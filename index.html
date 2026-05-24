@@ -245,7 +245,7 @@
             background-color: #f8fafc;
         }
 
-        /* CASOS DE ÉXITO REJILLA */
+        /* CASOS DE ÉXITO REJILLA REESTRUCTURADA */
         .success-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -262,6 +262,7 @@
             gap: 10px;
             min-height: 150px;
             justify-content: center;
+            position: relative;
         }
 
         .tag-row {
@@ -277,11 +278,6 @@
             border-radius: 2px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-
-        .tag.maint {
-            background: rgba(154, 33, 67, 0.1);
-            color: #9a2143;
         }
 
         .tag.dev {
@@ -304,6 +300,26 @@
             font-size: 15px;
             color: #64748b;
             line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        /* LINK DE LA DEMO */
+        .demo-link {
+            align-self: flex-start;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9a2143;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
+        }
+
+        .demo-link:hover {
+            color: #e28723;
         }
 
         /* ESTILO PARA LA DIAPOSITIVA DE EVOLUCIÓN TECNOLÓGICA (IA) */
@@ -369,7 +385,6 @@
 </head>
 <body>
 
-<!-- Slide 1 -->
 <div class="slide-container" id="slide1">
     <div class="content-area">
         <div class="title-layout">
@@ -384,7 +399,6 @@
     </div>
 </div>
 
-<!-- Slide 2 -->
 <div class="slide-container" id="slide2">
     <h2 class="slide-title">ORGANIZACIÓN COGNITIVA</h2>
     <div class="content-area">
@@ -408,7 +422,6 @@
     </div>
 </div>
 
-<!-- Slide 3 -->
 <div class="slide-container" id="slide3">
     <h2 class="slide-title">SERVICIOS DE PRÓXIMA GENERACIÓN</h2>
     <div class="content-area">
@@ -432,7 +445,6 @@
     </div>
 </div>
 
-<!-- Slide 4 -->
 <div class="slide-container" id="slide4">
     <h2 class="slide-title">Portafolio de Capacidades 4.0</h2>
     <div class="content-area">
@@ -460,7 +472,6 @@
     </div>
 </div>
 
-<!-- Slide 5 -->
 <div class="slide-container" id="slide5">
     <h2 class="slide-title">Nuestra Metodología de Desarrollo</h2>
     <div class="content-area">
@@ -476,7 +487,6 @@
     </div>
 </div>
 
-<!-- Slide 6 -->
 <div class="slide-container" id="slide6">
     <h2 class="slide-title">FACTORÍAS ESPECIALIZADAS</h2>
     <div class="content-area">
@@ -489,7 +499,7 @@
                 </ul>
             </div>
             <div class="card">
-                <h3>Células Autónomas</h3>
+                <h3>Células Autonomous</h3>
                 <p>Estructuramos equipos independientes dotados de pipelines modernos de verificación, permitiendo iterar constantemente sin detener la continuidad del negocio.</p>
             </div>
         </div>
@@ -500,7 +510,6 @@
     </div>
 </div>
 
-<!-- Slide 7 -->
 <div class="slide-container" id="slide7">
     <h2 class="slide-title">EQUIPO DE TRABAJO Y CULTURA</h2>
     <div class="content-area">
@@ -516,7 +525,6 @@
     </div>
 </div>
 
-<!-- Slide 8: Integración de IA y Ampliación de Stack -->
 <div class="slide-container" id="slide8">
     <h2 class="slide-title">Ampliación de la Capacidad Tecnológica</h2>
     <div class="content-area">
@@ -542,7 +550,6 @@
     </div>
 </div>
 
-<!-- Slide 9 -->
 <div class="slide-container" id="slide9">
     <h2 class="slide-title">PLATAFORMAS TECNOLÓGICAS</h2>
     <div class="content-area">
@@ -601,28 +608,18 @@
     </div>
 </div>
 
-<!-- Slide 10: Casos de Éxito - Parte 1 -->
 <div class="slide-container" id="slide10">
-    <h2 class="slide-title">ALGUNOS CASOS DE ÉXITO (I)</h2>
+    <h2 class="slide-title">ALGUNOS CASOS DE ÉXITO</h2>
     <div class="content-area">
         <div class="success-grid">
-            <div class="success-item">
-                <div class="tag-row"><span class="tag maint">Mantenimiento</span></div>
-                <h4>Evolutivo ADMINET</h4>
-                <p>ASP.NET, Visual Studio, TFS, DevExpress, SQLServer</p>
-            </div>
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
-                <h4>ADMINET MOBILE y ADMINET 24h</h4>
-                <p>IONICS</p>
-            </div>
             <div class="success-item">
                 <div class="tag-row">
                     <span class="tag dev">Desarrollo</span>
                     <span class="tag new-tech">React + .NET</span>
                 </div>
-                <h4>Aplicación de Reconocimientos Médicos</h4>
-                <p>ReactJs, ASP.NET, SQL Server. Integración de flujos de validación eficientes e intuitivos.</p>
+                <h4>Reconocimientos Médicos</h4>
+                <p>ReactJs, ASP.NET, SQL Server. Plataforma de gestión de Reconocimientos Médicos.</p>
+                <a href="./demo-reconocimientos/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
             </div>
             <div class="success-item">
                 <div class="tag-row">
@@ -631,76 +628,29 @@
                 </div>
                 <h4>Gestión de Condominios</h4>
                 <p>ReactJs, ASP.NET, SQL Server. Plataforma integral de administración y servicios distribuidos.</p>
+                <a href="./demo-condominios/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+            </div>
+            <div class="success-item">
+                <div class="tag-row">
+                    <span class="tag dev">Desarrollo</span>
+                </div>
+                <h4>Venta de Billetes</h4>
+                <p>Java, Spring, Angular, MariaDB. Sistema de Venta Anticipada de Billetes.</p>
+                <a href="./demo-billetes/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+            </div>
+            <div class="success-item">
+                <div class="tag-row">
+                    <span class="tag dev">Desarrollo</span>
+                </div>
+                <h4>Facturación</h4>
+                <p>Java, Spring, Angular, Oracle. Módulo de Sistema Gestión de Autopistas.</p>
+                <a href="./demo-facturacion/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
             </div>
         </div>
     </div>
     <div class="slide-footer">
         <span>SOFTWARE FACTORY – CASOS DE ÉXITO</span>
         <span>10</span>
-    </div>
-</div>
-
-<!-- Slide 11: Casos de Éxito - Parte 2 -->
-<div class="slide-container" id="slide11">
-    <h2 class="slide-title">ALGUNOS CASOS DE ÉXITO (II)</h2>
-    <div class="content-area">
-        <div class="success-grid">
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo / I+D</span></div>
-                <h4>Procesamiento y transformación de datos</h4>
-                <p>Java, Spring, OCR avanzado</p>
-            </div>
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
-                <h4>Proyectos INITHEALTH y Empresa Saludable</h4>
-                <p>Vuejs, Grails</p>
-            </div>
-            <div class="success-item">
-                <div class="tag-row"><span class="tag maint">Mantenimiento</span></div>
-                <h4>Evolutivo Proyectos Área Cliente y Tienda Online</h4>
-                <p>Cadena de Supermercados — Java, Angular, React</p>
-            </div>
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
-                <h4>Proyectos Matrícula Online, Cuadros Horarios</h4>
-                <p>Educación País Vasco — Java, Geremua, ORACLE</p>
-            </div>
-        </div>
-    </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – CASOS DE ÉXITO</span>
-        <span>11</span>
-    </div>
-</div>
-
-<!-- Slide 12: Casos de Éxito - Parte 3 -->
-<div class="slide-container" id="slide12">
-    <h2 class="slide-title">ALGUNOS CASOS DE ÉXITO (III)</h2>
-    <div class="content-area">
-        <div class="success-grid" style="grid-template-columns: 1fr 1fr; max-width: 100%;">
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
-                <h4>Sistemas Gestión de Autopistas y Reservas</h4>
-                <p>País Vasco — Java, Spring, Angular, ORACLE</p>
-            </div>
-            <div class="success-item">
-                <div class="tag-row"><span class="tag dev">Desarrollo / I+D</span></div>
-                <h4>Proyecto STARR – Seguimiento Pacientes Ictus</h4>
-                <p>Vuejs, Java, Spring, Node</p>
-            </div>
-        </div>
-    </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – CASOS DE ÉXITO</span>
-        <span>12</span>
-    </div>
-</div>
-
-<!-- Slide 13 -->
-<div class="slide-container" id="slide13" style="background-color: #9a2143;">
-    <div class="content-area" style="align-items: center; justify-content: center; text-align: center;">
-        <h2 style="color: #ffffff; font-size: 76px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 15px;">MUCHAS GRACIAS</h2>
-        <div style="width: 80px; height: 4px; background-color: #e28723;"></div>
     </div>
 </div>
 

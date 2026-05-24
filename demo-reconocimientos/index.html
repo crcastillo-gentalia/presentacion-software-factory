@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reconocimientos Médicos</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .bg-custom-green { background-color: #386e64; }
+        .text-custom-green { color: #386e64; }
+        .border-custom-green { border-color: #386e64; }
+        .bg-sidebar-light { background-color: #fbfcfb; }
+    </style>
+</head>
+<body class="bg-[#f4f6f5] text-slate-700 h-screen flex overflow-hidden text-[13px]">
+
+    <aside class="w-64 bg-sidebar-light border-r border-slate-200 flex flex-col justify-between shrink-0 select-none">
+        <div class="p-4 space-y-6">
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2">General</div>
+            <nav class="space-y-1">
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="bi bi-grid-1x2 text-base text-slate-400"></i>
+                    <span class="font-medium">Pantalla de Estado</span>
+                </a>
+            </nav>
+
+            <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-2 pt-2">Área de Salud</div>
+            <nav class="space-y-1">
+                <div class="flex items-center justify-between px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
+                    <div class="flex items-center space-x-3">
+                        <i class="bi bi-building text-base text-slate-400"></i>
+                        <span class="font-medium">Clientes</span>
+                    </div>
+                    <i class="bi bi-chevron-down text-[10px] text-slate-400"></i>
+                </div>
+                <button onclick="ocultarDetalle()" class="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-[#eef3f2] text-custom-green font-semibold border-l-4 border-custom-green text-left cursor-pointer">
+                    <i class="bi bi-file-earmark-medical text-base"></i>
+                    <span>Reconocimientos</span>
+                </button>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors">
+                    <i class="bi bi-heart-pulse text-base text-slate-400"></i>
+                    <span class="font-medium">Análisis</span>
+                </a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-slate-100 text-xs text-slate-400 text-center">
+            v4.2.1 Pro
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        
+        <header class="h-14 bg-custom-green px-6 flex items-center justify-between shrink-0 text-white shadow-sm">
+            <div class="flex items-center space-x-4">
+                <button class="text-white hover:opacity-80 text-lg"><i class="bi bi-list"></i></button>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-xs font-medium opacity-90">Usuario Demo</span>
+                <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm text-white select-none">U</div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-6 space-y-4 relative">
+            
+            <div class="text-xs text-slate-400 flex items-center space-x-1.5 select-none">
+                <span>Inicio</span>
+                <span><i class="bi bi-chevron-right text-[9px]"></i></span>
+                <span class="text-slate-600 font-medium">Historias Clínicas</span>
+            </div>
+
+            <div id="vista-listado" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">Reconocimientos</h2>
+                        <p class="text-xs text-slate-400">Gestión de Reconocimientos</p>
+                    </div>
+                    <button class="bg-custom-green hover:bg-[#2d574f] text-white px-4 py-2 rounded-lg font-medium flex items-center space-x-2 shadow-xs transition-colors cursor-pointer text-xs">
+                        <i class="bi bi-plus-lg"></i>
+                        <span>Nuevo Reconocimiento</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex items-center justify-between cursor-pointer hover:bg-slate-50/50 transition-colors">
+                    <div class="flex items-center space-x-2 text-slate-700 font-semibold">
+                        <i class="bi bi-filter-left text-lg"></i>
+                        <span>Filtros de Búsqueda</span>
+                    </div>
+                    <i class="bi bi-chevron-down text-xs text-slate-400"></i>
+                </div>
+
+                <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="text-slate-400 font-semibold border-b border-slate-100 bg-slate-50/70">
+                                    <th class="p-4 w-24">Nº Historia</th>
+                                    <th class="p-4">Fecha Reco.</th>
+                                    <th class="p-4">Persona</th>
+                                    <th class="p-4">Empresa</th>
+                                    <th class="p-4">Modalidad</th>
+                                    <th class="p-4">Tipo</th>
+                                    <th class="p-4">Estado</th>
+                                    <th class="p-4 text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-slate-600">
+                                <tr onclick="mostrarDetalle('roberto')" class="hover:bg-slate-50/80 transition-colors cursor-pointer">
+                                    <td class="p-4 font-bold text-custom-green">230406</td>
+                                    <td class="p-4">
+                                        <span class="inline-flex items-center space-x-1.5 border border-slate-200 px-2 py-1 rounded-md bg-white text-[11.5px]">
+                                            <i class="bi bi-calendar3 text-slate-400"></i>
+                                            <span>10 de enero de 2026</span>
+                                        </span>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="font-bold text-slate-800">Roberto Sánchez Torres</div>
+                                        <div class="text-[11px] text-slate-400 font-mono mt-0.5">87654321B</div>
+                                    </td>
+                                    <td class="p-4 text-slate-500">Particular</td>
+                                    <td class="p-4">Privado</td>
+                                    <td class="p-4">
+                                        <span class="border border-slate-200 px-2 py-0.5 rounded-full text-[11px] text-slate-500 bg-slate-50">Ingreso</span>
+                                    </td>
+                                    <td class="p-4">
+                                        <span class="bg-emerald-500 text-white px-2 py-0.5 rounded-md text-[11px] font-medium">Completado</span>
+                                    </td>
+                                    <td class="p-4 text-center space-x-3" onclick="event.stopPropagation();">
+                                        <button onclick="mostrarDetalle('roberto')" class="text-slate-400 hover:text-custom-green transition-colors"><i class="bi bi-pencil"></i></button>
+                                        <button class="text-slate-400 hover:text-rose-600 transition-colors"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr onclick="mostrarDetalle('maria')" class="hover:bg-slate-50/80 transition-colors cursor-pointer">
+                                    <td class="p-4 font-bold text-custom-green">230405</td>
+                                    <td class="p-4">
+                                        <span class="inline-flex items-center space-x-1.5 border border-slate-200 px-2 py-1 rounded-md bg-white text-[11.5px]">
+                                            <i class="bi bi-calendar3 text-slate-400"></i>
+                                            <span>10 de febrero de 2026</span>
+                                        </span>
+                                    </td>
+                                    <td class="p-4">
+                                        <div class="font-bold text-slate-800">María Carmen García López</div>
+                                        <div class="text-[11px] text-slate-400 font-mono mt-0.5">12345678A</div>
+                                    </td>
+                                    <td class="p-4 text-slate-400">—</td>
+                                    <td class="p-4">Seguro</td>
+                                    <td class="p-4">
+                                        <span class="border border-amber-200 px-2 py-0.5 rounded-full text-[11px] text-amber-600 bg-amber-50">Extraordinario</span>
+                                    </td>
+                                    <td class="p-4 space-y-1">
+                                        <div><span class="bg-emerald-500 text-white px-2 py-0.5 rounded-md text-[11px] font-medium">Completado</span></div>
+                                        <div><span class="bg-sky-600 text-white px-2 py-0.5 rounded-md text-[10px] font-medium">Auditado</span></div>
+                                    </td>
+                                    <td class="p-4 text-center space-x-3" onclick="event.stopPropagation();">
+                                        <button onclick="mostrarDetalle('maria')" class="text-slate-400 hover:text-custom-green transition-colors"><i class="bi bi-pencil"></i></button>
+                                        <button class="text-slate-400 hover:text-rose-600 transition-colors"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="vista-detalle" class="space-y-4 hidden">
+                
+                <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs flex items-center justify-between relative">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-custom-green text-xl">
+                            <i class="bi bi-file-earmark-medical"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wide border border-slate-200 px-1.5 py-0.5 rounded-sm">RECONOCIMIENTO</span>
+                                <span id="det-historia" class="text-[10px] font-mono font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-sm">Hº: 230406</span>
+                            </div>
+                            <h3 class="text-base font-bold text-slate-800 mt-1 flex items-center space-x-2">
+                                <span id="det-nombre">Roberto Sánchez Torres</span>
+                                <span id="det-sexo" class="bg-[#2d574f] text-white text-[10px] font-medium px-2 py-0.5 rounded-sm">Hombre</span>
+                                <span id="det-edad" class="text-xs font-normal text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-200">50 años</span>
+                                <span id="det-dni" class="bg-sky-600 text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded-sm">DNI: 87654321B</span>
+                            </h3>
+                            <p id="det-sub" class="text-xs text-slate-400 mt-0.5">Particular | Centro: Centro Médico Privado</p>
+                        </div>
+                    </div>
+                    <button onclick="ocultarDetalle()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 border border-slate-200 p-1.5 rounded-lg transition-all cursor-pointer">
+                        <i class="bi bi-x-lg text-xs font-bold"></i>
+                    </button>
+                </div>
+
+                <div class="flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-2xs overflow-x-auto space-x-1 select-none">
+                    <button class="flex items-center space-x-2 px-4 py-2 rounded-lg text-slate-500 text-xs font-medium hover:bg-slate-50"><i class="bi bi-person"></i><span>Datos Generales</span></button>
+                    <button class="flex items-center space-x-2 px-4 py-2 rounded-lg bg-[#eef3f2] text-custom-green text-xs font-bold border border-slate-100"><i class="bi bi-clock-history"></i><span>Historia Clínica</span></button>
+                    <button class="flex items-center space-x-2 px-4 py-2 rounded-lg text-slate-500 text-xs font-medium hover:bg-slate-50"><i class="bi bi-activity"></i><span>Exploración Física</span></button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    
+                    <div class="md:col-span-7 space-y-4">
+                        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+                            <div class="p-3 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-slate-700 text-xs">Historia Profesional</span>
+                                    <span class="bg-amber-50 border border-amber-100 text-amber-700 text-[10px] px-1.5 py-0.5 rounded font-medium">☲ 2 registro(s)</span>
+                                </div>
+                                <div class="inline-flex rounded-md border border-slate-200 bg-white p-0.5 text-[10px] font-medium text-slate-400">
+                                    <button class="px-2 py-0.5 text-slate-500">v1</button>
+                                    <button class="px-2 py-0.5 bg-slate-100 text-slate-700 font-bold rounded-sm border-l border-slate-200">v2</button>
+                                </div>
+                            </div>
+                            <table class="w-full text-left text-xs">
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr>
+                                        <td class="p-3 text-slate-600 w-1/2">¿Ha trabajado anteriormente?</td>
+                                        <td class="p-3 w-1/2">Sí</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 text-slate-600">¿En qué tipo industria?</td>
+                                        <td class="p-3 text-slate-500 font-normal">Metalúrgica</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+                            <div class="p-3 bg-slate-50/50 flex items-center justify-between">
+                                <span class="font-bold text-slate-700 text-xs">Antecedentes Familiares</span>
+                                <i class="bi bi-chevron-down text-xs text-slate-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-5 space-y-4">
+                        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+                            <div class="p-3 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-slate-700 text-xs">Inmunizaciones</span>
+                                    <span class="bg-amber-50 border border-amber-100 text-amber-700 text-[10px] px-1.5 py-0.5 rounded font-medium">☲ 1 registro(s)</span>
+                                </div>
+                                <div class="inline-flex rounded-md border border-slate-200 bg-white p-0.5 text-[10px] font-medium text-slate-400">
+                                    <button class="px-2 py-0.5">v1</button>
+                                    <button class="px-2 py-0.5 bg-slate-100 text-slate-700 font-bold rounded-sm border-l border-slate-200">v2</button>
+                                </div>
+                            </div>
+                            <table class="w-full text-left text-xs">
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr>
+                                        <td class="p-3 text-slate-600 w-1/2">Vacuna antitetánica</td>
+                                        <td class="p-3 w-1/2">Sí (Correctamente inmunizado)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+                            <div class="p-3 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-slate-700 text-xs">Alergias</span>
+                                    <span class="bg-orange-50 border border-orange-100 text-orange-700 text-[10px] px-1.5 py-0.5 rounded font-medium">☲ 1 registro(s)</span>
+                                </div>
+                                <div class="inline-flex rounded-md border border-slate-200 bg-white p-0.5 text-[10px] font-medium text-slate-400">
+                                    <button class="px-2 py-0.5">v1</button>
+                                    <button class="px-2 py-0.5 bg-slate-100 font-bold text-slate-700 rounded-sm border-l border-slate-200">v2</button>
+                                </div>
+                            </div>
+                            <table class="w-full text-left text-xs">
+                                <tbody class="divide-y divide-slate-100 font-medium text-slate-700">
+                                    <tr>
+                                        <td class="p-3 text-slate-600 w-1/2">¿Tiene Ud alguna alergia?</td>
+                                        <td class="p-3 w-1/2 text-rose-600 font-bold">Sí (Alergia a la Penicilina)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const datosPacientes = {
+            roberto: {
+                historia: "Hº: 230406",
+                nombre: "Roberto Sánchez Torres",
+                sexo: "Hombre",
+                edad: "50 años",
+                dni: "DNI: 87654321B",
+                sub: "Particular | Centro: Centro Médico Privado"
+            },
+            maria: {
+                historia: "Hº: 230405",
+                nombre: "María Carmen García López",
+                sexo: "Mujer",
+                edad: "44 años",
+                dni: "DNI: 12345678A",
+                sub: "Seguro Mapfre | Centro: Centro Médico Privado"
+            }
+        };
+
+        function mostrarDetalle(idPaciente) {
+            if(idPaciente && datosPacientes[idPaciente]) {
+                const p = datosPacientes[idPaciente];
+                document.getElementById('det-historia').innerText = p.historia;
+                document.getElementById('det-nombre').innerText = p.nombre;
+                document.getElementById('det-sexo').innerText = p.sexo;
+                document.getElementById('det-edad').innerText = p.edad;
+                document.getElementById('det-dni').innerText = p.dni;
+                document.getElementById('det-sub').innerText = p.sub;
+            }
+            document.getElementById('vista-listado').style.display = 'none';
+            document.getElementById('vista-detalle').style.display = 'block';
+        }
+
+        function ocultarDetalle() {
+            document.getElementById('vista-detalle').style.display = 'none';
+            document.getElementById('vista-listado').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
