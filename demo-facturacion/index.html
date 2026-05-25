@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Facturas</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        /* Estilos personalizados para clavar los detalles de la interfaz original */
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
         .bg-navbar-gradient {
             background: linear-gradient(to right, #0a4b7c, #0d62a1);
         }
@@ -14,10 +17,14 @@
             background: linear-gradient(to bottom, #0091ff, #0066b3);
             box-shadow: inset 0 -3px 0 0 #ffffff;
         }
+        .bg-sidebar-custom {
+            background-color: #1e4e79;
+        }
         .custom-table th {
             background-color: #0d82cb;
             color: #ffffff;
             font-weight: 500;
+            border: 1px solid #0a6eb1;
         }
         .custom-table tr:nth-child(even) {
             background-color: #e6f2fa;
@@ -27,186 +34,271 @@
         }
         .custom-table tr:hover {
             background-color: #d0e7f5;
-        }
-        /* Ocultar flechas nativas de inputs tipo date para asemejar a inputs normales */
-        input[type="date"]::-webkit-inner-spin-button,
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            opacity: 0.5;
             cursor: pointer;
+        }
+        .compact-input {
+            border: 1px solid #adb5bd;
+            border-radius: 3px;
+            padding: 2px 6px;
+            height: 26px;
+            font-size: 11px;
+            color: #333;
+            background-color: #ffffff;
+            width: 100%;
+        }
+        .compact-input:focus {
+            outline: none;
+            border-color: #0d62a1;
+        }
+        .compact-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444' stroke-width='2.5'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 6px center;
+            background-size: 10px;
+            padding-right: 18px;
         }
     </style>
 </head>
-<body class="bg-[#ffffff] text-slate-800 font-sans antialiased h-screen flex flex-col overflow-hidden text-sm">
+<body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden text-[11px] select-none">
 
-    <header class="bg-navbar-gradient h-12 flex items-center justify-between px-4 shrink-0 text-white select-none">
+    <header class="bg-navbar-gradient h-10 flex items-center justify-between shrink-0 text-white px-3 z-20">
         <div class="flex items-center h-full">
-            <div class="w-24 h-8 bg-white/10 rounded flex items-center justify-center mr-8 border border-white/5 font-bold italic text-xs tracking-wider">
-                LOGO
-            </div>
-            <nav class="flex h-full text-[13px]">
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Validación</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Recaudación</a>
-                <a href="#" class="px-4 flex items-center active-tab font-medium">Factura</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Informes</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Configuración</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Herramientas</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Seguridad</a>
-                <a href="#" class="px-4 flex items-center hover:bg-white/10 transition-colors">Remesador</a>
+            <nav class="flex h-full items-center text-[12px] font-normal">
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Validación</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Recaudación</a>
+                <a href="#" class="px-4 h-full flex items-center active-tab font-semibold">Factura</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Informes</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Configuración</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Herramientas</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Seguridad</a>
+                <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors opacity-75">Remesador</a>
             </nav>
         </div>
-
-        <div class="flex items-center space-x-4">
-            <div class="flex items-center space-x-2 cursor-pointer hover:opacity-90">
-                <div class="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-xs border border-white/30 font-bold">U</div>
-                <span class="text-xs font-medium">admin</span>
+        <div class="flex items-center space-x-4 pr-1 text-xs">
+            <i class="bi bi-lock-fill text-green-400 text-sm"></i>
+            <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-200">
+                <span>Salir</span>
+                <i class="bi bi-box-arrow-right text-green-400 font-bold"></i>
             </div>
-            <button class="text-white/80 hover:text-white cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-            </button>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
         
-        <aside class="w-56 bg-[#005596] shrink-0 text-white flex flex-col justify-between select-none text-[12.5px]">
-            <div class="flex flex-col">
-                <a href="#" class="px-3 py-2 hover:bg-black/10 border-b border-white/10 opacity-80">Gestión de procesos</a>
-                <a href="#" class="px-3 py-2 hover:bg-black/10 border-b border-white/10 opacity-80">Libro de Facturas Emitidas</a>
-                <a href="#" class="px-3 py-2 hover:bg-black/10 border-b border-white/10 opacity-85">Construcciones Vigo S.A.</a>
-                <a href="#" class="px-3 py-2 bg-[#0082cb] font-medium border-b border-white/10">Consulta de Facturas</a>
-                <a href="#" class="px-3 py-2 hover:bg-black/10 border-b border-white/10 opacity-80">Anulación de Facturas</a>
-                <a href="#" class="px-3 py-2 hover:bg-black/10 border-b border-white/10 opacity-80">Anulación de entre Facturas</a>
+        <aside class="w-52 bg-sidebar-custom shrink-0 text-white flex flex-col select-none border-r border-black/10">
+            <div class="flex flex-col text-[11px] pt-2">
+                <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Solicitudes de Metálico</a>
+                <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Gestión de procesos</a>
+                <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Libro de Facturas Emitidas</a>
+                <a href="#" class="px-4 py-2 bg-[#0082cb] font-medium border-b border-white/5">Consulta de Facturas</a>
+                <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Anulación de Facturas</a>
+                <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Cambio Cliente de Factura</a>
             </div>
         </aside>
 
-        <main class="flex-1 flex flex-col p-5 overflow-hidden bg-white">
+        <main class="flex-1 flex flex-col p-4 overflow-hidden bg-white">
             
-            <div class="flex justify-between items-center mb-2 shrink-0">
-                <h2 class="text-xl font-normal text-slate-800">Consulta de Facturas</h2>
-                <div class="flex items-center space-x-2">
-                    <button class="border border-slate-300 hover:bg-slate-50 text-slate-600 px-3 py-1 rounded text-xs flex items-center space-x-1 cursor-pointer">
-                        <span>Abor</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </button>
-                    <button class="bg-[#28a745] hover:bg-[#218838] text-white p-1 rounded cursor-pointer" title="Excel / Ajustes">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <fieldset class="border border-slate-200 rounded p-4 mb-4 shrink-0 relative">
-                <legend class="text-xs font-semibold px-1 text-slate-700">Filtros normales</legend>
+            <div id="view-list" class="flex flex-col flex-1 overflow-hidden">
                 
-                <form id="search-form" onsubmit="filterGrid(event)" class="grid grid-cols-12 gap-x-4 gap-y-3 items-end">
-                    <div class="col-span-2 relative">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">NIF-CIF</label>
-                        <input type="text" id="input-nif" class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs font-mono">
-                        <span class="absolute right-0 bottom-6 text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        </span>
-                        <div class="text-[9px] text-slate-400 text-right mt-0.5">0 / 10</div>
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">Núm. de Factura</label>
-                        <input type="text" id="input-num" class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs font-mono">
-                        <div class="text-[9px] text-slate-400 text-right mt-0.5">0 / 13</div>
-                    </div>
-
-                    <div class="col-span-1">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">Núm.-2026</label>
-                        <input type="text" class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs font-mono">
-                        <div class="text-[9px] text-slate-400 text-right mt-0.5">0 / 13</div>
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">Periodo Inicio</label>
-                        <input type="date" class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs">
-                    </div>
-
-                    <div class="col-span-2">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">Periodo Fin</label>
-                        <input type="date" class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs">
-                    </div>
-
-                    <div class="col-span-1 relative">
-                        <label class="block text-[11px] text-slate-500 mb-0.5">Tipo de Factura</label>
-                        <select class="w-full border-b border-slate-400 focus:border-blue-500 outline-none pb-0.5 text-xs bg-transparent appearance-none cursor-pointer">
-                            <option value=""></option>
-                            <option value="A">Tipo A</option>
-                            <option value="B">Tipo B</option>
-                        </select>
-                        <span class="absolute right-0 bottom-2 pointer-events-none text-slate-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
-                        </span>
-                    </div>
-
-                    <div class="col-span-2 flex flex-col items-end space-y-2 pl-4">
-                        <button type="submit" class="bg-[#8cc63f] hover:bg-[#7db235] text-white font-medium px-6 py-1.5 rounded text-xs tracking-wide shadow-xs flex items-center space-x-1 cursor-pointer w-full justify-center">
-                            <span>Buscar</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        </button>
-                        <button type="button" onclick="clearFilters()" class="text-xs text-slate-600 hover:text-black flex items-center space-x-1 cursor-pointer border border-transparent hover:border-slate-200 px-2 py-0.5 rounded transition-all">
-                            <span>Limpiar filtros</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                <div class="flex justify-between items-center mb-1 shrink-0">
+                    <h2 class="text-base font-bold text-slate-800 tracking-tight">Consulta de Facturas</h2>
+                    <div class="flex items-center">
+                        <button class="border border-gray-300 text-green-700 hover:bg-gray-50 px-2 py-0.5 rounded text-[12px] flex items-center">
+                            <i class="bi bi-file-earmark-excel"></i>
                         </button>
                     </div>
-                </form>
-
-                <div class="absolute right-4 -bottom-6 text-right font-medium text-[#0a4b7c]">
-                    Nº registros: <span id="record-count" class="font-bold">16</span>
                 </div>
-            </fieldset>
 
-            <div class="flex-1 overflow-auto border border-slate-200 rounded shadow-xs mt-3">
-                <table class="w-full text-left text-xs custom-table border-collapse">
-                    <thead class="sticky top-0 shadow-xs z-10 text-[12px]">
-                        <tr>
-                            <th class="p-2 border border-slate-300">Cliente</th>
-                            <th class="p-2 border border-slate-300">No. Factura</th>
-                            <th class="p-2 border border-slate-300">ViaEnvio</th>
-                            <th class="p-2 border border-slate-300">Periodo</th>
-                            <th class="p-2 border border-slate-300 text-right">Base. Imp.</th>
-                            <th class="p-2 border border-slate-300 text-right">IVA</th>
-                            <th class="p-2 border border-slate-300 text-right">Total Fac.</th>
-                            <th class="p-2 border border-slate-300 text-center">Sit.</th>
-                            <th class="p-2 border border-slate-300 text-center">F. Situación</th>
-                            <th class="p-2 border border-slate-300 text-center">Fac. Anul.</th>
-                        </tr>
-                    </thead>
-                    <tbody id="grid-body" class="font-mono text-slate-700">
+                <div class="border border-gray-300 rounded p-3 mb-3 shrink-0 relative bg-white mt-2">
+                    <span class="absolute -top-2 left-3 bg-white px-1 font-semibold text-gray-600 text-[10px]">Filtros normales</span>
+                    
+                    <form id="search-form" onsubmit="filterGrid(event)" class="flex flex-wrap items-center gap-2 pr-28">
+                        <div class="w-24 relative">
+                            <input type="text" id="input-nif" placeholder="NIF-CIF" class="compact-input font-mono pr-5">
+                            <i class="bi bi-search absolute right-2 top-1.5 text-gray-400 text-[10px]"></i>
+                        </div>
+                        <div class="w-32">
+                            <input type="text" id="input-num" placeholder="Núm. de Factura" class="compact-input font-mono">
+                        </div>
+                        <div class="w-24">
+                            <input type="text" id="input-obe" placeholder="Tarjeta/OBE" class="compact-input font-mono">
+                        </div>
+                        <div class="w-24">
+                            <input type="text" id="input-inicio" placeholder="Período Inicio" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                        <div class="w-24">
+                            <input type="text" id="input-fin" placeholder="Período Fin" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
+                        </div>
+                        <div class="w-32">
+                            <select id="input-tipo" class="compact-input compact-select text-gray-600">
+                                <option value="" selected>Tipo de Factura</option>
+                                <option value="todos">Todos los tipos</option>
+                                <option value="02">02 - Factura Ordinaria</option>
+                            </select>
+                        </div>
+                        <div class="w-24">
+                            <select id="input-via" class="compact-input compact-select text-gray-600">
+                                <option value="" selected>Vía Envío</option>
+                                <option value="todos">Todas</option>
+                                <option value="auto">auto</option>
+                                <option value="asto">asto</option>
+                            </select>
+                        </div>
+                        <div class="w-24">
+                            <select id="input-validada" class="compact-input compact-select text-gray-600">
+                                <option value="" selected>Validadas</option>
+                                <option value="todos">Todas</option>
+                                <option value="si">Sí</option>
+                            </select>
+                        </div>
+
+                        <div class="absolute right-3 top-0 bottom-0 flex flex-col justify-center space-y-1 w-24">
+                            <button type="submit" class="bg-[#8cc63f] hover:bg-[#7db235] text-black font-semibold h-[26px] rounded text-[11px] flex items-center justify-center space-x-1 cursor-pointer">
+                                <span>Buscar</span>
+                                <i class="bi bi-search text-[9px]"></i>
+                            </button>
+                            <button type="button" onclick="clearFilters()" class="text-[10px] text-gray-600 hover:text-black bg-white border border-gray-300 rounded h-[20px] flex items-center justify-center space-x-1 cursor-pointer hover:bg-gray-50">
+                                <span>Limpiar filtros</span>
+                                <i class="bi bi-x-lg text-[8px]"></i>
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="absolute right-3 -bottom-4.5 text-right font-bold text-[#0a4b7c] text-[10px]">
+                        Nº registros: <span id="record-count">0</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-auto border border-slate-300 mt-2">
+                    <table class="w-full text-left text-[11px] border-collapse whitespace-nowrap custom-table">
+                        <thead class="sticky top-0 z-10 text-white font-normal">
+                            <tr class="divide-x divide-white/20">
+                                <th class="p-1.5">Cliente</th>
+                                <th class="p-1.5">No. Factura</th>
+                                <th class="p-1.5 text-center">ViaEnvio</th>
+                                <th class="p-1.5 text-center">Fecha</th>
+                                <th class="p-1.5 text-center">Período</th>
+                                <th class="p-1.5 text-right">Base. Imp.</th>
+                                <th class="p-1.5 text-right">IVA</th>
+                                <th class="p-1.5 text-right">Total Fac.</th>
+                                <th class="p-1.5 text-center">Sit.</th>
+                                <th class="p-1.5 text-center">Fac. Anul.</th>
+                                <th class="p-1.5 text-center">Validada</th>
+                                <th class="p-1.5 text-center">Enviada</th>
+                                <th class="p-1.5">Fac. Email</th>
+                                <th class="p-1.5 text-center">Adjunto</th>
+                            </tr>
+                        </thead>
+                        <tbody id="grid-body" class="divide-y divide-slate-200 font-mono text-gray-800 bg-white">
                         </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
+
+            <div id="view-detail" class="hidden flex-col flex-1 overflow-hidden">
+                <div class="flex justify-between items-center mb-2 shrink-0">
+                    <h2 class="text-base font-bold text-slate-800 tracking-tight">Consulta de Facturas</h2>
+                    <div class="flex items-center space-x-3 text-gray-600 text-base pr-1">
+                        <i class="bi bi-envelope cursor-pointer hover:text-black"></i>
+                        <i class="bi bi-download cursor-pointer hover:text-black"></i>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-12 gap-x-4 gap-y-1 bg-slate-50 p-3 border border-gray-300 rounded shrink-0 text-[11px]">
+                    <div class="col-span-3 grid grid-cols-3 gap-y-0.5">
+                        <div class="text-right font-bold text-gray-600 pr-2">No. Factura:</div>
+                        <div class="col-span-2 text-gray-900 font-mono" id="det-no-factura">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Fecha Factura:</div>
+                        <div class="col-span-2 text-gray-900" id="det-fecha-factura">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Fecha Emisión:</div>
+                        <div class="col-span-2 text-gray-900" id="det-fecha-emision">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Situación:</div>
+                        <div class="col-span-2 text-gray-900 font-mono" id="det-situacion">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Período:</div>
+                        <div class="col-span-2 text-gray-900 text-[10px]" id="det-periodo">-</div>
+                    </div>
+                    <div class="col-span-3 grid grid-cols-3 gap-y-0.5">
+                        <div class="text-right font-bold text-gray-600 pr-2">Anula a:</div>
+                        <div class="col-span-2 text-gray-900 font-mono" id="det-anula-a">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Fecha:</div>
+                        <div class="col-span-2 text-gray-900" id="det-fecha-anula">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Fecha Emisión:</div>
+                        <div class="col-span-2 text-gray-900" id="det-fecha-emision-anula">-</div>
+                    </div>
+                    <div class="col-span-2 grid grid-cols-2 gap-y-0.5 border-r border-gray-300 pr-2">
+                        <div class="text-right font-bold text-gray-600 pr-2">B.I.:</div>
+                        <div class="text-right text-gray-900 font-mono" id="det-bi">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">IVA:</div>
+                        <div class="text-right text-gray-900 font-mono" id="det-iva">-</div>
+                        <div class="text-right font-bold text-gray-600 pr-2">Total:</div>
+                        <div class="text-right font-bold text-black font-mono" id="det-total">-</div>
+                    </div>
+                    <div class="col-span-4 pl-2">
+                        <div class="font-bold text-gray-600">Cliente:</div>
+                        <div class="text-gray-900 font-bold font-mono mt-0.5" id="det-cliente-id">-</div>
+                        <div class="text-gray-500 text-[10px] leading-tight font-bold mt-0.5" id="det-cliente-nombre">-</div>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-auto border border-slate-300 mt-3">
+                    <table class="w-full text-left text-[10px] border-collapse whitespace-nowrap custom-table">
+                        <thead class="sticky top-0 z-10 text-white font-normal">
+                            <tr class="divide-x divide-white/20">
+                                <th class="p-1">Tarjeta/OBE</th>
+                                <th class="p-1 text-center">Fecha</th>
+                                <th class="p-1 text-center">Hora</th>
+                                <th class="p-1 text-center">Locator</th>
+                                <th class="p-1 text-center">Numbsec</th>
+                                <th class="p-1 text-center">EE</th>
+                                <th class="p-1 text-center">ES</th>
+                                <th class="p-1 text-center">VS</th>
+                                <th class="p-1 text-center">CM</th>
+                                <th class="p-1 text-center">CA</th>
+                                <th class="p-1 text-center">GT</th>
+                                <th class="p-1 text-right pr-4">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detail-grid-body" class="divide-y divide-slate-200 font-mono text-gray-800 bg-white">
+                        </tbody>
+                        <tfoot class="sticky bottom-0 bg-slate-100 border-t-2 border-slate-300 font-bold text-black text-[11px]">
+                            <tr>
+                                <td class="p-1" id="detail-foot-count">Total 0</td>
+                                <td colspan="10"></td>
+                                <td class="p-1 text-right pr-4 font-mono text-black" id="detail-foot-total">0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="flex justify-end mt-3 shrink-0">
+                    <button onclick="closeDetailView()" class="bg-[#0d62a1] text-white px-5 py-1 rounded text-[11px] cursor-pointer">
+                        Cerrar
+                    </button>
+                </div>
+            </div>
+
         </main>
     </div>
 
     <script>
         const originalDatabase = [
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1044", via: "auto", periodo: "21/05/2021", base: "118.99", iva: "24.99", total: "143.98", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1044", via: "auto", periodo: "21/05/2021", base: "719.99", iva: "151.19", total: "871.11", sit: "VALIDADA", f_sit: "VALIDADA", anulada: true },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1045", via: "auto", periodo: "21/05/2021", base: "167.16", iva: "35.10", total: "202.26", sit: "VALIDADA", f_sit: "VALIDADA", anulada: true },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1046", via: "auto", periodo: "27/05/2021", base: "60.46", iva: "12.70", total: "73.16", sit: "VALIDADA", f_sit: "VALIDADA", anulada: true },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1047", via: "auto", periodo: "21/05/2021", base: "61.66", iva: "12.95", total: "74.61", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1028", via: "auto", periodo: "27/05/2021", base: "24.45", iva: "5.14", total: "29.59", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1029", via: "auto", periodo: "27/05/2021", base: "12.37", iva: "2.60", total: "14.97", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1030", via: "auto", periodo: "21/05/2021", base: "30.69", iva: "6.45", total: "37.14", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1030", via: "auto", periodo: "31/05/2021", base: "28.72", iva: "6.03", total: "34.75", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1031", via: "auto", periodo: "31/05/2021", base: "75.21", iva: "15.79", total: "91.00", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1032", via: "auto", periodo: "31/05/2021", base: "301.29", iva: "63.27", total: "364.56", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1033", via: "auto", periodo: "31/05/2021", base: "56.26", iva: "11.82", total: "68.08", sit: "VALIDADA", f_sit: "VALIDADA", anulada: true },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1040", via: "auto", periodo: "31/05/2021", base: "21.61", iva: "4.54", total: "26.15", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1043", via: "asto", periodo: "31/06/2021", base: "40324.47", iva: "8468.14", total: "48792.61", sit: "VALIDADA", f_sit: "VALIDADA", anulada: true },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1044", via: "asto", periodo: "31/06/2021", base: "13.34", iva: "2.80", total: "16.14", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false },
-            { cliente: "Construcciones Vigo S.A.", factura: "FACT-2026-1044", via: "asto", periodo: "31/06/2021", base: "129.56", iva: "27.21", total: "156.77", sit: "VALIDADA", f_sit: "VALIDADA", anulada: false }
+            { id: 1, clienteId: "306894", clienteNom: "VIGO CENTRAL OPERACIONES S.L.", factura: "9101711007014", via: "Postal", fecha: "31/01/2017", periodo: "02/01/2017 a 15/01/2017", base: "89.90", iva: "18.88", total: "108.78", sit: "02", f_sit: "31/01/2017", anulada: false, validada: true, enviada: false, email: "", lineas: [
+                { obe: "6039732080316029", fecha: "04/01/2017", hora: "14:40:28", locator: "01241816", numbsec: "33194038", ee: "0", es: "0", vs: "0", cm: "03", ca: "03", gt: "01", total: "50.00" },
+                { obe: "6039732080316029", fecha: "13/01/2017", hora: "08:17:08", locator: "00985317", numbsec: "33338391", ee: "0", es: "0", vs: "0", cm: "03", ca: "03", gt: "01", total: "58.78" }
+            ]},
+            { id: 2, clienteId: "306182", clienteNom: "CONSTRUCCIONES VIGO S.A.", factura: "9102611040606", via: "Email", fecha: "07/05/2026", periodo: "de 04/04/2026 a 30/04/2026", base: "146.37", iva: "30.74", total: "177.11", sit: "02", f_sit: "07/05/2026", anulada: false, validada: true, enviada: true, email: "vigo@construcciones.es", lineas: [
+                { obe: "6039732080316029", fecha: "14/04/2026", hora: "08:23:09", locator: "01995906", numbsec: "33349771", ee: "0", es: "0", vs: "0", cm: "03", ca: "03", gt: "01", total: "100.00" },
+                { obe: "6039732080316029", fecha: "14/04/2026", hora: "14:26:05", locator: "00920666", numbsec: "33353203", ee: "0", es: "0", vs: "0", cm: "03", ca: "03", gt: "01", total: "77.11" }
+            ]},
+            { id: 3, clienteId: "724336", clienteNom: "SUMINISTROS MIÑO S.A.", factura: "9101711007016", via: "Postal", fecha: "31/01/2017", periodo: "13/01/2017 a 20/01/2017", base: "11.55", iva: "2.42", total: "13.97", sit: "02", f_sit: "31/01/2017", anulada: true, validada: true, enviada: false, email: "", lineas: [
+                { obe: "6039732080316999", fecha: "20/01/2017", hora: "11:12:05", locator: "00192841", numbsec: "22194820", ee: "0", es: "0", vs: "0", cm: "01", ca: "01", gt: "02", total: "13.97" }
+            ]}
         ];
+
+        window.onload = () => {
+            renderTable(originalDatabase);
+        };
 
         function renderTable(data) {
             const tbody = document.getElementById('grid-body');
@@ -214,19 +306,26 @@
             
             data.forEach(row => {
                 const tr = document.createElement('tr');
+                tr.id = `invoice-row-${row.id}`;
+                tr.className = "divide-x divide-slate-200 text-slate-700";
+                // Un solo click abre directamente la vista de detalle
+                tr.onclick = () => openDetailView(row.id);
+                
                 tr.innerHTML = `
-                    <td class="p-2 border border-slate-200 font-sans">${row.cliente}</td>
-                    <td class="p-2 border border-slate-200">${row.factura}</td>
-                    <td class="p-2 border border-slate-200 text-center">${row.via}</td>
-                    <td class="p-2 border border-slate-200 text-center">${row.periodo}</td>
-                    <td class="p-2 border border-slate-200 text-right">${row.base}</td>
-                    <td class="p-2 border border-slate-200 text-right">${row.iva}</td>
-                    <td class="p-2 border border-slate-200 text-right font-medium">${row.total}</td>
-                    <td class="p-2 border border-slate-200 text-center">${row.sit}</td>
-                    <td class="p-2 border border-slate-200 text-center">${row.f_sit}</td>
-                    <td class="p-2 border border-slate-200 text-center text-sm font-bold">
-                        ${row.anulada ? '✓' : ''}
-                    </td>
+                    <td class="p-1.5 font-sans text-gray-900 font-medium">${row.clienteId} - ${row.clienteNom}</td>
+                    <td class="p-1.5 font-mono">${row.factura}</td>
+                    <td class="p-1.5 text-center font-sans">${row.via}</td>
+                    <td class="p-1.5 text-center">${row.fecha}</td>
+                    <td class="p-1.5 text-center font-sans text-[10px]">${row.periodo}</td>
+                    <td class="p-1.5 text-right font-mono">${row.base}</td>
+                    <td class="p-1.5 text-right font-mono">${row.iva}</td>
+                    <td class="p-1.5 text-right font-bold font-mono text-slate-900">${row.total}</td>
+                    <td class="p-1.5 text-center font-sans">${row.sit}</td>
+                    <td class="p-1.5 text-center font-bold text-red-600">${row.anulada ? '✓' : ''}</td>
+                    <td class="p-1.5 text-center">${row.validada ? '<i class="bi bi-check-lg text-black font-bold"></i>' : ''}</td>
+                    <td class="p-1.5 text-center">${row.enviada ? '<i class="bi bi-check-lg text-black font-bold"></i>' : ''}</td>
+                    <td class="p-1.5 font-sans text-gray-500">${row.email || ''}</td>
+                    <td class="p-1.5 text-center text-gray-900" onclick="event.stopPropagation();"><i class="bi bi-download cursor-pointer"></i></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -236,26 +335,79 @@
 
         function filterGrid(event) {
             event.preventDefault();
-            const nifVal = document.getElementById('input-nif').value.trim().toUpperCase();
-            const numVal = document.getElementById('input-num').value.trim().toUpperCase();
+            const nifVal = document.getElementById('input-nif').value.trim().toLowerCase();
+            const numVal = document.getElementById('input-num').value.trim().toLowerCase();
+            const viaVal = document.getElementById('input-via').value;
 
             const filtered = originalDatabase.filter(item => {
-                const matchNif = nifVal === '' || item.cliente.toUpperCase().includes(nifVal);
-                const matchNum = numVal === '' || item.factura.toUpperCase().includes(numVal);
-                return matchNif && matchNum;
+                const matchNif = !nifVal || item.clienteNom.toLowerCase().includes(nifVal) || item.clienteId.toLowerCase().includes(nifVal);
+                const matchNum = !numVal || item.factura.toLowerCase().includes(numVal);
+                const matchVia = !viaVal || viaVal === 'todos' || item.via.toLowerCase() === viaVal.toLowerCase();
+                return matchNif && matchNum && matchVia;
             });
 
             renderTable(filtered);
         }
 
         function clearFilters() {
-            document.getElementById('input-nif').value = '';
-            document.getElementById('input-num').value = '';
+            document.getElementById('search-form').reset();
             renderTable(originalDatabase);
         }
 
-        // Carga inicial completa de la grilla
-        window.onload = () => renderTable(originalDatabase);
+        function openDetailView(id) {
+            const factura = originalDatabase.find(item => item.id === id);
+            if (!factura) return;
+
+            document.getElementById('det-no-factura').innerText = factura.factura;
+            document.getElementById('det-fecha-factura').innerText = factura.fecha;
+            document.getElementById('det-fecha-emision').innerText = factura.fecha;
+            document.getElementById('det-situacion').innerText = factura.sit; 
+            document.getElementById('det-periodo').innerText = factura.periodo;
+            document.getElementById('det-anula-a').innerText = factura.anulada ? "91011140021" : "";
+            document.getElementById('det-fecha-anula').innerText = factura.anulada ? factura.f_sit : "";
+            document.getElementById('det-fecha-emision-anula').innerText = factura.anulada ? factura.f_sit : "";
+            document.getElementById('det-bi').innerText = factura.base;
+            document.getElementById('det-iva').innerText = factura.iva;
+            document.getElementById('det-total').innerText = factura.total;
+            document.getElementById('det-cliente-id').innerText = factura.clienteId;
+            document.getElementById('det-cliente-nombre').innerText = factura.clienteNom;
+
+            const subTbody = document.getElementById('detail-grid-body');
+            subTbody.innerHTML = '';
+            
+            let accumTotal = 0;
+            factura.lineas.forEach(linea => {
+                const tr = document.createElement('tr');
+                tr.className = "divide-x divide-slate-200 text-slate-700";
+                tr.innerHTML = `
+                    <td class="p-1">${linea.obe}</td>
+                    <td class="p-1 text-center">${linea.fecha}</td>
+                    <td class="p-1 text-center">${linea.hora}</td>
+                    <td class="p-1 text-center">${linea.locator}</td>
+                    <td class="p-1 text-center">${linea.numbsec}</td>
+                    <td class="p-1 text-center">${linea.ee}</td>
+                    <td class="p-1 text-center">${linea.es}</td>
+                    <td class="p-1 text-center">${linea.vs}</td>
+                    <td class="p-1 text-center">${linea.cm}</td>
+                    <td class="p-1 text-center">${linea.ca}</td>
+                    <td class="p-1 text-center">${linea.gt}</td>
+                    <td class="p-1 text-right pr-4 font-bold text-slate-900">${linea.total}</td>
+                `;
+                subTbody.appendChild(tr);
+                accumTotal += parseFloat(linea.total);
+            });
+
+            document.getElementById('detail-foot-count').innerText = `Total ${factura.lineas.length}`;
+            document.getElementById('detail-foot-total').innerText = accumTotal.toFixed(2);
+
+            document.getElementById('view-list').classList.add('hidden');
+            document.getElementById('view-detail').classList.remove('hidden');
+        }
+
+        function closeDetailView() {
+            document.getElementById('view-detail').classList.add('hidden');
+            document.getElementById('view-list').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>

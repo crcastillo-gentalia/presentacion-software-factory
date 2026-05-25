@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comunidades - Consola Inmobiliaria</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    color: #222;
+    background: #f0f0f0;
+    overflow: hidden;
+  }
+
+  /* ============ TITLE BAR / TOP STRIP ============ */
+  .title-bar {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    background: linear-gradient(to bottom, #f7f7f7, #e6e6e6);
+    border-bottom: 1px solid #cfcfcf;
+    position: relative;
+  }
+  .quick-access {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    height: 100%;
+  }
+  .qa-btn {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #555;
+    cursor: pointer;
+    border-radius: 2px;
+  }
+  .qa-btn:hover { background: rgba(255,180,80,0.3); }
+  .qa-red-dot {
+    width: 10px;
+    height: 10px;
+    background: #e53935;
+    border-radius: 50%;
+    margin-left: 4px;
+  }
+  .contextual-tabs {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    display: flex;
+    height: 26px;
+  }
+  .ctx-tab {
+    padding: 4px 40px 0;
+    font-weight: 600;
+    color: #5a4a3a;
+    font-size: 12px;
+    line-height: 22px;
+  }
+  .ctx-tab.procesos { background: linear-gradient(to bottom, #f8d4b8, #f3b88a); border-right: 1px solid #d8a070; }
+  .ctx-tab.config   { background: linear-gradient(to bottom, #f0c8a0, #e8a878); border-right: 1px solid #d8a070; }
+  .ctx-tab.soporte  { background: linear-gradient(to bottom, #f8d4b8, #f3b88a); }
+
+  .window-title {
+    position: absolute;
+    right: 120px;
+    top: 5px;
+    font-size: 12px;
+    color: #333;
+  }
+  .window-controls {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    height: 26px;
+  }
+  .win-btn {
+    width: 32px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #555;
+    font-size: 11px;
+  }
+  .win-btn:hover { background: #d8d8d8; }
+  .win-btn.close:hover { background: #e53935; color: #fff; }
+
+  /* ============ RIBBON TABS ============ */
+  .ribbon-tabs {
+    display: flex;
+    background: #f3f3f3;
+    border-bottom: 1px solid #c8c8c8;
+    height: 24px;
+    align-items: flex-end;
+    padding-left: 4px;
+    position: relative;
+  }
+  .ribbon-tab {
+    padding: 4px 14px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-bottom: none;
+    margin-right: 1px;
+    line-height: 16px;
+  }
+  .ribbon-tab.active {
+    background: #fff;
+    border-color: #c8c8c8;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 2;
+  }
+  .ribbon-tab:not(.active):hover {
+    background: #fce8c8;
+    border-color: #f0c080;
+  }
+  .ribbon-tab.contextual { color: #5a4a3a; }
+  .ribbon-help {
+    position: absolute;
+    right: 8px;
+    top: 4px;
+    display: flex;
+    gap: 6px;
+    color: #888;
+    font-size: 12px;
+  }
+
+  /* ============ RIBBON CONTENT ============ */
+  .ribbon {
+    background: #fff;
+    border-bottom: 1px solid #c8c8c8;
+    height: 94px;
+    display: flex;
+    align-items: stretch;
+    padding: 2px 0 0;
+    position: relative;
+  }
+  .rb-group {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e0e0e0;
+    padding: 2px 4px 0;
+    position: relative;
+    min-width: 0;
+  }
+  .rb-group-body {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    gap: 1px;
+    padding-top: 2px;
+  }
+  .rb-group-label {
+    text-align: center;
+    font-size: 11px;
+    color: #555;
+    padding: 1px 6px 2px;
+    line-height: 1;
+  }
+  .rb-btn-large {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2px 6px;
+    cursor: pointer;
+    border-radius: 2px;
+    min-width: 46px;
+    max-width: 78px;
+    text-align: center;
+  }
+  .rb-btn-large:hover { background: #fde6c0; outline: 1px solid #f0c070; }
+  .rb-btn-large .ico {
+    font-size: 26px;
+    line-height: 1;
+    margin-bottom: 2px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .rb-btn-large .lbl {
+    font-size: 11px;
+    line-height: 1.1;
+    color: #222;
+    max-width: 70px;
+  }
+  .rb-btn-large .caret {
+    font-size: 8px;
+    color: #555;
+    margin-top: 1px;
+  }
+
+  .rb-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 2px 2px;
+    gap: 1px;
+  }
+  .rb-btn-small {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px 2px 4px;
+    cursor: pointer;
+    font-size: 11.5px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .rb-btn-small:hover { background: #fde6c0; outline: 1px solid #f0c070; }
+  .rb-btn-small .ico-s {
+    width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+  }
+
+  /* "Buscar" button (no highlight) */
+  .buscar-highlight { position: relative; }
+
+  /* Color icons emulated with backgrounds */
+  .ic-green   { color: #4caf50; }
+  .ic-orange  { color: #ef6c00; }
+  .ic-blue    { color: #1976d2; }
+  .ic-red     { color: #c62828; }
+  .ic-yellow  { color: #f9a825; }
+  .ic-purple  { color: #6a1b9a; }
+  .ic-teal    { color: #00838f; }
+  .ic-brown   { color: #795548; }
+  .ic-gray    { color: #616161; }
+
+  /* ============ MAIN LAYOUT ============ */
+  .main {
+    display: flex;
+    height: calc(100% - 26px - 24px - 94px);
+  }
+  .sidebar {
+    width: 240px;
+    background: #fff;
+    border-right: 1px solid #d0d0d0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px 8px;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  .sidebar-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #222;
+  }
+  .sidebar-header .collapse {
+    color: #888;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .sidebar-links {
+    padding: 6px 0;
+  }
+  .sidebar-link {
+    padding: 3px 18px;
+    font-size: 12px;
+    color: #1a4b8c;
+    cursor: pointer;
+    line-height: 18px;
+  }
+  .sidebar-link:hover { text-decoration: underline; }
+  .sidebar-section-gap { height: 8px; }
+  .sidebar-red-bar { display: none; }
+
+  .sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+    border-top: 1px solid #e0e0e0;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #222;
+    border-left: 3px solid transparent;
+  }
+  .nav-item:hover { background: #f3f3f3; }
+  .nav-item.active {
+    background: #fde9c8;
+    border-left-color: #f0a040;
+    font-weight: 600;
+  }
+  .nav-item .nav-ico {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+  .sidebar-footer {
+    padding: 4px 12px 8px;
+    color: #999;
+    text-align: center;
+    font-size: 16px;
+  }
+
+  /* ============ CONTENT AREA ============ */
+  .content {
+    flex: 1;
+    background: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .content-tabs {
+    display: flex;
+    background: #ececec;
+    border-bottom: 1px solid #c8c8c8;
+    padding: 4px 4px 0;
+    height: 26px;
+    align-items: flex-end;
+    position: relative;
+  }
+  .ct-tab {
+    padding: 4px 16px;
+    background: #e0e0e0;
+    border: 1px solid #c8c8c8;
+    border-bottom: none;
+    border-radius: 3px 3px 0 0;
+    margin-right: 2px;
+    font-size: 12px;
+    color: #333;
+    cursor: pointer;
+    line-height: 16px;
+  }
+  .ct-tab.active {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+    font-weight: 600;
+  }
+  .ct-tab .close {
+    margin-left: 8px;
+    color: #888;
+    font-size: 11px;
+  }
+  .ct-tab .close:hover { color: #c00; }
+  .ct-collapse {
+    position: absolute;
+    right: 8px;
+    bottom: 4px;
+    color: #888;
+    cursor: pointer;
+    font-size: 11px;
+  }
+
+  /* ============ FILTERS PANEL ============ */
+  .filters-panel {
+    background: #fff;
+    padding: 14px 18px 14px 50px;
+    border-bottom: 1px solid #d8d8d8;
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    position: relative;
+  }
+  .filters-label-vertical {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center;
+    font-size: 11px;
+    color: #888;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .filter-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    max-width: 540px;
+  }
+  .filter-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .filter-row label {
+    width: 130px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+  }
+  .filter-row .input-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .filter-row input[type="text"],
+  .filter-row select {
+    flex: 1;
+    height: 22px;
+    border: 1px solid #b8b8b8;
+    background: #fff;
+    padding: 0 6px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+  }
+  .filter-row input[type="text"]:focus,
+  .filter-row select:focus { border-color: #5a9ed8; }
+  .combo {
+    position: relative;
+    flex: 1;
+    display: flex;
+  }
+  .combo input { padding-right: 38px; flex: 1; }
+  .combo .combo-arrow,
+  .combo .combo-clear {
+    position: absolute;
+    top: 0;
+    height: 22px;
+    width: 18px;
+    border-left: 1px solid #c8c8c8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #f0f0f0;
+    font-size: 10px;
+    color: #555;
+  }
+  .combo .combo-arrow { right: 18px; }
+  .combo .combo-clear { right: 0; color: #888; }
+  .select-narrow {
+    width: 180px;
+    flex: none !important;
+  }
+
+  .filters-right {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: flex-start;
+    padding-top: 2px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 18px;
+    background: linear-gradient(to bottom, #fafafa, #e4e4e4);
+    border: 1px solid #b0b0b0;
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #222;
+    font-family: inherit;
+  }
+  .btn:hover {
+    background: linear-gradient(to bottom, #fff3dc, #fad89a);
+    border-color: #d89a40;
+  }
+  .btn .ico { font-size: 14px; }
+  .btn-buscar { padding: 4px 28px; }
+  .check-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #333;
+  }
+  .check-row input { margin: 0; }
+
+  /* ============ SEARCH BAR + TABLE ============ */
+  .table-area {
+    flex: 1;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-top: 1px solid #d8d8d8;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .search-bar .clear-x {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .search-bar input {
+    flex: 1;
+    max-width: 580px;
+    height: 22px;
+    border: 1px solid #c0c0c0;
+    padding: 0 8px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    color: #999;
+  }
+  .search-bar input:focus { border-color: #5a9ed8; color: #222; }
+  .search-bar .btn { padding: 3px 16px; }
+
+  .data-table-wrap {
+    flex: 1;
+    overflow: auto;
+    background: #fff;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    table-layout: fixed;
+  }
+  table.data-table thead th {
+    background: linear-gradient(to bottom, #f8f8f8, #ebebeb);
+    border: 1px solid #d0d0d0;
+    border-top: 1px solid #c8c8c8;
+    padding: 5px 8px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    white-space: nowrap;
+  }
+  table.data-table tbody td {
+    border: 1px solid #e8e8e8;
+    padding: 4px 8px;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  /* Filter row under header */
+  table.data-table tbody tr.filter-row-tr td {
+    background: #fff;
+    border-bottom: 1px solid #d0d0d0;
+    padding: 3px 6px;
+  }
+  .col-filter {
+    width: 100%;
+    height: 18px;
+    border: 1px solid #c8c8c8;
+    background: #fff;
+    padding: 0 4px;
+    font-family: inherit;
+    font-size: 11px;
+    outline: none;
+    color: #444;
+  }
+  .col-filter:focus {
+    border-color: #5a9ed8;
+    background: #fff8e8;
+  }
+  .col-filter::placeholder {
+    color: #b0b0b0;
+    font-style: italic;
+  }
+  .filter-input-cell {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 18px;
+  }
+  .abc-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #2b7a2b;
+    font-family: monospace;
+    letter-spacing: 0;
+  }
+  .abc-badge span { padding: 0 1px; }
+  .abc-badge .sep { color: #c00; }
+  .filter-marker {
+    color: #888;
+    font-size: 11px;
+  }
+  .yellow-marker {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    background: #f9d24a;
+    border: 1px solid #b8902a;
+  }
+
+  .row-cb {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #999;
+    background: #fff;
+    display: inline-block;
+  }
+  .row-hour-ic {
+    color: #999;
+    font-size: 12px;
+  }
+
+  table.data-table tbody tr.data-row:hover td {
+    background: #fff7e1;
+  }
+  table.data-table tbody tr.data-row.selected td {
+    background: #fff;
+    border-top: 1px solid #b0b0b0;
+    border-bottom: 1px solid #b0b0b0;
+  }
+  table.data-table tbody tr.data-row.selected td:first-child {
+    border-left: 1px solid #b0b0b0;
+  }
+  .row-arrow {
+    color: #444;
+    font-size: 10px;
+  }
+
+  /* ============ FOOTER PAGER ============ */
+  .pager {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: #f3f3f3;
+    border-top: 1px solid #d0d0d0;
+    font-size: 11px;
+  }
+  .pager-btn {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    color: #444;
+    cursor: pointer;
+    background: transparent;
+    font-size: 11px;
+  }
+  .pager-btn:hover { border-color: #c8c8c8; background: #fff; }
+  .pager-info {
+    margin: 0 6px;
+    color: #333;
+  }
+  .pager-scroll {
+    flex: 1;
+    height: 14px;
+    background: #e6e6e6;
+    border: 1px solid #c8c8c8;
+    margin: 0 4px;
+    position: relative;
+  }
+  .pager-thumb {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    background: linear-gradient(to bottom, #f0f0f0, #d8d8d8);
+    border: 1px solid #b0b0b0;
+  }
+
+  /* ============ CUSTOM DROPDOWNS ============ */
+  .dd-list {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #5a9ed8;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 100;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+  }
+  .dd-list.open { display: block; }
+  .dd-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #222;
+  }
+  .dd-item:hover { background: #fde6c0; }
+  .dd-item.selected { background: #fce0b0; }
+
+  /* Action buttons in table */
+  .row-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    border-radius: 2px;
+    font-size: 12px;
+    margin: 0 1px;
+    color: #555;
+    background: transparent;
+    border: 1px solid transparent;
+  }
+  .row-action:hover {
+    background: #fde6c0;
+    border-color: #f0c070;
+  }
+  .row-action.edit { color: #1976d2; }
+  .row-action.delete { color: #c62828; }
+  .row-actions-cell {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* "De baja" row styling */
+  tr.data-row.inactive td {
+    color: #999;
+    font-style: italic;
+  }
+  .status-badge {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 600;
+  }
+  .status-badge.active {
+    background: #d4edda;
+    color: #155724;
+  }
+  .status-badge.inactive {
+    background: #f8d7da;
+    color: #721c24;
+  }
+
+  /* Hidden rows when filtered */
+  tr.data-row.hidden { display: none; }
+
+  /* ============ EDIT MODAL ============ */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-window {
+    width: 1380px;
+    max-width: 96vw;
+    height: 820px
+    max-height: 94vh;
+    background: #f4f4f4;
+    border: 1px solid #888;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+  }
+
+  /* Modal title bar */
+  .modal-titlebar {
+    display: flex;
+    align-items: center;
+    height: 28px;
+    background: linear-gradient(to bottom, #f7f7f7, #e6e6e6);
+    border-bottom: 1px solid #cfcfcf;
+    padding: 0 4px;
+    position: relative;
+  }
+  .modal-titlebar .mt-ico {
+    width: 18px;
+    height: 18px;
+    background: #c8c8c8;
+    border: 1px solid #888;
+    margin: 0 6px;
+  }
+  .modal-titlebar .mt-title {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: #333;
+  }
+  .modal-titlebar .mt-controls { display: flex; }
+  .modal-titlebar .mt-btn {
+    width: 32px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #555;
+    font-size: 11px;
+  }
+  .modal-titlebar .mt-btn:hover { background: #d8d8d8; }
+  .modal-titlebar .mt-btn.close:hover { background: #e53935; color: #fff; }
+
+  /* Modal ribbon tab */
+  .modal-ribbon-tabs {
+    display: flex;
+    background: #f3f3f3;
+    border-bottom: 1px solid #c8c8c8;
+    height: 22px;
+    align-items: flex-end;
+    padding-left: 4px;
+    position: relative;
+  }
+  .modal-ribbon-tabs .ribbon-tab {
+    padding: 3px 18px;
+    font-size: 12px;
+    border: 1px solid transparent;
+    border-bottom: none;
+  }
+  .modal-ribbon-tabs .ribbon-tab.active {
+    background: #fff;
+    border-color: #c8c8c8;
+    border-bottom: 1px solid #fff;
+    margin-bottom: -1px;
+  }
+
+  /* Modal ribbon body */
+  .modal-ribbon {
+    background: #fff;
+    border-bottom: 1px solid #c8c8c8;
+    height: 102px;
+    display: flex;
+    padding: 2px 0 0;
+  }
+  .modal-ribbon .rb-group {
+    padding-bottom: 16px;
+  }
+  .modal-ribbon .rb-group-label {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background: #fff;
+  }
+  .modal-ribbon .rb-btn-large {
+    min-width: 56px;
+    max-width: 82px;
+  }
+  .modal-ribbon .rb-btn-large .lbl {
+    max-width: 76px;
+  }
+
+  /* Modal body layout */
+  .modal-body {
+    flex: 1;
+    display: flex;
+    background: #f4f4f4;
+    overflow: hidden;
+  }
+  .modal-sidebar {
+    width: 220px;
+    background: #f4f4f4;
+    border-right: 1px solid #d8d8d8;
+    overflow-y: auto;
+    padding: 8px 0;
+  }
+  .ms-section {
+    margin: 0 8px 6px;
+    border: 1px solid #d8d8d8;
+    background: #fff;
+  }
+  .ms-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 8px;
+    background: linear-gradient(to bottom, #f3f3f3, #e4e4e4);
+    border-bottom: 1px solid #d8d8d8;
+    font-size: 12px;
+    font-weight: 600;
+    color: #222;
+    cursor: pointer;
+  }
+  .ms-section-header .ms-h-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ms-section-header .ms-chev { color: #666; font-size: 10px; }
+  .ms-links { padding: 4px 0; }
+  .ms-link {
+    padding: 4px 18px;
+    font-size: 12px;
+    color: #1a4b8c;
+    cursor: pointer;
+    line-height: 17px;
+  }
+  .ms-link:hover { background: #fde6c0; text-decoration: underline; }
+  .ms-link.active {
+    background: #fde9c8;
+    color: #222;
+    font-weight: 600;
+  }
+
+  /* Modal main form */
+  .modal-main {
+    flex: 1;
+    background: #f4f4f4;
+    overflow: auto;
+    padding: 14px 18px;
+  }
+  .modal-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 14px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 24px;
+  }
+  .form-fields { display: flex; flex-direction: column; gap: 8px; }
+  .form-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-row label {
+    width: 200px;
+    text-align: left;
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+  }
+  .form-row .field {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .form-row input[type="text"],
+  .form-row input[type="date"],
+  .form-row select,
+  .form-row textarea {
+    flex: 1;
+    height: 22px;
+    border: 1px solid #b8b8b8;
+    background: #fff;
+    padding: 0 6px;
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+  }
+  .form-row input.highlighted {
+    background: #2e6ed8;
+    color: #fff;
+    border-color: #1e5cc8;
+  }
+  .form-row input[readonly],
+  .form-row input.readonly {
+    background: #ececec;
+    color: #333;
+  }
+  .form-row input:focus,
+  .form-row select:focus { border-color: #5a9ed8; }
+
+  .field-with-btn {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex: 1;
+  }
+  .field-with-btn input { flex: 1; }
+  .field-btn {
+    width: 24px;
+    height: 22px;
+    border: 1px solid #b8b8b8;
+    border-left: none;
+    background: linear-gradient(to bottom, #fafafa, #e4e4e4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 11px;
+    color: #555;
+  }
+  .field-btn:hover { background: #fde6c0; }
+  .field-btn.add { color: #2b7a2b; font-weight: 700; }
+  .field-btn.search { color: #1976d2; }
+  .field-clear {
+    width: 22px;
+    height: 22px;
+    border: 1px solid #b8b8b8;
+    background: #f0f0f0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #888;
+    font-size: 11px;
+  }
+  .form-row .small-input { flex: 0 0 160px; }
+  .form-row .inline-label {
+    font-size: 12px;
+    color: #333;
+    white-space: nowrap;
+    margin-left: 4px;
+  }
+
+  .direccion-fiscal {
+    display: flex;
+    flex-direction: column;
+  }
+  .direccion-fiscal label {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .direccion-fiscal textarea {
+    width: 100%;
+    height: 280px;
+    border: 1px solid #b8b8b8;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    background: #fff;
+    resize: none;
+    outline: none;
+  }
+
+  .observaciones-block {
+    margin-top: 16px;
+  }
+  .observaciones-block label {
+    display: block;
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  .observaciones-block textarea {
+    width: 100%;
+    height: 260px;
+    border: 1px solid #b8b8b8;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    background: #fff;
+    resize: none;
+    outline: none;
+  }
+
+  /* Modal field dropdown */
+  .field-with-btn { position: relative; }
+  .modal-dd-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #888;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1100;
+    display: none;
+  }
+  .modal-dd-list.open { display: block; }
+  .modal-dd-item {
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #222;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .modal-dd-item:hover { background: #fde6c0; }
+  .modal-dd-item.selected { background: #fce0b0; font-weight: 600; }
+
+  /* Category chips */
+  .cat-chips-wrap {
+    flex: 1;
+    border: 1px solid #b8b8b8;
+    background: #fff;
+    min-height: 22px;
+    padding: 2px 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    align-items: center;
+  }
+  .cat-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #e3f0ff;
+    border: 1px solid #9bc1e8;
+    color: #1a4b8c;
+    border-radius: 10px;
+    padding: 1px 4px 1px 8px;
+    font-size: 11px;
+    line-height: 14px;
+  }
+  .cat-chip .chip-x {
+    cursor: pointer;
+    color: #1a4b8c;
+    font-size: 11px;
+    padding: 0 2px;
+    border-radius: 50%;
+  }
+  .cat-chip .chip-x:hover { background: #c00; color: #fff; }
+
+  /* Ribbon dropdown menus */
+  .ribbon-dd-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #888;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    min-width: 200px;
+    z-index: 500;
+    display: none;
+    padding: 4px 0;
+  }
+  .ribbon-dd-menu.open { display: block; }
+  .ribbon-dd-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #222;
+    white-space: nowrap;
+  }
+  .ribbon-dd-item:hover { background: #fde6c0; }
+  .ribbon-dd-divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 4px 0;
+  }
+  .rb-btn-large.has-dd { position: relative; }
+  .rb-btn-small.has-dd { position: relative; }
+</style>
+</head>
+<body>
+
+<!-- ========================= TITLE BAR ========================= -->
+<div class="title-bar">
+  <div class="quick-access">
+    <span class="qa-btn" title="Menú">📋</span>
+    <span class="qa-btn ic-blue">✉</span>
+    <span class="qa-btn ic-blue">📝</span>
+    <span class="qa-btn">📡</span>
+  </div>
+
+  <div class="contextual-tabs">
+    <div class="ctx-tab procesos">Procesos</div>
+    <div class="ctx-tab config">Configuración general</div>
+    <div class="ctx-tab soporte">Soporte</div>
+  </div>
+
+  <div class="window-title">Comunidades - Consola Inmobiliaria</div>
+
+  <div class="window-controls">
+    <div class="win-btn">—</div>
+    <div class="win-btn">▢</div>
+    <div class="win-btn close">✕</div>
+  </div>
+</div>
+
+<!-- ========================= RIBBON TABS ========================= -->
+<div class="ribbon-tabs">
+  <div class="ribbon-tab active">Principal</div>
+  <div class="ribbon-tab">Impuestos</div>
+  <div class="ribbon-tab">Informes</div>
+  <div class="ribbon-tab">Configuración personal</div>
+  <div class="ribbon-tab contextual">Comunidades</div>
+  <div class="ribbon-tab contextual">Alquileres</div>
+  <div class="ribbon-tab contextual">Mi empresa</div>
+  <div class="ribbon-tab contextual">Configuración general</div>
+  <div class="ribbon-tab contextual">Plantillas de texto</div>
+  <div class="ribbon-tab contextual">Herramientas</div>
+  <div class="ribbon-tab contextual">Soporte</div>
+  <div class="ribbon-help">
+    <span>?</span>
+    <span>▭</span>
+  </div>
+</div>
+
+<!-- ========================= RIBBON CONTENT ========================= -->
+<div class="ribbon">
+
+  <!-- Group: Nuevo / Incidencias / Recoger / Calendario -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-btn-large">
+        <span class="ico ic-green">➕</span>
+        <span class="lbl">Nuevo</span>
+        <span class="caret">▼</span>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-orange">📋</span>
+        <span class="lbl">Incidencias y notificaciones</span>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-green">📞</span>
+        <span class="lbl">Recoger llamada</span>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-blue">📅</span>
+        <span class="lbl">Calendario</span>
+      </div>
+    </div>
+    <div class="rb-group-label">&nbsp;</div>
+  </div>
+
+  <!-- Group: Inmobiliaria para hoy / Notificaciones masivas -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-btn-large">
+        <span class="ico ic-gray">⏰</span>
+        <span class="lbl">Inmobiliaria para hoy</span>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-teal">📡</span>
+        <span class="lbl">Notificaciones masivas</span>
+      </div>
+    </div>
+    <div class="rb-group-label">&nbsp;</div>
+  </div>
+
+  <!-- Group: Firma / Documentos / Portal -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-red">📄</span> Firma electrónica</div>
+        <div class="rb-btn-small"><span class="ico-s ic-orange">📁</span> Mis documentos</div>
+        <div class="rb-btn-small"><span class="ico-s ic-blue">🏠</span> Portal inmobiliario</div>
+      </div>
+    </div>
+    <div class="rb-group-label">&nbsp;</div>
+  </div>
+
+  <!-- Group: Nuevo / Abrir / Eliminar / Actualizar -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-btn-large">
+        <span class="ico ic-gray">📄</span>
+        <span class="lbl">Nuevo</span>
+      </div>
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-yellow">📂</span> Abrir...</div>
+        <div class="rb-btn-small"><span class="ico-s ic-red">✖</span> Eliminar</div>
+        <div class="rb-btn-small"><span class="ico-s ic-green">🔄</span> Actualizar</div>
+      </div>
+    </div>
+    <div class="rb-group-label">&nbsp;</div>
+  </div>
+
+  <!-- Group: Buscar (highlighted) / Vista previa / Imprimir -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-btn-large buscar-highlight">
+        <span class="ico ic-yellow">🔍</span>
+        <span class="lbl">Buscar</span>
+      </div>
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-blue">🔎</span> Vista previa</div>
+        <div class="rb-btn-small"><span class="ico-s ic-gray">🖨</span> Imprimir</div>
+      </div>
+    </div>
+    <div class="rb-group-label">Lista</div>
+  </div>
+
+  <!-- Group: Exportar / Tabla dinámica / Informes -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-btn-large">
+        <span class="ico ic-green">📊</span>
+        <span class="lbl">Exportar a excel</span>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-purple">ƒx</span>
+        <span class="lbl">Tabla dinámica</span>
+      </div>
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-gray">📑</span> Informes <span style="color:#888">▼</span></div>
+        <div class="rb-btn-small"><span class="ico-s ic-gray">≡</span> Listas <span style="color:#888">▼</span></div>
+        <div class="rb-btn-small"><span class="ico-s ic-gray">⚙</span> Procesos <span style="color:#888">▼</span></div>
+      </div>
+    </div>
+    <div class="rb-group-label">&nbsp;</div>
+  </div>
+
+  <!-- Group: Adicional -->
+  <div class="rb-group">
+    <div class="rb-group-body">
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-orange">📞</span> Acceso masivo Inmobiliaria24H</div>
+        <div class="rb-btn-small"><span class="ico-s ic-orange">📋</span> Presupuestos</div>
+        <div class="rb-btn-small"><span class="ico-s ic-blue">⊘</span> Contadores</div>
+      </div>
+      <div class="rb-btn-large">
+        <span class="ico ic-gray">💬</span>
+        <span class="lbl">Contactar con</span>
+      </div>
+      <div class="rb-col">
+        <div class="rb-btn-small"><span class="ico-s ic-orange">📋</span> Notificar a</div>
+        <div class="rb-btn-small"><span class="ico-s ic-purple">📜</span> Incidencias y notificaciones</div>
+        <div class="rb-btn-small"><span class="ico-s ic-red">€</span> Impuestos</div>
+      </div>
+    </div>
+    <div class="rb-group-label">Adicional</div>
+  </div>
+
+  <!-- Group: Cerrar -->
+  <div class="rb-group" style="border-right:none;">
+    <div class="rb-group-body">
+      <div class="rb-btn-large">
+        <span class="ico ic-orange">📁</span>
+        <span class="lbl">Cerrar</span>
+      </div>
+    </div>
+    <div class="rb-group-label">Cerrar</div>
+  </div>
+
+</div>
+
+<!-- ========================= MAIN AREA ========================= -->
+<div class="main">
+
+  <!-- ========================= SIDEBAR ========================= -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>Comunidades</h2>
+      <span class="collapse">‹</span>
+    </div>
+
+    <div class="sidebar-links">
+      <div class="sidebar-link">Comunidades</div>
+      <div class="sidebar-link">Macro-comunidades</div>
+      <div class="sidebar-section-gap"></div>
+      <div class="sidebar-link">Departamentos</div>
+      <div class="sidebar-link">Copropietarios activos</div>
+      <div class="sidebar-section-gap"></div>
+      <div class="sidebar-link">Reuniones</div>
+      <div class="sidebar-link">Emisiones de recibos</div>
+    </div>
+
+    <div class="sidebar-red-bar"></div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item"><span class="nav-ico ic-blue">☁</span> Oficina digital</div>
+      <div class="nav-item"><span class="nav-ico ic-orange">▦</span> Entidades generales</div>
+      <div class="nav-item active"><span class="nav-ico ic-blue">▤</span> Comunidades</div>
+      <div class="nav-item"><span class="nav-ico ic-blue">🏠</span> Alquileres</div>
+      <div class="nav-item"><span class="nav-ico ic-red">📑</span> Facturas y nóminas</div>
+      <div class="nav-item"><span class="nav-ico ic-green">🔑</span> Inmobiliaria</div>
+      <div class="nav-item"><span class="nav-ico ic-red">📊</span> Cuadro de mando</div>
+      <div class="nav-item"><span class="nav-ico ic-yellow">💰</span> Tesorería</div>
+      <div class="nav-item"><span class="nav-ico ic-blue">📘</span> Contabilidad</div>
+      <div class="nav-item"><span class="nav-ico ic-orange">📅</span> Calendario</div>
+      <div class="nav-item"><span class="nav-ico ic-blue">✉</span> Comunicados</div>
+      <div class="nav-item"><span class="nav-ico ic-orange">📋</span> Incidencias y notificaciones</div>
+    </nav>
+
+    <div class="sidebar-footer">▼</div>
+  </aside>
+
+  <!-- ========================= CONTENT ========================= -->
+  <section class="content">
+
+    <!-- Inner tabs -->
+    <div class="content-tabs">
+      <div class="ct-tab">Calendario</div>
+      <div class="ct-tab">Inmobiliaria para hoy</div>
+      <div class="ct-tab active">Comunidades <span class="close">✕</span></div>
+      <span class="ct-collapse">▼</span>
+    </div>
+
+    <!-- Filters Panel -->
+    <div class="filters-panel">
+      <div class="filters-label-vertical">Buscar por</div>
+
+      <div class="filter-rows">
+        <div class="filter-row">
+          <label>Empresa:</label>
+          <div class="combo" id="comboEmpresa">
+            <input type="text" id="filterEmpresa" readonly placeholder="(Todas)">
+            <span class="combo-arrow" onclick="toggleDropdown('ddEmpresa')">▼</span>
+            <span class="combo-clear" onclick="clearFilter('filterEmpresa')">✕</span>
+            <div class="dd-list" id="ddEmpresa">
+              <div class="dd-item" onclick="selectOption('filterEmpresa','Fincas Horizonte','ddEmpresa')">Fincas Horizonte</div>
+              <div class="dd-item" onclick="selectOption('filterEmpresa','Administradora Mediterránea S.L.','ddEmpresa')">Administradora Mediterránea S.L.</div>
+            </div>
+          </div>
+        </div>
+        <div class="filter-row">
+          <label>Nombre / Dirección:</label>
+          <div class="input-wrap">
+            <input type="text" id="filterNombre">
+          </div>
+        </div>
+        <div class="filter-row">
+          <label>Comunidades:</label>
+          <div class="combo select-narrow" id="comboEstado">
+            <input type="text" id="filterEstado" value="Sólo activas" readonly>
+            <span class="combo-arrow" style="right:0;border-left:1px solid #c8c8c8;" onclick="toggleDropdown('ddEstado')">▼</span>
+            <div class="dd-list" id="ddEstado">
+              <div class="dd-item selected" onclick="selectOption('filterEstado','Sólo activas','ddEstado')">Sólo activas</div>
+              <div class="dd-item" onclick="selectOption('filterEstado','De baja','ddEstado')">De baja</div>
+              <div class="dd-item" onclick="selectOption('filterEstado','Todas','ddEstado')">Todas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filters-right">
+        <button class="btn btn-buscar" onclick="aplicarFiltros()"><span class="ico ic-blue">🔍</span> Buscar</button>
+        <label class="check-row"><input type="checkbox"> Solicitar filtro al entrar</label>
+      </div>
+    </div>
+
+    <!-- Table area -->
+    <div class="table-area">
+      <div class="search-bar">
+        <span class="clear-x" onclick="clearQuickSearch()">✕</span>
+        <input type="text" id="quickSearch" placeholder="Introduzca texto a buscar..." oninput="quickSearchInput()">
+        <button class="btn" onclick="aplicarFiltros()">Buscar</button>
+      </div>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <colgroup>
+            <col style="width:24px">
+            <col style="width:80px">
+            <col style="width:300px">
+            <col style="width:160px">
+            <col style="width:240px">
+            <col style="width:110px">
+            <col style="width:90px">
+            <col style="width:140px">
+            <col style="width:90px">
+            <col style="width:90px">
+          </colgroup>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Acciones</th>
+              <th>Nombre</th>
+              <th>Alias</th>
+              <th>Empresa</th>
+              <th>NIF</th>
+              <th>NIF validado</th>
+              <th>Oficina</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Per-column filter row -->
+            <tr class="filter-row-tr">
+              <td></td>
+              <td></td>
+              <td><input type="text" class="col-filter" data-col="2" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="3" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="4" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="5" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="6" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="7" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="8" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+              <td><input type="text" class="col-filter" data-col="9" placeholder="Filtrar..." oninput="aplicarFiltros()"></td>
+            </tr>
+
+            <tr class="data-row selected" data-estado="activa">
+              <td><span class="row-arrow">▶</span></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Avenida del Sol, 15</td>
+              <td>Edificio Sol</td>
+              <td>Fincas Horizonte</td>
+              <td>B12345678</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>15/03/22</td>
+            </tr>
+            <tr class="data-row" data-estado="activa">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Calle Mayor, 87</td>
+              <td>Res. Mayor</td>
+              <td>Fincas Horizonte</td>
+              <td>B23456789</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>02/06/21</td>
+            </tr>
+            <tr class="data-row" data-estado="activa">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Plaza Real, 3</td>
+              <td>Pza Real</td>
+              <td>Fincas Horizonte</td>
+              <td>B34567890</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>20/09/20</td>
+            </tr>
+            <tr class="data-row inactive" data-estado="baja">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Paseo de los Tilos, 42</td>
+              <td>Los Tilos</td>
+              <td>Fincas Horizonte</td>
+              <td>B45678901</td>
+              <td>No</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge inactive">De baja</span></td>
+              <td>11/11/19</td>
+            </tr>
+            <tr class="data-row" data-estado="activa">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Avenida Central, 128</td>
+              <td>Central 128</td>
+              <td>Fincas Horizonte</td>
+              <td>B56789012</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>05/01/23</td>
+            </tr>
+            <tr class="data-row inactive" data-estado="baja">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Calle del Puerto, 56</td>
+              <td>Puerto Vista</td>
+              <td>Fincas Horizonte</td>
+              <td>B67890123</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge inactive">De baja</span></td>
+              <td>28/02/18</td>
+            </tr>
+            <tr class="data-row" data-estado="activa">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Gran Vía de las Flores, 200</td>
+              <td>Las Flores</td>
+              <td>Administradora Mediterránea S.L.</td>
+              <td>B78901234</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>01/01/24</td>
+            </tr>
+            <tr class="data-row" data-estado="activa">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Ronda Norte, 12</td>
+              <td>Ronda N12</td>
+              <td>Administradora Mediterránea S.L.</td>
+              <td>B89012345</td>
+              <td>Sí</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge active">Activa</span></td>
+              <td>17/07/22</td>
+            </tr>
+            <tr class="data-row inactive" data-estado="baja">
+              <td></td>
+              <td class="row-actions-cell">
+                <span class="row-action edit" title="Editar" onclick="editRow(this)">✏️</span>
+                <span class="row-action delete" title="Eliminar" onclick="deleteRow(this)">🗑️</span>
+              </td>
+              <td>Travesía del Olivo, 9</td>
+              <td>El Olivo</td>
+              <td>Administradora Mediterránea S.L.</td>
+              <td>B90123456</td>
+              <td>No</td>
+              <td>CENTRAL</td>
+              <td><span class="status-badge inactive">De baja</span></td>
+              <td>30/04/17</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pager -->
+      <div class="pager">
+        <span class="pager-btn">⏮</span>
+        <span class="pager-btn">◀</span>
+        <span class="pager-info" id="pagerInfo">Registro 1 de 9</span>
+        <span class="pager-btn">▶</span>
+        <span class="pager-btn">⏭</span>
+        <span class="pager-btn">◁</span>
+        <div class="pager-scroll">
+          <div class="pager-thumb"></div>
+        </div>
+        <span class="pager-btn">▷</span>
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+<!-- ========================= EDIT MODAL ========================= -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal-window">
+
+    <!-- Modal title bar -->
+    <div class="modal-titlebar">
+      <div class="mt-ico"></div>
+      <div class="mt-title" id="modalTitle">Comunidad</div>
+      <div class="mt-controls">
+        <div class="mt-btn">—</div>
+        <div class="mt-btn">▢</div>
+        <div class="mt-btn close" onclick="closeEditModal()">✕</div>
+      </div>
+    </div>
+
+    <!-- Modal ribbon tab -->
+    <div class="modal-ribbon-tabs">
+      <div class="ribbon-tab active">Principal</div>
+      <div class="ribbon-help"><span>?</span><span>▭</span></div>
+    </div>
+
+    <!-- Modal ribbon -->
+    <div class="modal-ribbon">
+      <!-- Group: Comunidad -->
+      <div class="rb-group">
+        <div class="rb-group-body">
+          <div class="rb-btn-large" onclick="saveAndClose()">
+            <span class="ico ic-blue">💾</span>
+            <span class="lbl">Guardar y cerrar</span>
+          </div>
+          <div class="rb-btn-large" onclick="deleteFromModal()">
+            <span class="ico ic-red">✖</span>
+            <span class="lbl">Eliminar</span>
+          </div>
+          <div class="rb-btn-large has-dd" onclick="toggleRibbonMenu('rb_informes')">
+            <span class="ico ic-gray">📑</span>
+            <span class="lbl">Informes</span>
+            <span class="caret">▼</span>
+            <div class="ribbon-dd-menu" id="rb_informes">
+              <div class="ribbon-dd-item" onclick="ribbonAction('Informe general de la comunidad')">📄 Informe general</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Listado de propietarios')">👥 Listado de propietarios</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Resumen de cuotas')">💰 Resumen de cuotas</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Estado de cuentas')">📊 Estado de cuentas</div>
+              <div class="ribbon-dd-divider"></div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Informe personalizado')">⚙ Informe personalizado...</div>
+            </div>
+          </div>
+          <div class="rb-btn-large has-dd" onclick="toggleRibbonMenu('rb_listas')">
+            <span class="ico ic-gray">≡</span>
+            <span class="lbl">Listas</span>
+            <span class="caret">▼</span>
+            <div class="ribbon-dd-menu" id="rb_listas">
+              <div class="ribbon-dd-item" onclick="ribbonAction('Lista de departamentos')">🏢 Departamentos</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Lista de copropietarios')">👤 Copropietarios</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Lista de empleados')">👷 Empleados</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Lista de proveedores')">📦 Proveedores</div>
+            </div>
+          </div>
+        </div>
+        <div class="rb-group-label">Comunidad</div>
+      </div>
+
+      <!-- Group: Opciones -->
+      <div class="rb-group">
+        <div class="rb-group-body">
+          <div class="rb-btn-large" onclick="ribbonAction('Asistente virtual abierto')">
+            <span class="ico ic-orange">🤖</span>
+            <span class="lbl">Pregunta al Asistente</span>
+          </div>
+          <div class="rb-btn-large has-dd" onclick="toggleRibbonMenu('rb_cuotas')">
+            <span class="ico ic-yellow">💰</span>
+            <span class="lbl">Cuotas</span>
+            <span class="caret">▼</span>
+            <div class="ribbon-dd-menu" id="rb_cuotas">
+              <div class="ribbon-dd-item" onclick="ribbonAction('Generar nuevas cuotas')">➕ Generar nuevas cuotas</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Modificar cuotas existentes')">✏ Modificar cuotas existentes</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Anular cuotas')">✖ Anular cuotas</div>
+              <div class="ribbon-dd-divider"></div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Histórico de cuotas')">📊 Histórico de cuotas</div>
+            </div>
+          </div>
+          <div class="rb-btn-large has-dd" onclick="toggleRibbonMenu('rb_cambios')">
+            <span class="ico ic-gray">⚙</span>
+            <span class="lbl">Cambios masivos</span>
+            <span class="caret">▼</span>
+            <div class="ribbon-dd-menu" id="rb_cambios">
+              <div class="ribbon-dd-item" onclick="ribbonAction('Cambio masivo de coeficientes')">📐 Cambio de coeficientes</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Cambio masivo de cuentas bancarias')">🏦 Cambio de cuentas bancarias</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Cambio masivo de zonas')">📍 Cambio de zonas</div>
+              <div class="ribbon-dd-item" onclick="ribbonAction('Cambio masivo de categorías')">🏷 Cambio de categorías</div>
+            </div>
+          </div>
+          <div class="rb-btn-large" onclick="ribbonAction('Saldos liquidación')">
+            <span class="ico ic-gray">⚖</span>
+            <span class="lbl">Saldos liquidación</span>
+          </div>
+          <div class="rb-btn-large" onclick="ribbonAction('Saldos contables ordinarios')">
+            <span class="ico ic-gray">⚖</span>
+            <span class="lbl">Saldos contables ordinarios</span>
+          </div>
+          <div class="rb-btn-large" onclick="ribbonAction('Incidencias y notificaciones')">
+            <span class="ico ic-purple">📜</span>
+            <span class="lbl">Incidencias y notificaciones</span>
+          </div>
+          <div class="rb-btn-large" onclick="ribbonAction('Impuestos')">
+            <span class="ico ic-red">€</span>
+            <span class="lbl">Impuestos</span>
+          </div>
+          <div class="rb-btn-large" onclick="closeEditModal()">
+            <span class="ico ic-orange">📁</span>
+            <span class="lbl">Cerrar</span>
+          </div>
+        </div>
+        <div class="rb-group-label">Opciones</div>
+      </div>
+    </div>
+
+    <!-- Modal body -->
+    <div class="modal-body">
+
+      <!-- Sidebar -->
+      <aside class="modal-sidebar">
+        <div class="ms-section">
+          <div class="ms-section-header">
+            <div class="ms-h-left"><span class="ic-blue">🏢</span> Comunidad</div>
+            <span class="ms-chev">▲</span>
+          </div>
+          <div class="ms-links">
+            <div class="ms-link active">Datos generales</div>
+            <div class="ms-link">Direcciones y departamentos</div>
+            <div class="ms-link">Estructura de liquidación</div>
+            <div class="ms-link">Coeficientes</div>
+            <div class="ms-link">Planes de gastos</div>
+            <div class="ms-link">Presupuestos</div>
+            <div class="ms-link">Datos de recibos</div>
+            <div class="ms-link">Contratos de propiedad</div>
+            <div class="ms-link">Cuentas bancarias</div>
+            <div class="ms-link">Derramas</div>
+          </div>
+        </div>
+
+        <div class="ms-section">
+          <div class="ms-section-header">
+            <div class="ms-h-left"><span class="ic-orange">👥</span> Contactos e industriales</div>
+            <span class="ms-chev">▲</span>
+          </div>
+          <div class="ms-links">
+            <div class="ms-link">Cargos junta</div>
+            <div class="ms-link">Empleados</div>
+            <div class="ms-link">Otros contactos</div>
+            <div class="ms-link">Industriales</div>
+          </div>
+        </div>
+
+        <div class="ms-section">
+          <div class="ms-section-header">
+            <div class="ms-h-left"><span class="ic-yellow">📁</span> Adicional</div>
+            <span class="ms-chev">▲</span>
+          </div>
+          <div class="ms-links">
+            <div class="ms-link">Documentos</div>
+            <div class="ms-link">Configuración</div>
+            <div class="ms-link">Certificado digital</div>
+            <div class="ms-link">Impuestos</div>
+            <div class="ms-link">Usuarios con acceso</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main form -->
+      <main class="modal-main">
+        <div class="modal-section-title">Datos generales</div>
+
+        <div class="form-grid">
+
+          <!-- Form left column -->
+          <div class="form-fields">
+
+            <div class="form-row">
+              <label>Nombre:</label>
+              <div class="field">
+                <input type="text" id="f_nombre" class="highlighted">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Alias:</label>
+              <div class="field">
+                <input type="text" id="f_alias">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>CIF:</label>
+              <div class="field">
+                <div class="field-with-btn" style="flex:0 0 200px;">
+                  <input type="text" id="f_cif">
+                  <span class="field-btn">…</span>
+                </div>
+                <span class="inline-label">Fecha de alta:</span>
+                <div class="field-with-btn" style="flex:0 0 150px;">
+                  <input type="date" id="f_fechaAlta">
+                  <span class="field-btn">✕</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Oficina:</label>
+              <div class="field">
+                <div class="field-with-btn">
+                  <input type="text" id="f_oficina" readonly onclick="toggleModalDropdown('dd_oficina')">
+                  <span class="field-btn" onclick="toggleModalDropdown('dd_oficina')">▼</span>
+                  <div class="modal-dd-list" id="dd_oficina">
+                    <div class="modal-dd-item" onclick="selectModalOption('f_oficina','CENTRAL','dd_oficina')">CENTRAL</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_oficina','NORTE','dd_oficina')">NORTE</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_oficina','SUR','dd_oficina')">SUR</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_oficina','LEVANTE','dd_oficina')">LEVANTE</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Usuario asignado:</label>
+              <div class="field">
+                <div class="field-with-btn">
+                  <input type="text" id="f_usuario" readonly onclick="toggleModalDropdown('dd_usuario')">
+                  <span class="field-btn search" onclick="toggleModalDropdown('dd_usuario')">🔍</span>
+                  <div class="modal-dd-list" id="dd_usuario">
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','María González López ( CENTRAL )','dd_usuario')">María González López ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Carlos Ruiz Fernández ( CENTRAL )','dd_usuario')">Carlos Ruiz Fernández ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Laura Martín Pérez ( CENTRAL )','dd_usuario')">Laura Martín Pérez ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Pedro Sánchez Gómez ( CENTRAL )','dd_usuario')">Pedro Sánchez Gómez ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Ana Torres Vidal ( CENTRAL )','dd_usuario')">Ana Torres Vidal ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Javier Romero Castro ( CENTRAL )','dd_usuario')">Javier Romero Castro ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Lucía Navarro Díaz ( CENTRAL )','dd_usuario')">Lucía Navarro Díaz ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Daniel Herrera Soto ( CENTRAL )','dd_usuario')">Daniel Herrera Soto ( CENTRAL )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_usuario','Carmen Vega Ortiz ( CENTRAL )','dd_usuario')">Carmen Vega Ortiz ( CENTRAL )</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Categorías:</label>
+              <div class="field">
+                <div class="field-with-btn">
+                  <div class="cat-chips-wrap" id="f_categorias_chips"></div>
+                  <span class="field-btn add" onclick="toggleModalDropdown('dd_categorias')">+</span>
+                  <div class="modal-dd-list" id="dd_categorias">
+                    <div class="modal-dd-item" onclick="addCategoria('Residencial')">Residencial</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Comercial')">Comercial</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Industrial')">Industrial</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Garajes')">Garajes</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Locales')">Locales</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Trasteros')">Trasteros</div>
+                    <div class="modal-dd-item" onclick="addCategoria('Oficinas')">Oficinas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Zona:</label>
+              <div class="field">
+                <div class="field-with-btn">
+                  <input type="text" id="f_zona" readonly onclick="toggleModalDropdown('dd_zona')">
+                  <span class="field-btn" onclick="toggleModalDropdown('dd_zona')">▼</span>
+                  <span class="field-btn" onclick="clearModalField('f_zona')">✕</span>
+                  <div class="modal-dd-list" id="dd_zona">
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Norte','dd_zona')">Zona Norte</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Sur','dd_zona')">Zona Sur</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Este','dd_zona')">Zona Este</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Oeste','dd_zona')">Zona Oeste</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Centro','dd_zona')">Zona Centro</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_zona','Zona Marítima','dd_zona')">Zona Marítima</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Empresa:</label>
+              <div class="field">
+                <div class="field-with-btn">
+                  <input type="text" id="f_empresa" readonly onclick="toggleModalDropdown('dd_empresa_modal')">
+                  <span class="field-btn" onclick="toggleModalDropdown('dd_empresa_modal')">▼</span>
+                  <div class="modal-dd-list" id="dd_empresa_modal">
+                    <div class="modal-dd-item" onclick="selectModalOption('f_empresa','Fincas Horizonte ( B58111222 )','dd_empresa_modal')">Fincas Horizonte ( B58111222 )</div>
+                    <div class="modal-dd-item" onclick="selectModalOption('f_empresa','Administradora Mediterránea S.L. ( B92444555 )','dd_empresa_modal')">Administradora Mediterránea S.L. ( B92444555 )</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Id. cliente:</label>
+              <div class="field">
+                <input type="text" id="f_idCliente" class="small-input" readonly>
+                <span class="inline-label">Código auxiliar:</span>
+                <input type="text" id="f_codAuxiliar">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <label>Cuenta contable ( Cliente ) - 430:</label>
+              <div class="field">
+                <input type="text" id="f_cuentaContable">
+              </div>
+            </div>
+          </div>
+
+          <!-- Form right column: dirección fiscal -->
+          <div class="direccion-fiscal">
+            <label>Dirección fiscal:</label>
+            <textarea id="f_direccionFiscal"></textarea>
+          </div>
+        </div>
+
+        <!-- Observaciones -->
+        <div class="observaciones-block">
+          <label>Observaciones:</label>
+          <textarea id="f_observaciones"></textarea>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* ============ DROPDOWN HANDLING ============ */
+  function toggleDropdown(id) {
+    const dd = document.getElementById(id);
+    // Close all other dropdowns
+    document.querySelectorAll('.dd-list').forEach(el => {
+      if (el.id !== id) el.classList.remove('open');
+    });
+    dd.classList.toggle('open');
+  }
+
+  function selectOption(inputId, value, ddId) {
+    document.getElementById(inputId).value = value;
+    const dd = document.getElementById(ddId);
+    // Mark selection
+    dd.querySelectorAll('.dd-item').forEach(it => it.classList.remove('selected'));
+    event.target.classList.add('selected');
+    dd.classList.remove('open');
+    aplicarFiltros();
+  }
+
+  function clearFilter(inputId) {
+    document.getElementById(inputId).value = '';
+    aplicarFiltros();
+  }
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.combo')) {
+      document.querySelectorAll('.dd-list').forEach(el => el.classList.remove('open'));
+    }
+  });
+
+  /* ============ FILTERING ============ */
+  function normalize(s) {
+    return (s || '').toString().toLowerCase().trim()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function aplicarFiltros() {
+    const empresa = normalize(document.getElementById('filterEmpresa').value);
+    const nombre  = normalize(document.getElementById('filterNombre').value);
+    const estado  = document.getElementById('filterEstado').value;
+    const quick   = normalize(document.getElementById('quickSearch').value);
+
+    // Per-column filters
+    const colFilters = {};
+    document.querySelectorAll('.col-filter').forEach(inp => {
+      const v = normalize(inp.value);
+      if (v) colFilters[inp.dataset.col] = v;
+    });
+
+    const rows = document.querySelectorAll('#tableBody tr.data-row');
+    let visibleCount = 0;
+    let firstVisible = null;
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      const rowEstado = row.dataset.estado;
+      const rowEmpresa = normalize(cells[4]?.textContent);
+      const rowNombre  = normalize(cells[2]?.textContent);
+      const rowAllText = normalize(row.textContent);
+
+      let show = true;
+
+      // Estado filter (Sólo activas / De baja / Todas)
+      if (estado === 'Sólo activas' && rowEstado !== 'activa') show = false;
+      if (estado === 'De baja'      && rowEstado !== 'baja')   show = false;
+
+      // Empresa filter
+      if (show && empresa && !rowEmpresa.includes(empresa)) show = false;
+
+      // Nombre / Dirección filter
+      if (show && nombre && !rowNombre.includes(nombre)) show = false;
+
+      // Quick search (global)
+      if (show && quick && !rowAllText.includes(quick)) show = false;
+
+      // Per-column filters
+      if (show) {
+        for (const colIdx in colFilters) {
+          const cellText = normalize(cells[colIdx]?.textContent);
+          if (!cellText.includes(colFilters[colIdx])) { show = false; break; }
+        }
+      }
+
+      if (show) {
+        row.classList.remove('hidden');
+        visibleCount++;
+        if (!firstVisible) firstVisible = row;
+      } else {
+        row.classList.add('hidden');
+      }
+    });
+
+    // Update selection
+    rows.forEach(r => {
+      r.classList.remove('selected');
+      const arrowCell = r.querySelector('td:first-child');
+      if (arrowCell) arrowCell.innerHTML = '';
+    });
+    if (firstVisible) {
+      firstVisible.classList.add('selected');
+      const arrowCell = firstVisible.querySelector('td:first-child');
+      if (arrowCell) arrowCell.innerHTML = '<span class="row-arrow">▶</span>';
+    }
+
+    // Update pager info
+    const info = document.getElementById('pagerInfo');
+    info.textContent = visibleCount === 0
+      ? 'No hay registros'
+      : `Registro 1 de ${visibleCount}`;
+  }
+
+  function quickSearchInput() {
+    aplicarFiltros();
+  }
+
+  function clearQuickSearch() {
+    document.getElementById('quickSearch').value = '';
+    aplicarFiltros();
+  }
+
+  /* ============ ROW ACTIONS ============ */
+
+  // Detailed data per community (matched by name)
+  const comunidadesData = {
+    'Avenida del Sol, 15': {
+      alias: 'Edificio Sol',
+      cif: 'B12345678',
+      fechaAlta: '2022-03-15',
+      oficina: 'CENTRAL',
+      usuario: 'María González López ( CENTRAL )',
+      categoriasList: ['Residencial', 'Garajes'],
+      zona: 'Zona Norte',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '101',
+      codAuxiliar: '',
+      cuentaContable: '43001001',
+      direccionFiscal: 'Avenida del Sol, 15\n28010 MADRID\nMADRID',
+      observaciones: ''
+    },
+    'Calle Mayor, 87': {
+      alias: 'Res. Mayor',
+      cif: 'B23456789',
+      fechaAlta: '2021-06-02',
+      oficina: 'CENTRAL',
+      usuario: 'Carlos Ruiz Fernández ( CENTRAL )',
+      categoriasList: ['Residencial'],
+      zona: 'Zona Centro',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '102',
+      codAuxiliar: '',
+      cuentaContable: '43001002',
+      direccionFiscal: 'Calle Mayor, 87\n28013 MADRID\nMADRID',
+      observaciones: ''
+    },
+    'Plaza Real, 3': {
+      alias: 'Pza Real',
+      cif: 'B34567890',
+      fechaAlta: '2020-09-20',
+      oficina: 'CENTRAL',
+      usuario: 'Laura Martín Pérez ( CENTRAL )',
+      categoriasList: ['Residencial', 'Locales'],
+      zona: 'Zona Centro',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '103',
+      codAuxiliar: '',
+      cuentaContable: '43001003',
+      direccionFiscal: 'Plaza Real, 3\n28012 MADRID\nMADRID',
+      observaciones: ''
+    },
+    'Paseo de los Tilos, 42': {
+      alias: 'Los Tilos',
+      cif: 'B45678901',
+      fechaAlta: '2019-11-11',
+      oficina: 'CENTRAL',
+      usuario: 'Pedro Sánchez Gómez ( CENTRAL )',
+      categoriasList: ['Residencial'],
+      zona: 'Zona Este',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '104',
+      codAuxiliar: '',
+      cuentaContable: '43001004',
+      direccionFiscal: 'Paseo de los Tilos, 42\n28023 MADRID\nMADRID',
+      observaciones: 'Comunidad dada de baja el 30/06/2024.'
+    },
+    'Avenida Central, 128': {
+      alias: 'Central 128',
+      cif: 'B56789012',
+      fechaAlta: '2023-01-05',
+      oficina: 'CENTRAL',
+      usuario: 'Ana Torres Vidal ( CENTRAL )',
+      categoriasList: ['Residencial', 'Comercial', 'Garajes'],
+      zona: 'Zona Centro',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '105',
+      codAuxiliar: '',
+      cuentaContable: '43001005',
+      direccionFiscal: 'Avenida Central, 128\n28006 MADRID\nMADRID',
+      observaciones: ''
+    },
+    'Calle del Puerto, 56': {
+      alias: 'Puerto Vista',
+      cif: 'B67890123',
+      fechaAlta: '2018-02-28',
+      oficina: 'CENTRAL',
+      usuario: 'Javier Romero Castro ( CENTRAL )',
+      categoriasList: ['Residencial'],
+      zona: 'Zona Marítima',
+      empresa: 'Fincas Horizonte ( B58111222 )',
+      idCliente: '106',
+      codAuxiliar: '',
+      cuentaContable: '43001006',
+      direccionFiscal: 'Calle del Puerto, 56\n28045 MADRID\nMADRID',
+      observaciones: 'Comunidad dada de baja el 15/09/2023.'
+    },
+    'Gran Vía de las Flores, 200': {
+      alias: 'Las Flores',
+      cif: 'B78901234',
+      fechaAlta: '2024-01-01',
+      oficina: 'CENTRAL',
+      usuario: 'Lucía Navarro Díaz ( CENTRAL )',
+      categoriasList: ['Residencial', 'Locales', 'Trasteros'],
+      zona: 'Zona Norte',
+      empresa: 'Administradora Mediterránea S.L. ( B92444555 )',
+      idCliente: '201',
+      codAuxiliar: '',
+      cuentaContable: '43002001',
+      direccionFiscal: 'Gran Vía de las Flores, 200\n08010 BARCELONA\nBARCELONA',
+      observaciones: ''
+    },
+    'Ronda Norte, 12': {
+      alias: 'Ronda N12',
+      cif: 'B89012345',
+      fechaAlta: '2022-07-17',
+      oficina: 'CENTRAL',
+      usuario: 'Daniel Herrera Soto ( CENTRAL )',
+      categoriasList: ['Residencial'],
+      zona: 'Zona Norte',
+      empresa: 'Administradora Mediterránea S.L. ( B92444555 )',
+      idCliente: '202',
+      codAuxiliar: '',
+      cuentaContable: '43002002',
+      direccionFiscal: 'Ronda Norte, 12\n08025 BARCELONA\nBARCELONA',
+      observaciones: ''
+    },
+    'Travesía del Olivo, 9': {
+      alias: 'El Olivo',
+      cif: 'B90123456',
+      fechaAlta: '2017-04-30',
+      oficina: 'CENTRAL',
+      usuario: 'Carmen Vega Ortiz ( CENTRAL )',
+      categoriasList: ['Residencial'],
+      zona: 'Zona Sur',
+      empresa: 'Administradora Mediterránea S.L. ( B92444555 )',
+      idCliente: '203',
+      codAuxiliar: '',
+      cuentaContable: '43002003',
+      direccionFiscal: 'Travesía del Olivo, 9\n08038 BARCELONA\nBARCELONA',
+      observaciones: 'Comunidad dada de baja el 10/12/2022.'
+    }
+  };
+
+  let editingRow = null;
+
+  function editRow(el) {
+    event.stopPropagation();
+    const row = el.closest('tr');
+    editingRow = row;
+    const nombre = row.querySelectorAll('td')[2].textContent.trim();
+    const data = comunidadesData[nombre] || {};
+
+    document.getElementById('modalTitle').textContent = nombre + ' - Comunidad';
+    document.getElementById('f_nombre').value = nombre;
+    document.getElementById('f_alias').value = data.alias || '';
+    document.getElementById('f_cif').value = data.cif || '';
+    document.getElementById('f_fechaAlta').value = data.fechaAlta || '';
+    document.getElementById('f_oficina').value = data.oficina || '';
+    document.getElementById('f_usuario').value = data.usuario || '';
+    renderCategorias(data.categoriasList || []);
+    document.getElementById('f_zona').value = data.zona || '';
+    document.getElementById('f_empresa').value = data.empresa || '';
+    document.getElementById('f_idCliente').value = data.idCliente || '';
+    document.getElementById('f_codAuxiliar').value = data.codAuxiliar || '';
+    document.getElementById('f_cuentaContable').value = data.cuentaContable || '';
+    document.getElementById('f_direccionFiscal').value = data.direccionFiscal || '';
+    document.getElementById('f_observaciones').value = data.observaciones || '';
+
+    document.getElementById('editModal').classList.add('open');
+    setTimeout(() => {
+      const n = document.getElementById('f_nombre');
+      n.focus();
+      n.select();
+    }, 50);
+  }
+
+  function closeEditModal() {
+    document.getElementById('editModal').classList.remove('open');
+    closeAllModalDropdowns();
+    closeAllRibbonMenus();
+    editingRow = null;
+  }
+
+  function saveAndClose() {
+    if (!editingRow) { closeEditModal(); return; }
+    const cells = editingRow.querySelectorAll('td');
+    const newNombre = document.getElementById('f_nombre').value.trim();
+    const newAlias  = document.getElementById('f_alias').value.trim();
+    const newCif    = document.getElementById('f_cif').value.trim();
+    const newEmpresa = document.getElementById('f_empresa').value
+        .replace(/\s*\([^)]*\)\s*$/, '').trim();
+    const newOficina = document.getElementById('f_oficina').value.trim();
+    // Update row cells (Nombre=2, Alias=3, Empresa=4, NIF=5, Oficina=7)
+    if (newNombre) cells[2].textContent = newNombre;
+    cells[3].textContent = newAlias;
+    if (newEmpresa) cells[4].textContent = newEmpresa;
+    cells[5].textContent = newCif;
+    if (newOficina) cells[7].textContent = newOficina;
+    closeEditModal();
+  }
+
+  function deleteFromModal() {
+    if (!editingRow) return;
+    const nombre = editingRow.querySelectorAll('td')[2].textContent;
+    if (confirm('¿Eliminar la comunidad "' + nombre + '"?')) {
+      editingRow.remove();
+      closeEditModal();
+      aplicarFiltros();
+    }
+  }
+
+  /* ============ MODAL DROPDOWNS ============ */
+  function toggleModalDropdown(id) {
+    event.stopPropagation();
+    const dd = document.getElementById(id);
+    document.querySelectorAll('.modal-dd-list').forEach(el => {
+      if (el.id !== id) el.classList.remove('open');
+    });
+    dd.classList.toggle('open');
+  }
+
+  function selectModalOption(inputId, value, ddId) {
+    event.stopPropagation();
+    document.getElementById(inputId).value = value;
+    document.getElementById(ddId).classList.remove('open');
+  }
+
+  function clearModalField(inputId) {
+    event.stopPropagation();
+    document.getElementById(inputId).value = '';
+  }
+
+  function closeAllModalDropdowns() {
+    document.querySelectorAll('.modal-dd-list').forEach(el => el.classList.remove('open'));
+  }
+
+  /* ============ CATEGORÍAS (chips) ============ */
+  let currentCategorias = [];
+
+  function renderCategorias(list) {
+    currentCategorias = list.slice();
+    const wrap = document.getElementById('f_categorias_chips');
+    wrap.innerHTML = '';
+    currentCategorias.forEach(cat => {
+      const chip = document.createElement('span');
+      chip.className = 'cat-chip';
+      chip.innerHTML = `${cat} <span class="chip-x" onclick="removeCategoria('${cat.replace(/'/g, "\\'")}')">✕</span>`;
+      wrap.appendChild(chip);
+    });
+  }
+
+  function addCategoria(cat) {
+    event.stopPropagation();
+    if (!currentCategorias.includes(cat)) {
+      currentCategorias.push(cat);
+      renderCategorias(currentCategorias);
+    }
+    document.getElementById('dd_categorias').classList.remove('open');
+  }
+
+  function removeCategoria(cat) {
+    event.stopPropagation();
+    currentCategorias = currentCategorias.filter(c => c !== cat);
+    renderCategorias(currentCategorias);
+  }
+
+  /* ============ RIBBON DROPDOWN MENUS ============ */
+  function toggleRibbonMenu(id) {
+    event.stopPropagation();
+    const m = document.getElementById(id);
+    document.querySelectorAll('.ribbon-dd-menu').forEach(el => {
+      if (el.id !== id) el.classList.remove('open');
+    });
+    m.classList.toggle('open');
+  }
+
+  function closeAllRibbonMenus() {
+    document.querySelectorAll('.ribbon-dd-menu').forEach(el => el.classList.remove('open'));
+  }
+
+  function ribbonAction(name) {
+    event.stopPropagation();
+    closeAllRibbonMenus();
+    alert(name);
+  }
+
+  // Close modal dropdowns and ribbon menus when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.field-with-btn') && !e.target.closest('.cat-chips-wrap')) {
+      closeAllModalDropdowns();
+    }
+    if (!e.target.closest('.has-dd')) {
+      closeAllRibbonMenus();
+    }
+  });
+
+  // Close modal with ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.querySelector('.modal-dd-list.open') || document.querySelector('.ribbon-dd-menu.open')) {
+        closeAllModalDropdowns();
+        closeAllRibbonMenus();
+      } else {
+        closeEditModal();
+      }
+    }
+  });
+
+  function deleteRow(el) {
+    event.stopPropagation();
+    const row = el.closest('tr');
+    const nombre = row.querySelectorAll('td')[2].textContent;
+    if (confirm('¿Eliminar la comunidad "' + nombre + '"?')) {
+      row.remove();
+      aplicarFiltros();
+    }
+  }
+
+  /* ============ ROW SELECTION ============ */
+  document.querySelectorAll('#tableBody tr.data-row').forEach(row => {
+    row.addEventListener('click', () => {
+      document.querySelectorAll('#tableBody tr.data-row').forEach(r => {
+        r.classList.remove('selected');
+        const ac = r.querySelector('td:first-child');
+        if (ac) ac.innerHTML = '';
+      });
+      row.classList.add('selected');
+      const ac = row.querySelector('td:first-child');
+      if (ac) ac.innerHTML = '<span class="row-arrow">▶</span>';
+    });
+  });
+
+  // Initial filter pass (Sólo activas)
+  aplicarFiltros();
+</script>
+
+</body>
+</html>

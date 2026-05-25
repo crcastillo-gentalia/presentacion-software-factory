@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* CONFIGURACIÓN BASE ESTILO EDITORIAL Y PROFESIONAL */
+        /* CONFIGURACIÓN BASE - ESTILO CONSULTORÍA PREMIUM */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,11 +27,7 @@
             color: #334155;
         }
 
-        /* PALETA DE COLORES CORPORATIVA:
-           - Color Principal (Granate): #9a2143
-           - Color de Acento (Ocre / Naranja Tostado): #e28723
-           - Fondos limpios y profesionales: #ffffff, #f8fafc y toques sutiles de gris
-        */
+        /* PALETA CORPORATIVA: Granate #9a2143 | Ocre #e28723 */
         .slide-container {
             width: 1280px;
             height: 720px;
@@ -41,12 +37,12 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            padding: 60px 80px;
+            padding: 50px 70px;
             box-shadow: 0 15px 35px rgba(154, 33, 67, 0.05), 0 5px 15px rgba(0, 0, 0, 0.04);
             border: 1px solid #e2e8f0;
         }
 
-        /* DECORACIÓN SUTIL DE FONDO COGNITIVO */
+        /* FONDO DECORATIVO SUTIL */
         .slide-container::before {
             content: '';
             position: absolute;
@@ -54,18 +50,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 95% 5%, rgba(226, 135, 35, 0.04) 0%, transparent 45%),
-                        radial-gradient(circle at 5% 95%, rgba(154, 33, 67, 0.04) 0%, transparent 45%);
-            z-index: 0;
+            background: radial-gradient(circle at 95% 5%, rgba(226, 135, 35, 0.03) 0%, transparent 45%),
+                        radial-gradient(circle at 5% 95%, rgba(154, 33, 67, 0.03) 0%, transparent 45%);
             pointer-events: none;
         }
 
-        .slide-container > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        /* TIPOGRAFÍA */
+        /* TIPOGRAFÍA Y TÍTULOS */
         h1, h2, h3, h4 {
             font-weight: 700;
             line-height: 1.2;
@@ -73,9 +63,9 @@
         }
 
         .slide-title {
-            font-size: 38px;
+            font-size: 36px;
             color: #9a2143;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
             position: relative;
             text-transform: uppercase;
             letter-spacing: -0.5px;
@@ -86,15 +76,15 @@
             position: absolute;
             bottom: -10px;
             left: 0;
-            width: 50px;
+            width: 45px;
             height: 4px;
             background-color: #e28723;
             border-radius: 2px;
         }
 
         p, li, td, th {
-            font-size: 20px;
-            line-height: 1.6;
+            font-size: 19px;
+            line-height: 1.5;
             color: #475569;
         }
 
@@ -106,47 +96,11 @@
             width: 100%;
         }
 
-        /* PORTADA AI-FIRST */
-        .title-layout {
-            text-align: left;
-            justify-content: center;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            max-width: 1000px;
-        }
-
-        .title-layout h1 {
-            font-size: 76px;
-            color: #9a2143;
-            margin-bottom: 20px;
-            font-weight: 800;
-            letter-spacing: -1.5px;
-        }
-
-        .title-layout .subtitle {
-            font-size: 24px;
-            color: #e28723;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-        }
-
-        .title-layout .tagline {
-            font-size: 21px;
-            color: #64748b;
-            font-weight: 400;
-            margin-top: 10px;
-            border-left: 3px solid #9a2143;
-            padding-left: 15px;
-        }
-
-        /* LAYOUTS GRIDS Y COLUMNAS */
+        /* COMPONENTES DE DISEÑO */
         .two-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 60px;
+            gap: 50px;
             width: 100%;
             align-items: center;
         }
@@ -154,458 +108,249 @@
         .card {
             background: #f8fafc;
             border-left: 5px solid #9a2143;
-            padding: 35px;
+            padding: 30px;
             border-radius: 4px;
-            border-top: 1px solid #e2e8f0;
-            border-right: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .card h3 {
-            color: #e28723;
-            font-size: 24px;
-            margin-bottom: 12px;
+            border: 1px solid #e2e8f0;
+            border-left-width: 5px;
+            border-left-color: #9a2143;
         }
 
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            gap: 25px;
         }
 
         .service-box {
-            padding: 40px 30px;
+            padding: 35px 25px;
             background: #ffffff;
             border: 1px solid #e2e8f0;
             border-top: 4px solid #9a2143;
             border-radius: 4px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
         }
 
-        .service-box.featured {
-            border-top-color: #e28723;
-            background: #f8fafc;
-        }
-
-        .service-box i {
-            font-size: 36px;
-            color: #e28723;
-            margin-bottom: 20px;
-        }
-
-        .service-box h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-
-        /* LISTAS */
-        .custom-list {
-            list-style: none;
-        }
-
+        .custom-list { list-style: none; }
         .custom-list li {
-            margin-bottom: 22px;
+            margin-bottom: 18px;
             position: relative;
             padding-left: 45px;
-            font-size: 21px;
+            font-size: 20px;
         }
-
         .custom-list li i {
             position: absolute;
-            left: 0;
-            top: 5px;
+            left: 0; top: 4px;
             color: #e28723;
-            font-size: 22px;
+            font-size: 20px;
         }
 
-        /* TABLA MIGRADA Y OPTIMIZADA */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            text-align: left;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 16px;
-        }
-
+        /* TABLA TECNOLÓGICA */
+        table { width: 100%; border-collapse: collapse; }
         th {
             background-color: #9a2143;
             color: #ffffff;
-            font-weight: 600;
+            padding: 12px 15px;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: 13px;
             letter-spacing: 0.5px;
         }
+        td { padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-size: 15px; }
+        tr:nth-child(even) td { background-color: #f8fafc; }
 
-        tr:nth-child(even) td {
-            background-color: #f8fafc;
-        }
-
-        /* CASOS DE ÉXITO REJILLA REESTRUCTURADA */
+        /* REJILLA DE CASOS DE ÉXITO (6 ITEMS - 3x2) */
         .success-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
         }
 
         .success-item {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            padding: 24px 30px;
+            padding: 20px;
             border-radius: 4px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            min-height: 150px;
-            justify-content: center;
-            position: relative;
+            gap: 8px;
+            min-height: 180px;
+            justify-content: flex-start;
         }
 
-        .tag-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
+        .tag-row { display: flex; gap: 8px; align-items: center; margin-bottom: 2px; }
         .tag {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 2px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
+        .tag.dev { background: rgba(226, 135, 35, 0.1); color: #e28723; }
+        .tag.new-tech { background: #0f172a; color: #ffffff; }
 
-        .tag.dev {
-            background: rgba(226, 135, 35, 0.1);
-            color: #e28723;
-        }
+        .success-item h4 { font-size: 16px; color: #334155; margin-bottom: 4px; }
+        .success-item p { font-size: 13px; color: #64748b; line-height: 1.4; margin-bottom: 10px; }
 
-        .tag.new-tech {
-            background: #0f172a;
-            color: #ffffff;
-        }
-
-        .success-item h4 {
-            font-size: 19px;
-            color: #334155;
-            font-weight: 700;
-        }
-
-        .success-item p {
-            font-size: 15px;
-            color: #64748b;
-            line-height: 1.5;
-            margin-bottom: 5px;
-        }
-
-        /* LINK DE LA DEMO */
         .demo-link {
-            align-self: flex-start;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
             color: #9a2143;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.2s ease;
+            margin-top: auto;
         }
+        .demo-link:hover { color: #e28723; }
 
-        .demo-link:hover {
-            color: #e28723;
-        }
-
-        /* ESTILO PARA LA DIAPOSITIVA DE EVOLUCIÓN TECNOLÓGICA (IA) */
-        .tech-evolution-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .tech-evolution-visual {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 40px;
-            border-radius: 8px;
-            border-right: 4px solid #e28723;
-        }
-
-        .tech-evolution-visual h3 {
-            color: #9a2143;
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-
-        .tech-evolution-visual ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .tech-evolution-visual ul li {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #475569;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .tech-evolution-visual ul li i {
-            color: #e28723;
-        }
-
-        /* PIE DE PÁGINA */
+        /* FOOTER DE DIAPOSITIVA */
         .slide-footer {
             position: absolute;
-            bottom: 35px;
-            left: 80px;
-            right: 80px;
+            bottom: 30px;
+            left: 70px;
+            right: 70px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
             border-top: 1px solid #e2e8f0;
-            padding-top: 20px;
+            padding-top: 15px;
         }
-
-        .slide-footer span {
-            font-size: 13px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .slide-footer span { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
 <div class="slide-container" id="slide1">
     <div class="content-area">
-        <div class="title-layout">
-            <div class="subtitle">AI-driven software factory</div>
-            <h1>Software factory</h1>
-            <div class="tagline">Ingeniería Avanzada, Co-Creación Cognitiva y Soluciones del Futuro</div>
+        <div style="text-align: left;">
+            <div style="font-size: 24px; color: #e28723; font-weight: 600; text-transform: uppercase; letter-spacing: 3px;">AI-driven software factory</div>
+            <h1 style="font-size: 76px; color: #9a2143; margin: 15px 0;">Software factory</h1>
+            <div style="border-left: 4px solid #9a2143; padding-left: 20px; font-size: 21px; color: #64748b;">Ingeniería Avanzada, Co-Creación Cognitiva y Soluciones del Futuro</div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – INTELIGENCIA COMO BASE</span>
-        <span>01</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – INTELIGENCIA COMO BASE</span><span>01</span></div>
 </div>
 
 <div class="slide-container" id="slide2">
     <h2 class="slide-title">ORGANIZACIÓN COGNITIVA</h2>
     <div class="content-area">
         <div class="two-column">
-            <div>
-                <ul class="custom-list">
-                    <li><i class="fa-solid fa-brain"></i> <strong>Evolución Fundacional:</strong> Constituida en 2012; hoy transformamos el modelo operativo integrando Inteligencia Artificial como el motor central de nuestra arquitectura de desarrollo.</li>
-                    <li><i class="fa-solid fa-people-arrows"></i> <strong>Sinergia Híbrida:</strong> Rediseñamos el coworking tecnológico tradicional hacia una colaboración simbiótica entre ingenieros senior y agentes de IA.</li>
-                    <li><i class="fa-solid fa-rocket"></i> <strong>Optimización Directa:</strong> Construimos productos inteligentes que elevan sustancialmente la productividad y aceleran el retorno de inversión.</li>
-                </ul>
-            </div>
+            <ul class="custom-list">
+                <li><i class="fa-solid fa-brain"></i> <strong>Evolución Fundacional:</strong> Modelo transformado integrando IA como motor central de arquitectura.</li>
+                <li><i class="fa-solid fa-people-arrows"></i> <strong>Sinergia Híbrida:</strong> Colaboración simbiótica entre ingenieros senior y agentes cognitivos.</li>
+                <li><i class="fa-solid fa-rocket"></i> <strong>Optimización:</strong> Productos inteligentes que aceleran drásticamente el retorno de inversión.</li>
+            </ul>
             <div class="card">
-                <h3>La IA como Pilar Estructurado</h3>
-                <p>Nuestra organización ya no trata la IA como una herramienta externa de oficina: la integramos desde la fase de especificación conceptual hasta el despliegue automático en producción.</p>
+                <h3>IA como Pilar</h3>
+                <p>Integrada desde la fase de especificación conceptual hasta el despliegue automático en producción.</p>
             </div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – MÁS ALLÁ DEL CÓDIGO CLÁSICO</span>
-        <span>02</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – MÁS ALLÁ DEL CÓDIGO CLÁSICO</span><span>02</span></div>
 </div>
 
 <div class="slide-container" id="slide3">
     <h2 class="slide-title">SERVICIOS DE PRÓXIMA GENERACIÓN</h2>
     <div class="content-area">
-        <div class="two-column" style="grid-template-columns: 1.1fr 0.9fr;">
-            <div>
-                <ul class="custom-list">
-                    <li><i class="fa-solid fa-square-poll-vertical"></i> <strong>Socio de Soluciones Cognitivas:</strong> Desarrollo nativo de plataformas que incorporan IA, análisis inteligente y automatización.</li>
-                    <li><i class="fa-solid fa-shuffle"></i> <strong>Agilidad e Integridad:</strong> Modelos adaptados para asimilar cambios continuos de manera fluida y predecible.</li>
-                    <li><i class="fa-solid fa-microchip"></i> <strong>Ecosistema Multi-Stack:</strong> Dominio de entornos JavaEE, .NET y arquitecturas móviles unificados bajo flujos automatizados inteligentes.</li>
-                </ul>
-            </div>
+        <div class="two-column">
+            <ul class="custom-list">
+                <li><i class="fa-solid fa-square-poll-vertical"></i> <strong>Socio de Soluciones Cognitivas:</strong> Desarrollo nativo de plataformas con IA integrada.</li>
+                <li><i class="fa-solid fa-shuffle"></i> <strong>Agilidad e Integridad:</strong> Modelos adaptados para asimilar cambios de manera fluida.</li>
+                <li><i class="fa-solid fa-microchip"></i> <strong>Ecosistema Multi-Stack:</strong> Dominio de Java, .NET y Mobile bajo flujos automatizados.</li>
+            </ul>
             <div class="card">
                 <h3>Ingeniería Sólida</h3>
-                <p>Abordamos la transición tecnológica eliminando silos tradicionales, haciendo que las aplicaciones heredadas se integren limpiamente con microservicios e interfaces del mañana.</p>
+                <p>Modernización de aplicaciones heredadas mediante microservicios e interfaces de vanguardia.</p>
             </div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – DESARROLLO, TECNOLOGÍAS Y PROYECTOS</span>
-        <span>03</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – CAPACIDADES TÉCNICAS</span><span>03</span></div>
 </div>
 
 <div class="slide-container" id="slide4">
     <h2 class="slide-title">Portafolio de Capacidades 4.0</h2>
     <div class="content-area">
         <div class="services-grid">
-            <div class="service-box">
-                <i class="fa-solid fa-chart-line"></i>
-                <h3>Consultoría de Soluciones</h3>
-                <p>Análisis conceptual, I+D integrada, prototipado rápido y propuestas de arquitectura impulsadas por lógica predictiva.</p>
-            </div>
-            <div class="service-box featured">
-                <i class="fa-solid fa-cubes-stacked"></i>
-                <h3>Ingeniería Inteligente</h3>
-                <p>Desarrollo integral de sistemas nativos con componentes inteligentes y bases de datos optimizadas a nivel transaccional.</p>
-            </div>
-            <div class="service-box">
-                <i class="fa-solid fa-network-wired"></i>
-                <h3>Factorías de Evolución</h3>
-                <p>Células de desarrollo de software especializadas y parametrizadas para la modernización ágil y segura de aplicaciones críticas.</p>
-            </div>
+            <div class="service-box"><i class="fa-solid fa-chart-line"></i><h3>Consultoría</h3><p>Análisis conceptual y prototipado rápido impulsado por lógica predictiva.</p></div>
+            <div class="service-box" style="background:#f8fafc; border-top-color:#e28723;"><i class="fa-solid fa-cubes-stacked"></i><h3>Ingeniería</h3><p>Sistemas nativos con componentes inteligentes y bases de datos transaccionales.</p></div>
+            <div class="service-box"><i class="fa-solid fa-network-wired"></i><h3>Factorías</h3><p>Células especializadas para la modernización segura de aplicaciones críticas.</p></div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – DESARROLLO, TECNOLOGÍAS Y PROYECTOS</span>
-        <span>04</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – SOLUCIONES CORPORATIVAS</span><span>04</span></div>
 </div>
 
 <div class="slide-container" id="slide5">
-    <h2 class="slide-title">Nuestra Metodología de Desarrollo</h2>
+    <h2 class="slide-title">Metodología de Desarrollo</h2>
     <div class="content-area">
-        <ul class="custom-list" style="max-width: 950px;">
-            <li><i class="fa-solid fa-gears"></i> <strong>Ingeniería Predictiva:</strong> Mantenimiento proactivo, migraciones asistidas sin fricción y desarrollo ágil de proyectos integrales.</li>
-            <li><i class="fa-solid fa-user-gear"></i> <strong>Soporte Metodológico:</strong> Asignación inteligente de recursos adaptables que se integran de inmediato en la cultura del cliente.</li>
-            <li><i class="fa-solid fa-shield-halved"></i> <strong>Compromiso y Garantía:</strong> Calidad de código validada estricta e industrialmente para cumplir siempre los plazos acordados.</li>
+        <ul class="custom-list">
+            <li><i class="fa-solid fa-gears"></i> <strong>Ingeniería Predictiva:</strong> Mantenimiento proactivo y migraciones asistidas sin fricción.</li>
+            <li><i class="fa-solid fa-user-gear"></i> <strong>Soporte Metodológico:</strong> Asignación inteligente de recursos que se integran en la cultura del cliente.</li>
+            <li><i class="fa-solid fa-shield-halved"></i> <strong>Garantía:</strong> Calidad de código validada industrialmente para cumplimiento estricto de plazos.</li>
         </ul>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – CALIDAD Y CERTIFICACIÓN TÉCNICA</span>
-        <span>05</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – CALIDAD Y RIGOR</span><span>05</span></div>
 </div>
 
 <div class="slide-container" id="slide6">
     <h2 class="slide-title">FACTORÍAS ESPECIALIZADAS</h2>
     <div class="content-area">
-        <div class="two-column" style="grid-template-columns: 1.1fr 0.9fr;">
-            <div>
-                <ul class="custom-list">
-                    <li><i class="fa-solid fa-puzzle-piece"></i> <strong>Especialización Dinámica:</strong> Capacidad para articular factorías "verticales" orientadas a procesos de negocio específicos.</li>
-                    <li><i class="fa-solid fa-users-viewfinder"></i> <strong>Células Dedicadas:</strong> Equipos balanceados y optimizados metodológicamente según el volumen de trabajo.</li>
-                    <li><i class="fa-solid fa-scale-balanced"></i> <strong>Eficiencia Total:</strong> Maximización del beneficio operativo con estándares de rendimiento técnico medibles.</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Células Autonomous</h3>
-                <p>Estructuramos equipos independientes dotados de pipelines modernos de verificación, permitiendo iterar constantemente sin detener la continuidad del negocio.</p>
-            </div>
+        <div class="two-column">
+            <ul class="custom-list">
+                <li><i class="fa-solid fa-puzzle-piece"></i> <strong>Especialización Dinámica:</strong> Factorías verticales orientadas a procesos de negocio.</li>
+                <li><i class="fa-solid fa-users-viewfinder"></i> <strong>Células Dedicadas:</strong> Equipos optimizados según volumen y criticidad.</li>
+                <li><i class="fa-solid fa-scale-balanced"></i> <strong>Eficiencia:</strong> Rendimiento técnico medible y maximización del beneficio operativo.</li>
+            </ul>
+            <div class="card"><h3>Células Autónomas</h3><p>Pipelines modernos de verificación para iterar constantemente sin detener el negocio.</p></div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – DESARROLLO, TECNOLOGÍAS Y PROYECTOS</span>
-        <span>06</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – ESTRUCTURA OPERATIVA</span><span>06</span></div>
 </div>
 
 <div class="slide-container" id="slide7">
     <h2 class="slide-title">EQUIPO DE TRABAJO Y CULTURA</h2>
     <div class="content-area">
-        <ul class="custom-list" style="max-width: 1000px;">
-            <li><i class="fa-solid fa-network-wired"></i> <strong>Sólida Cultura Descentralizada:</strong> Amplia experiencia en la estructuración y gestión de equipos de teletrabajo de alto rendimiento.</li>
-            <li><i class="fa-solid fa-laptop-code"></i> <strong>Adaptabilidad Activa:</strong> Integración inmediata en metodologías ágiles (Scrum, Kanban) y adecuación sin fricción de stacks tecnológicos.</li>
-            <li><i class="fa-solid fa-lock"></i> <strong>Seguridad Integral:</strong> Procesos validados para asumir de forma solvente retos complejos y sistemas corporativos críticos.</li>
+        <ul class="custom-list">
+            <li><i class="fa-solid fa-network-wired"></i> <strong>Cultura Descentralizada:</strong> Gestión experta de equipos de teletrabajo de alto rendimiento.</li>
+            <li><i class="fa-solid fa-laptop-code"></i> <strong>Adaptabilidad:</strong> Integración inmediata en metodologías Scrum/Kanban y diversos stacks.</li>
+            <li><i class="fa-solid fa-lock"></i> <strong>Seguridad:</strong> Procesos validados para sistemas corporativos críticos y retos complejos.</li>
         </ul>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – COMPROMISO PROFESIONAL</span>
-        <span>07</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – TALENTO Y PROCESOS</span><span>07</span></div>
 </div>
 
 <div class="slide-container" id="slide8">
-    <h2 class="slide-title">Ampliación de la Capacidad Tecnológica</h2>
+    <h2 class="slide-title">Ampliación de Capacidad</h2>
     <div class="content-area">
-        <div class="tech-evolution-grid">
+        <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:60px; align-items:center;">
             <div>
-                <p style="font-size: 24px; color: #9a2143; font-weight: 600; margin-bottom: 20px;">La IA como Núcleo de la Software Factory</p>
-                <p style="margin-bottom: 20px;">Nuestra adopción estratégica de modelos inteligentes como <strong>Claude</strong> y <strong>GitHub Copilot</strong> funciona como el cimiento operativo diario para ampliar exponencialmente nuestro espectro de tecnologías.</p>
-                <p>Este paradigma acorta drásticamente la curva de aprendizaje ante nuevos lenguajes y arquitecturas cloud, permitiendo a nuestros ingenieros focalizarse en lo que realmente importa: la robustez del negocio, la seguridad del código y la satisfacción del usuario.</p>
+                <p style="font-size:22px; color:#9a2143; font-weight:600; margin-bottom:15px;">IA como Núcleo Operativo</p>
+                <p>La adopción de modelos como <strong>Claude</strong> y <strong>Copilot</strong> amplía exponencialmente nuestro espectro tecnológico, acortando la curva de aprendizaje en arquitecturas cloud y nuevos lenguajes.</p>
             </div>
-            <div class="tech-evolution-visual">
-                <h3>Beneficios Tangibles</h3>
-                <ul>
-                    <li><i class="fa-solid fa-expand"></i> Amplitud y agilidad en múltiples stacks</li>
-                    <li><i class="fa-solid fa-bug-slash"></i> Refactorización segura de aplicaciones complejas</li>
-                    <li><i class="fa-solid fa-clock-rotate-left"></i> Reducción drástica del "time-to-market"</li>
+            <div style="background:#f8fafc; padding:30px; border-radius:8px; border-right:4px solid #e28723;">
+                <ul style="list-style:none;">
+                    <li style="font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-expand" style="color:#e28723; margin-right:10px;"></i> Agilidad en múltiples stacks</li>
+                    <li style="font-size:15px; margin-bottom:10px;"><i class="fa-solid fa-bug-slash" style="color:#e28723; margin-right:10px;"></i> Refactorización segura</li>
+                    <li style="font-size:15px;"><i class="fa-solid fa-clock-rotate-left" style="color:#e28723; margin-right:10px;"></i> Reducción de time-to-market</li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – INGENIERÍA EN EVOLUCIÓN</span>
-        <span>08</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – INGENIERÍA 4.0</span><span>08</span></div>
 </div>
 
 <div class="slide-container" id="slide9">
     <h2 class="slide-title">PLATAFORMAS TECNOLÓGICAS</h2>
     <div class="content-area">
         <table>
-            <thead>
-                <tr>
-                    <th>BD</th>
-                    <th>LENGUAJES</th>
-                    <th>FRAMEWORKS</th>
-                    <th>IDE</th>
-                    <th>INCIDENCIAS Y VERSIONES</th>
-                </tr>
-            </thead>
+            <thead><tr><th>BD</th><th>LENGUAJES</th><th>FRAMEWORKS</th><th>IDE</th><th>VERSIONES</th></tr></thead>
             <tbody>
-                <tr>
-                    <td>SQL SERVER</td>
-                    <td>Java</td>
-                    <td>Springboot</td>
-                    <td>Eclipse</td>
-                    <td>Team Foundation System</td>
-                </tr>
-                <tr>
-                    <td>ORACLE</td>
-                    <td>C#</td>
-                    <td>DevExpress</td>
-                    <td>Visual Studio</td>
-                    <td>JIRA</td>
-                </tr>
-                <tr>
-                    <td>MySQL</td>
-                    <td>VisualBasic</td>
-                    <td>Angular</td>
-                    <td>IntelliJIDEA</td>
-                    <td>MS Azure</td>
-                </tr>
-                <tr>
-                    <td>PostgreSQL</td>
-                    <td>ASP.NET</td>
-                    <td>IONICS</td>
-                    <td>Visual Studio Code</td>
-                    <td>GIT</td>
-                </tr>
-                <tr>
-                    <td>MongoDB</td>
-                    <td>PHP</td>
-                    <td>React</td>
-                    <td>PHPStorm</td>
-                    <td>SVN</td>
-                </tr>
+                <tr><td>SQL SERVER</td><td>Java</td><td>Springboot</td><td>Eclipse</td><td>TFS</td></tr>
+                <tr><td>ORACLE</td><td>C#</td><td>DevExpress</td><td>Visual Studio</td><td>JIRA</td></tr>
+                <tr><td>MySQL</td><td>VisualBasic</td><td>Angular</td><td>IntelliJ</td><td>Azure</td></tr>
+                <tr><td>PostgreSQL</td><td>ASP.NET</td><td>IONICS</td><td>VS Code</td><td>GIT</td></tr>
+                <tr><td>MongoDB</td><td>PHP</td><td>React</td><td>PHPStorm</td><td>SVN</td></tr>
             </tbody>
         </table>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – DESARROLLO, TECNOLOGÍAS Y PROYECTOS</span>
-        <span>09</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – STACK TECNOLÓGICO</span><span>09</span></div>
 </div>
 
 <div class="slide-container" id="slide10">
@@ -619,7 +364,7 @@
                 </div>
                 <h4>Reconocimientos Médicos</h4>
                 <p>ReactJs, ASP.NET, SQL Server. Plataforma de gestión de Reconocimientos Médicos.</p>
-                <a href="./demo-reconocimientos/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+                <a href="./demo-reconocimientos/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
             </div>
             <div class="success-item">
                 <div class="tag-row">
@@ -628,15 +373,19 @@
                 </div>
                 <h4>Gestión de Condominios</h4>
                 <p>ReactJs, ASP.NET, SQL Server. Plataforma integral de administración y servicios distribuidos.</p>
-                <a href="./demo-condominios/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+                <a href="./demo-condominios/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
             </div>
-            <div class="success-item">
-                <div class="tag-row">
-                    <span class="tag dev">Desarrollo</span>
-                </div>
-                <h4>Venta de Billetes</h4>
-                <p>Java, Spring, Angular, MariaDB. Sistema de Venta Anticipada de Billetes.</p>
-                <a href="./demo-billetes/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+			<div class="success-item">
+                <div class="tag-row"><span class="tag dev">Desarrollo</span><span class="tag new-tech">React + Java</span></div>
+                <h4>Gestión de Supermercados</h4>
+                <p>React, Java, Spring, Oracle. Ecosistema transaccional de alta demanda.</p>
+                <a href="./demo-supermercados/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
+            </div>
+			<div class="success-item">
+                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
+                <h4>Gestión Inmobiliaria</h4>
+                <p>ASP.NET, DevExpress, SQL Server. Gestión de activos y contratos complejos.</p>
+                <a href="./demo-inmobiliaria/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
             </div>
             <div class="success-item">
                 <div class="tag-row">
@@ -644,7 +393,15 @@
                 </div>
                 <h4>Facturación</h4>
                 <p>Java, Spring, Angular, Oracle. Módulo de Sistema Gestión de Autopistas.</p>
-                <a href="./demo-facturacion/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Demo Online</a>
+                <a href="./demo-facturacion/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+            </div>
+            <div class="success-item">
+                <div class="tag-row">
+                    <span class="tag dev">Desarrollo</span>
+                </div>
+                <h4>Venta de Billetes</h4>
+                <p>Java, Spring, Angular, MariaDB. Sistema de Venta Anticipada de Billetes.</p>
+                <a href="./demo-billetes/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
             </div>
         </div>
     </div>

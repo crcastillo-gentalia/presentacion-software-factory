@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión Diaria Detalle</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; font-size: 10px; background: #f0f0f0; color: #333; }
+
+    .topbar {
+      background: #f8f8f8; border-bottom: 1px solid #ddd;
+      display: flex; align-items: center; padding: 4px 10px;
+      font-size: 10px; gap: 20px; flex-wrap: wrap;
+    }
+    .topbar .range { font-weight: bold; font-size: 11px; color: #333; }
+    .topbar .center-name { font-weight: bold; font-size: 13px; color: #333; flex: 1; text-align: center; }
+    .topbar .logo {
+      background: #cc0000; color: white; font-weight: bold;
+      font-size: 11px; padding: 3px 8px; display: flex; align-items: center; gap: 3px;
+    }
+    .topbar .logo .sq { background: #ff6600; width: 10px; height: 10px; display: inline-block; }
+
+    .kpibar {
+      background: white; border-bottom: 1px solid #ddd;
+      display: flex; align-items: center; padding: 6px 14px; gap: 14px; flex-wrap: wrap;
+    }
+    .kpi-block { display: flex; flex-direction: column; gap: 2px; }
+    .kpi-block .kpi-title { font-size: 9px; color: #777; text-transform: uppercase; }
+    .kpi-block .kpi-val   { font-size: 16px; font-weight: bold; color: #333; }
+    .kpi-block .kpi-sub   { font-size: 9px; color: #555; line-height: 1.5; }
+    .kpi-block .kpi-sub span.red    { color: #cc0000; font-weight: bold; }
+    .kpi-block .kpi-sub span.orange { color: #d97706; font-weight: bold; }
+    .kpi-block .kpi-sub span.green  { color: #5a9e44; font-weight: bold; }
+    .kpi-divider { width: 1px; align-self: stretch; background: #ddd; }
+
+    .alertbox-inline {
+      flex: 1; background: #fff3cd; border: 1px solid #f0ad4e;
+      padding: 6px 12px; font-size: 9px; color: #7a4f00; line-height: 1.7;
+      align-self: stretch; display: flex; flex-direction: column; justify-content: center;
+    }
+    .alertbox-inline b { color: #cc0000; }
+
+    .filterbar {
+      background: white; border: 1px solid #ddd;
+      padding: 6px 10px; margin: 4px 10px;
+      display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap;
+    }
+    .filterbar .fg { display: flex; flex-direction: column; gap: 2px; }
+    .filterbar .fg label { font-size: 9px; color: #666; }
+    .filterbar .fg input,
+    .filterbar .fg select { border: 1px solid #ccc; padding: 3px 5px; font-size: 10px; min-width: 90px; }
+    .btn-filtrar {
+      background: #cc0000; color: white; border: none;
+      padding: 5px 14px; cursor: pointer; font-size: 10px; font-weight: bold;
+    }
+    .btn-limpiar {
+      background: #666; color: white; border: none;
+      padding: 5px 10px; cursor: pointer; font-size: 10px;
+    }
+    .btn-limpiar:hover { background: #444; }
+    .btn-filtrar:hover { background: #aa0000; }
+
+    .no-results {
+      display: none; text-align: center; padding: 20px;
+      color: #888; font-size: 12px; background: white;
+      margin: 6px 10px; border: 1px solid #ddd;
+    }
+
+    .tbl-wrap { overflow-x: auto; margin: 6px 10px; }
+    table { border-collapse: collapse; width: 100%; background: white; font-size: 9px; }
+    th {
+      border: 1px solid #bbb; padding: 3px 4px; text-align: center;
+      white-space: nowrap; background: #d4d4d4; font-weight: bold;
+      font-size: 8.5px; color: #333; text-transform: uppercase;
+    }
+    td {
+      border: 1px solid #ccc; padding: 2px 4px;
+      text-align: center; white-space: nowrap; background: white;
+    }
+    .th-section { background: #bbb; font-size: 9px; font-weight: bold; }
+
+    tr.row-main-green td  { background: #92c47a !important; color: #1a3a00; }
+    tr.row-main-orange td { background: #f6b342 !important; color: #5a3000; }
+    tr.row-sub-green td   { background: #c6e0b4 !important; color: #1a3a00; }
+    tr.row-sub-orange td  { background: #fce5b0 !important; color: #5a3000; }
+    tr.row-anulado td     { background: #e0e0e0 !important; color: #555; }
+    tr.row-sep td         { background: #f0f0f0 !important; height: 5px; border: none; }
+
+    tr.row-sub-green td.empty {
+      background: #c6e0b4 !important;
+      border-top: 1px solid #a8d08d !important; border-bottom: 1px solid #a8d08d !important;
+      border-left: none !important; border-right: none !important;
+    }
+    tr.row-sub-orange td.empty {
+      background: #fce5b0 !important;
+      border-top: 1px solid #f0c070 !important; border-bottom: 1px solid #f0c070 !important;
+      border-left: none !important; border-right: none !important;
+    }
+
+    .badge { display: inline-block; padding: 1px 5px; border-radius: 2px; font-size: 8px; font-weight: bold; white-space: nowrap; }
+    .badge-green  { background: #5a9e44; color: white; }
+    .badge-orange { background: #d97706; color: white; }
+    .badge-gray   { background: #888; color: white; }
+
+    .cobrado { font-weight: bold; color: #1a7a1a; font-size: 9px; }
+    .lnk { color: #1a0dab; text-decoration: underline; cursor: pointer; font-size: 9px; }
+    .faltas-lnk { color: #cc0000; text-decoration: underline; cursor: pointer; font-size: 9px; font-weight: bold; }
+    .pendiente-lnk { color: #b45309; text-decoration: underline; cursor: pointer; font-size: 9px; font-weight: bold; }
+    .cell-alert { background: #f6b342 !important; font-weight: bold; font-size: 8px; padding: 1px 4px; }
+
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55); z-index: 1000;
+      align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: white; border: 1px solid #aaa; border-radius: 3px;
+      min-width: 680px; max-width: 92vw; max-height: 85vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35); overflow: hidden;
+    }
+    .modal-header {
+      background: #cc0000; color: white; font-weight: bold; font-size: 13px;
+      padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+    }
+    .modal-close { background: none; border: none; color: white; font-size: 18px; cursor: pointer; line-height:1; }
+    .modal-close:hover { opacity: 0.7; }
+    .modal-body { overflow-y: auto; flex: 1; }
+
+    .modal-table, .modal-pend-table { border-collapse: collapse; width: 100%; font-size: 11px; }
+    .modal-table th, .modal-pend-table th {
+      background: #444; color: white; border: 1px solid #666;
+      padding: 7px 10px; text-align: center; font-size: 11px; text-transform: none; white-space: normal;
+    }
+    .modal-table td, .modal-pend-table td {
+      border: 1px solid #ddd; padding: 6px 10px;
+      text-align: center; background: white; white-space: normal; line-height: 1.4;
+    }
+    .modal-table tbody tr:hover td,
+    .modal-pend-table tbody tr:hover td { background: #f5f5f5 !important; }
+
+    .modal-footer {
+      background: #333; color: white; padding: 7px 12px; font-size: 11px;
+      display: flex; gap: 24px; align-items: center; font-weight: bold; flex-shrink: 0;
+    }
+    .modal-footer span { color: #ccc; font-weight: normal; margin-left: 4px; }
+
+    .modal-pedido { min-width: 560px; max-width: 680px; }
+    .cajones-grid {
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      border-bottom: 2px solid #ddd; background: white;
+    }
+    .cajones-cell {
+      border-right: 1px solid #ddd; padding: 14px 8px;
+      text-align: center; display: flex; flex-direction: column; gap: 10px;
+    }
+    .cajones-cell:last-child { border-right: none; }
+    .cajones-cell .caj-label { font-size: 11px; font-weight: bold; color: #333; line-height: 1.3; }
+    .cajones-cell .caj-val   { font-size: 20px; font-weight: bold; color: #1a6fc4; }
+    .pedido-btns { padding: 18px 40px; display: flex; flex-direction: column; gap: 10px; background: white; }
+    .pedido-btn {
+      background: #cc0000; color: white; border: none;
+      padding: 12px; font-size: 13px; font-weight: bold;
+      letter-spacing: 0.5px; cursor: pointer; text-transform: uppercase;
+    }
+    .pedido-btn:hover { background: #aa0000; }
+    .pedido-btn.disabled { background: #f5c6c6; color: #cc8888; cursor: default; }
+    .pedido-btn.disabled:hover { background: #f5c6c6; }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="range">De lunes 25/05/2026 a lunes 25/05/2026</span>
+  <span class="center-name">CENTRO COMERCIAL</span>
+  <div class="logo"><span class="sq"></span>&nbsp;TIENDA <span style="color:#ffaa44">online</span></div>
+  <span style="font-size:10px;color:#555;cursor:pointer;">⚙ config</span>
+</div>
+
+<div class="kpibar">
+  <div class="kpi-block">
+    <div class="kpi-title">TOTAL PEDIDOS</div>
+    <div class="kpi-val" id="kpi-total">21</div>
+    <div class="kpi-sub">
+      <span class="red">■</span> Domicilio<br>
+      <span class="orange">■</span> Taquilla<br>
+      <span class="green">■</span> Tienda
+    </div>
+  </div>
+  <div class="kpi-divider"></div>
+  <div class="kpi-block">
+    <div class="kpi-title">TOTAL IMPORTE</div>
+    <div class="kpi-val" style="color:#cc0000;">9841.27 €</div>
+    <div class="kpi-sub">
+      8472.21 € Domicilio<br>
+      3596.32 € Taquilla<br>
+      3706.10 € Tienda
+    </div>
+  </div>
+  <div class="kpi-divider"></div>
+  <div class="alertbox-inline">
+    ⚠ Pedidos con grandes cantidades: aprovechárselos para asegurarse que hay stock o llamar al cliente para cambio de fechas<br>
+    <b>25/05/2026</b> Fecha de entrega: 25/05 — Nº de pedido: <span class="lnk" onclick="openPedidoModal('113151486')">113151486</span><br>
+    <span style="color:#cc0000">ref: 113151196 Nutella de cacao SPECIAL, bote 1 litro 88 unid</span>
+  </div>
+</div>
+
+<div class="filterbar">
+  <div class="fg">
+    <label>Nº Pedido</label>
+    <input type="text" id="f-numpedido" placeholder="Nº pedido…"/>
+  </div>
+  <div class="fg">
+    <label>Estado</label>
+    <select id="f-preparado">
+      <option value="">Todos</option>
+      <option value="Entregado">Entregado</option>
+      <option value="Puesto Total">Puesto Total</option>
+      <option value="Anulado">Anulado</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Nombre</label>
+    <input type="text" id="f-nombre" placeholder="Buscar cliente…"/>
+  </div>
+  <div class="fg">
+    <label>Tipo entrega</label>
+    <select id="f-tipo">
+      <option value="">Todos</option>
+      <option value="Taquilla">Taquilla</option>
+      <option value="Domicilio">Domicilio</option>
+    </select>
+  </div>
+  <div class="fg">
+    <label>Preparador</label>
+    <select id="f-preparador">
+      <option value="">Todos</option>
+    </select>
+  </div>
+  <button class="btn-limpiar" onclick="limpiarFiltros()">✕ Limpiar</button>
+  <button class="btn-filtrar" onclick="applyFilters()">FILTRAR</button>
+</div>
+
+<div class="no-results" id="no-results">⚠ No se encontraron pedidos con los filtros seleccionados.</div>
+
+<div class="tbl-wrap">
+  <table id="main-table">
+    <thead>
+      <tr>
+        <th rowspan="2">Fecha</th><th rowspan="2">Franja</th><th rowspan="2">Zona</th>
+        <th rowspan="2">N.Lin</th><th rowspan="2">Nº pedido</th>
+        <th rowspan="2">Montadores</th>
+        <th rowspan="2">Subpedido</th><th rowspan="2">Estado</th>
+        <th class="th-section" colspan="7">PREPARACIÓN</th>
+        <th class="th-section" colspan="4">CLIENTE</th>
+      </tr>
+      <tr>
+        <th>Refs</th><th>Uds</th><th>Importe</th><th>Preparador</th>
+        <th>Bolsas</th><th>Cajones</th><th>Buenas</th>
+        <th>Nombre</th><th>Teléfono</th><th>Tipo</th><th>Extra</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+
+      <tr class="row-main-green" data-group="1" data-pedido="113479714" data-estado="Entregado" data-nombre="ANGELICA ELISA BELLOCH" data-tipo="Taquilla" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>09:00-10:00</td><td>Taquilla</td><td>09:09</td>
+        <td class="lnk" onclick="openPedidoModal('113479714')">113479714</td><td></td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 21<br><span class="faltas-lnk" onclick="openFaltasModal('113479714')">Faltas: 1</span></td>
+        <td>21</td><td>1</td><td>506.71€</td><td></td>
+        <td>Frasco: 2<br>Cong: 1</td>
+        <td>Seco: 14<br>Fuera de Cajón: 0<br>Fresco: 2<br>Conge: 1</td>
+        <td>0</td>
+        <td>ANGELICA ELISA BELLOCH</td><td>620700124</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="1"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Microondas</td><td>Entregado</td><td>1</td><td>1</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="1"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>12</td><td>18</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="1"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Panaderia</td><td>Entregado</td><td>3</td><td>3</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="1"><td colspan="19"></td></tr>
+
+      <tr class="row-main-green" data-group="2" data-pedido="114040747" data-estado="Entregado" data-nombre="LORE MANZALANO" data-tipo="Taquilla" data-preparadores="APOYO9-236,PREPARA-236">
+        <td>02/05/2026</td><td>09:00-10:00</td><td>Taquilla</td><td>09:09</td>
+        <td class="lnk" onclick="openPedidoModal('114040747')">114040747</td><td></td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 20<br><span class="faltas-lnk" onclick="openFaltasModal('114040747')">Faltas: 1</span></td>
+        <td>20</td><td>31</td><td>34.37€</td><td></td>
+        <td>Frasco: 2<br>Cong: 0</td>
+        <td>Seco: 17<br>Fuera de Cajón: 0<br>Fresco: 2<br>Conge: 0</td>
+        <td>0</td>
+        <td>LORE MANZALANO</td><td>636073031</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="2"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>0</td><td>0</td><td></td><td>APOYO9-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="2"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Nevera/Congelados</td><td>Entregado</td><td>0</td><td>0</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="2"><td colspan="19"></td></tr>
+
+      <tr class="row-main-green" data-group="3" data-pedido="114040782" data-estado="Entregado" data-nombre="LARRATZ CARRASCOS" data-tipo="Domicilio" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>10:00-11:00</td><td>Berango</td><td>09:00</td>
+        <td class="lnk" onclick="openPedidoModal('114040782')">114040782</td><td></td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 54<br><span class="faltas-lnk" onclick="openFaltasModal('114040782')">Faltas: 2</span></td>
+        <td>31</td><td>64</td><td>17326.8</td><td>22</td>
+        <td>Frasco: 2<br>Cong: 0</td>
+        <td>Seco: 26<br>Fuera de Cajón: 3<br>Fresco: 2<br>Conge: 0</td>
+        <td>0</td>
+        <td>LARRATZ CARRASCOS</td><td>617747126</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="3"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Microondas</td><td>Entregado</td><td>2</td><td>2</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="3"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>24</td><td>47</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="3"><td colspan="19"></td></tr>
+
+      <tr class="row-main-orange" data-group="4" data-pedido="113471867" data-estado="Puesto Total" data-nombre="ANA MARIA BERAZA" data-tipo="Domicilio" data-preparadores="APOYO12-236">
+        <td>02/05/2026</td><td>10:00-11:00</td><td>Arrasate</td><td>09:05</td>
+        <td class="lnk" onclick="openPedidoModal('113471867')">113471867</td><td></td>
+        <td><span class="badge badge-orange">Puesto Total</span></td>
+        <td>Total: 11<br><span class="faltas-lnk" onclick="openFaltasModal('113471867')">Faltas: 1</span></td>
+        <td>15</td><td>11</td><td>43.62€</td><td>17</td>
+        <td>Frasco: 2<br>Cong: 0</td>
+        <td>Seco: 8<br>Fuera de Cajón: 1<br>Fresco: 2<br>Conge: 0</td>
+        <td>0</td>
+        <td>ANA MARIA BERAZA</td><td>620748016</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-orange" data-group="4"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>6</td><td>6</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="4"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('113471867')">Pendiente</span></td><td>Pendiente</td><td>3</td><td>3</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="4"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('113471867')">Pendiente 2</span></td><td>Pendiente</td><td>2</td><td>2</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="4"><td colspan="19"></td></tr>
+
+      <tr class="row-main-orange" data-group="5" data-pedido="114047391" data-estado="Puesto Total" data-nombre="MIKEL AIZPURU" data-tipo="Domicilio" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>10:00-11:00</td><td>Arrasate</td><td>09:30</td>
+        <td class="lnk" onclick="openPedidoModal('114047391')">114047391</td><td></td>
+        <td><span class="badge badge-orange">Puesto Total</span></td>
+        <td>Total: 18<br><span class="faltas-lnk" onclick="openFaltasModal('114047391')">Faltas: 2</span></td>
+        <td>18</td><td>25</td><td>87.30€</td><td>12</td>
+        <td>Frasco: 1<br>Cong: 0</td>
+        <td>Seco: 13<br>Fuera de Cajón: 0<br>Fresco: 1<br>Conge: 0</td>
+        <td>0</td>
+        <td>MIKEL AIZPURU</td><td>944112233</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-orange" data-group="5"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>12</td><td>12</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="5"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('114047391')">Pendiente</span></td><td>Pendiente</td><td>4</td><td>4</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="5"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Nevera/Congelados</td><td>Entregado</td><td>2</td><td>2</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="5"><td colspan="19"></td></tr>
+
+      <tr class="row-main-green" data-group="6" data-pedido="114140005" data-estado="Entregado" data-nombre="JULIA GONZALEZ" data-tipo="Domicilio" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>11:00-12:00</td><td>Berango</td><td>09:00</td>
+        <td class="lnk" onclick="openPedidoModal('114140005')">114140005</td><td></td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 27<br><span class="faltas-lnk" onclick="openFaltasModal('114140005')">Faltas: 3</span></td>
+        <td>27</td><td>48</td><td>100.13€</td><td>14</td>
+        <td>Frasco: 4<br>Cong: 0</td>
+        <td>Seco: 20<br>Fuera de Cajón: 1<br>Fresco: 4<br>Conge: 0</td>
+        <td>0</td>
+        <td>JULIA GONZALEZ</td><td>627801252</td><td></td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="6"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Microondas</td><td>Entregado</td><td>3</td><td>3</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="6"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>24</td><td>48</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="6"><td colspan="19"></td></tr>
+
+      <tr class="row-main-orange" data-group="7" data-pedido="114051882" data-estado="Puesto Total" data-nombre="ITZIAR URIARTE" data-tipo="Domicilio" data-preparadores="PREPARA-236,APOYO9-236">
+        <td>02/05/2026</td><td>11:00-12:00</td><td>Berango</td><td>10:10</td>
+        <td class="lnk" onclick="openPedidoModal('114051882')">114051882</td><td></td>
+        <td><span class="badge badge-orange">Puesto Total</span></td>
+        <td>Total: 22<br><span class="faltas-lnk" onclick="openFaltasModal('114051882')">Faltas: 3</span></td>
+        <td>22</td><td>30</td><td>143.60€</td><td>9</td>
+        <td>Frasco: 2<br>Cong: 1</td>
+        <td>Seco: 16<br>Fuera de Cajón: 0<br>Fresco: 2<br>Conge: 1</td>
+        <td>0</td>
+        <td>ITZIAR URIARTE</td><td>636990011</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-orange" data-group="7"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>14</td><td>14</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="7"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('114051882')">Pendiente</span></td><td>Pendiente</td><td>5</td><td>5</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="7"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('114051882')">Pendiente 2</span></td><td>Pendiente</td><td>3</td><td>3</td><td></td><td>APOYO9-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="7"><td colspan="19"></td></tr>
+
+      <tr class="row-main-green" data-group="8" data-pedido="114140277" data-estado="Entregado" data-nombre="LEIRE BELATEGI" data-tipo="Domicilio" data-preparadores="APOYO12-236">
+        <td>02/05/2026</td><td>11:00-12:00</td><td>Arrasate</td><td>09:30</td>
+        <td class="lnk" onclick="openPedidoModal('114140277')">114140277</td><td></td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 19<br><span class="faltas-lnk" onclick="openFaltasModal('114140277')">Faltas: 2</span></td>
+        <td>19</td><td>32</td><td>131.68€</td><td>13</td>
+        <td>Frasco: 2<br>Cong: 0</td>
+        <td>Seco: 12<br>Fuera de Cajón: 4<br>Fresco: 2<br>Conge: 0</td>
+        <td>0</td>
+        <td>LEIRE BELATEGI</td><td>636531784</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="8"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Microondas</td><td>Entregado</td><td>1</td><td>1</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="8"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Panaderia</td><td>Entregado</td><td>10</td><td>10</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="8"><td colspan="19"></td></tr>
+
+      <tr class="row-anulado" data-group="9" data-pedido="114142005" data-estado="Anulado" data-nombre="MIREN ETXEBERRIA" data-tipo="Taquilla" data-preparadores="">
+        <td>02/05/2026</td><td>11:00-12:00</td><td>Taquilla</td><td>10:15</td>
+        <td class="lnk" onclick="openPedidoModal('114142005')">114142005</td><td>No</td>
+        <td><span class="badge badge-gray">Anulado</span></td><td>Total: 8</td>
+        <td>8</td><td>12</td><td>58.20€</td><td>0</td>
+        <td>Frasco: 1<br>Cong: 0</td>
+        <td>Seco: 5<br>Fuera de Cajón: 0<br>Fresco: 1<br>Conge: 0</td>
+        <td>0</td>
+        <td>MIREN ETXEBERRIA</td><td>944821033</td><td></td><td></td>
+      </tr>
+      <tr class="row-sep" data-group="9"><td colspan="19"></td></tr>
+
+      <tr class="row-main-orange" data-group="10" data-pedido="114062745" data-estado="Puesto Total" data-nombre="GORKA LARREA" data-tipo="Domicilio" data-preparadores="APOYO12-236">
+        <td>02/05/2026</td><td>12:00-13:00</td><td>Arrasate</td><td>11:45</td>
+        <td class="lnk" onclick="openPedidoModal('114062745')">114062745</td><td></td>
+        <td><span class="badge badge-orange">Puesto Total</span></td>
+        <td>Total: 15</td>
+        <td>15</td><td>20</td><td>98.15€</td><td>6</td>
+        <td>Frasco: 1<br>Cong: 0</td>
+        <td>Seco: 11<br>Fuera de Cajón: 0<br>Fresco: 1<br>Conge: 0</td>
+        <td>0</td>
+        <td>GORKA LARREA</td><td>617443322</td><td></td><td></td>
+      </tr>
+      <tr class="row-sub-orange" data-group="10"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>10</td><td>10</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="10"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('114062745')">Pendiente</span></td><td>Pendiente</td><td>5</td><td>5</td><td></td><td>APOYO12-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="10"><td colspan="19"></td></tr>
+
+      <tr class="row-main-green" data-group="11" data-pedido="113413403" data-estado="Entregado" data-nombre="JOHN BARROS DIAZ" data-tipo="Domicilio" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>12:00-13:00</td><td>Arrasate</td><td>09:30</td>
+        <td class="lnk" onclick="openPedidoModal('113413403')">113413403</td><td>No</td>
+        <td><span class="badge badge-green">Entregado</span><br><span class="cobrado">Cobrado</span></td>
+        <td>Total: 35<br><span class="faltas-lnk" onclick="openFaltasModal('113413403')">Faltas: 3</span></td>
+        <td>35</td><td>55</td><td>101.39€</td><td>7</td>
+        <td>Frasco: 3<br>Cong: 0</td>
+        <td>Seco: 28<br>Fuera de Cajón: 1<br>Fresco: 3<br>Conge: 0</td>
+        <td>0</td>
+        <td>JOHN BARROS DIAZ</td><td>645577656</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-green" data-group="11"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Microondas</td><td>Entregado</td><td>10</td><td>12</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="11"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>16</td><td>32</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-green" data-group="11"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="cell-alert" colspan="3">⚠ Pedidos grandes cantidades 🔔</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sep" data-group="11"><td colspan="19"></td></tr>
+
+      <tr class="row-main-orange" data-group="12" data-pedido="114073318" data-estado="Puesto Total" data-nombre="AMAIA TXURRUKA" data-tipo="Taquilla" data-preparadores="PREPARA-236">
+        <td>02/05/2026</td><td>12:00-13:00</td><td>Taquilla</td><td>11:30</td>
+        <td class="lnk" onclick="openPedidoModal('114073318')">114073318</td><td></td>
+        <td><span class="badge badge-orange">Puesto Total</span></td>
+        <td>Total: 28<br><span class="faltas-lnk" onclick="openFaltasModal('114073318')">Faltas: 2</span></td>
+        <td>28</td><td>40</td><td>212.80€</td><td>15</td>
+        <td>Frasco: 2<br>Cong: 0</td>
+        <td>Seco: 21<br>Fuera de Cajón: 2<br>Fresco: 2<br>Conge: 0</td>
+        <td>0</td>
+        <td>AMAIA TXURRUKA</td><td>616778899</td><td>Bueno</td><td></td>
+      </tr>
+      <tr class="row-sub-orange" data-group="12"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Principal</td><td>Entregado</td><td>18</td><td>18</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="12"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td>Nevera/Congelados</td><td>Entregado</td><td>5</td><td>5</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr class="row-sub-orange" data-group="12"><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td><span class="pendiente-lnk" onclick="openPendienteModal('114073318')">Pendiente</span></td><td>Pendiente</td><td>5</td><td>5</td><td></td><td>PREPARA-236</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="modal-overlay" id="modalFaltas">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="faltasTitle">Faltas</span>
+      <button class="modal-close" onclick="closeModal('modalFaltas')">✕</button>
+    </div>
+    <div class="modal-body">
+      <table class="modal-table">
+        <thead>
+          <tr>
+            <th>Referencia</th>
+            <th>Denominación</th>
+            <th>Uds Solicitadas</th>
+            <th>Uds Servidas</th>
+            <th>Subpedido</th>
+          </tr>
+        </thead>
+        <tbody id="faltasBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <div>Líneas con falta:<span id="f-lineas">0</span></div>
+      <div>Unidades faltas:<span id="f-unidades">0</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalPendiente">
+  <div class="modal">
+    <div class="modal-header">
+      <span id="pendienteTitle">Pendiente</span>
+      <button class="modal-close" onclick="closeModal('modalPendiente')">✕</button>
+    </div>
+    <div class="modal-body">
+      <table class="modal-pend-table">
+        <thead>
+          <tr>
+            <th>Referencia</th>
+            <th>Denominación</th>
+            <th>Uds Pendientes</th>
+            <th>Subpedido</th>
+          </tr>
+        </thead>
+        <tbody id="pendienteBody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalPedido">
+  <div class="modal modal-pedido">
+    <div class="modal-header">
+      <span id="pedidoTitle">Nº pedido</span>
+      <button class="modal-close" onclick="closeModal('modalPedido')">✕</button>
+    </div>
+    <div class="cajones-grid">
+      <div class="cajones-cell"><span class="caj-label">Seco</span><span class="caj-val" id="caj-seco">0</span></div>
+      <div class="cajones-cell"><span class="caj-label">Fresco</span><span class="caj-val" id="caj-fresco">0</span></div>
+      <div class="cajones-cell"><span class="caj-label">Conge.</span><span class="caj-val" id="caj-conge">0</span></div>
+      <div class="cajones-cell"><span class="caj-label">Frasco</span><span class="caj-val" id="caj-frasco">0</span></div>
+      <div class="cajones-cell"><span class="caj-label">Cong.</span><span class="caj-val" id="caj-cong">0</span></div>
+      <div class="cajones-cell"><span class="caj-label">Fuera Cajón</span><span class="caj-val" id="caj-fuera">0</span></div>
+    </div>
+    <div class="pedido-btns">
+      <button class="pedido-btn" id="btn-imprimir">Imprimir Etiquetas</button>
+      <button class="pedido-btn" id="btn-reparto">Asignar a Ruta Reparto</button>
+      <button class="pedido-btn disabled" id="btn-incidencia">Registrar Incidencia</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Datos Estáticos para Faltas
+  const faltasData = {
+    '113479714': [{ref:'42490011',den:'Leche entera udb de vaca, brik 1 L',sol:6,ser:5,sub:'Principal'}],
+    '114040747': [{ref:'99110022',den:'Arroz integral bolsa 1 kg',sol:2,ser:1,sub:'Principal'}],
+    '114040782': [
+      {ref:'55001122',den:'Aceite de oliva virgen extra 1 L',sol:4,ser:2,sub:'Principal'},
+      {ref:'11223344',den:'Detergente líquido lavadora 40 lavados',sol:2,ser:1,sub:'Microondas'}
+    ],
+    '113471867': [{ref:'88442211',den:'Tomate frito casero, frasco 400 g',sol:3,ser:2,sub:'Principal'}],
+    '114047391': [
+      {ref:'77331100',den:'Filetes de pechuga de pollo 500 g',sol:2,ser:1,sub:'Nevera/Congelados'},
+      {ref:'66228899',den:'Manzana gran smith, bolsa 1.5 kg',sol:1,ser:0,sub:'Principal'}
+    ],
+    '114140005': [
+      {ref:'10102020',den:'Atún claro en aceite de oliva, pack 3x80 g',sol:3,ser:1,sub:'Principal'},
+      {ref:'30304040',den:'Yogurt natural pack 4 unidades',sol:2,ser:0,sub:'Microondas'}
+    ],
+    '114051882': [
+      {ref:'90901111',den:'Pan de molde blanco sin corteza',sol:2,ser:1,sub:'Principal'},
+      {ref:'80802222',den:'Queso rallado mozzarella bolsa 200 g',sol:3,ser:2,sub:'Principal'}
+    ],
+    '114140277': [{ref:'44556677',den:'Café molido tueste natural 250 g',sol:4,ser:2,sub:'Panaderia'}],
+    '113413403': [
+      {ref:'12123434',den:'Garbanzos cocidos frasco 400 g',sol:6,ser:4,sub:'Principal'},
+      {ref:'56567878',den:'Plátano de canarias, kg',sol:2,ser:1,sub:'Principal'}
+    ],
+    '114073318': [{ref:'98765432',den:'Suavizante azul ropa concentrado',sol:2,ser:1,sub:'Principal'}]
+  };
+
+  // Datos Estáticos para Pendientes
+  const pendienteData = {
+    '113471867': [
+      {ref:'54411002',den:'Macarrones plumas de la huerta, bolsa 1 kg',uds:3,sub:'Pendiente'},
+      {ref:'22110099',den:'Galletas maría hojaldradas, caja 800 g',uds:2,sub:'Pendiente 2'}
+    ],
+    '114047391': [
+      {ref:'33445566',den:'Patatas fritas onduladas bolsa 300 g',uds:4,sub:'Pendiente'}
+    ],
+    '114051882': [
+      {ref:'77889900',den:'Cerveza clásica lata 33 cl, pack 12',uds:5,sub:'Pendiente'},
+      {ref:'11224455',den:'Zumo de naranja exprimido con pulpa 1 L',uds:3,sub:'Pendiente 2'}
+    ],
+    '114062745': [
+      {ref:'66778899',den:'Limpiador hogar amoniacal botella 1.5 L',uds:5,sub:'Pendiente'}
+    ],
+    '114073318': [
+      {ref:'55667788',den:'Tomate eusko label, cal. 67/101, bandeja',uds:1,sub:'Pendiente'},
+      {ref:'16491052',den:'Lechuga batavia pv',uds:0,sub:'Pendiente'},
+      {ref:'82200113',den:'Pechuga de pollo fileteada NATUR, 500 g',uds:1,sub:'Pendiente'},
+      {ref:'44009911',den:'Zanahoria , bolsa 1 kg',uds:1,sub:'Pendiente'},
+      {ref:'71004455',den:'Espinacas frescas , bolsa 300 g',uds:0,sub:'Pendiente'},
+      {ref:'6833388',den:'Lomo cinta vacio (u)',uds:1,sub:'Pendiente'}
+    ],
+  };
+
+  function openPendienteModal(pedido) {
+    const rows = pendienteData[pedido];
+    if (!rows) return;
+    document.getElementById('pendienteTitle').textContent = 'Nº pedido ' + pedido;
+    const tbody = document.getElementById('pendienteBody');
+    tbody.innerHTML = '';
+    rows.forEach(r => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.ref}</td><td style="text-align:left;max-width:280px;white-space:normal">${r.den}</td><td>${r.uds}</td><td>${r.sub}</td>`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('modalPendiente').classList.add('active');
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  function openFaltasModal(pedido) {
+    const rows = faltasData[pedido] || [];
+    document.getElementById('faltasTitle').textContent = 'Faltas del pedido ' + pedido;
+    const tbody = document.getElementById('faltasBody');
+    tbody.innerHTML = '';
+    
+    let totalLineas = rows.length;
+    let totalUnidades = 0;
+
+    rows.forEach(r => {
+      const faltaUds = r.sol - r.ser;
+      totalUnidades += faltaUds;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${r.ref}</td><td style="text-align:left;">${r.den}</td><td>${r.sol}</td><td>${r.ser}</td><td>${r.sub}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    document.getElementById('f-lineas').textContent = totalLineas;
+    document.getElementById('f-unidades').textContent = totalUnidades;
+    document.getElementById('modalFaltas').classList.add('active');
+  }
+
+  function openPedidoModal(pedidoNum) {
+    document.getElementById('pedidoTitle').textContent = 'Opciones del Pedido Nº ' + pedidoNum;
+    
+    const mainRow = document.querySelector(`tr[data-pedido="${pedidoNum}"]`);
+    if(mainRow) {
+      const cajonesText = mainRow.cells[12].innerHTML; 
+      document.getElementById('caj-seco').textContent = parseCajon(cajonesText, 'Seco:');
+      document.getElementById('caj-fresco').textContent = parseCajon(cajonesText, 'Fresco:');
+      document.getElementById('caj-conge').textContent = parseCajon(cajonesText, 'Conge:');
+      document.getElementById('caj-fuera').textContent = parseCajon(cajonesText, 'Fuera de Cajón:');
+      
+      const bolsasText = mainRow.cells[11].innerHTML;
+      document.getElementById('caj-frasco').textContent = parseCajon(bolsasText, 'Frasco:');
+      document.getElementById('caj-cong').textContent = parseCajon(bolsasText, 'Cong:');
+    }
+    document.getElementById('modalPedido').classList.add('active');
+  }
+
+  function parseCajon(text, label) {
+    const parts = text.split('<br>');
+    for(let p of parts) {
+      if(p.includes(label)) {
+        return p.replace(label, '').trim();
+      }
+    }
+    return '0';
+  }
+
+  function limpiarFiltros() {
+    document.getElementById('f-numpedido').value = '';
+    document.getElementById('f-preparado').value = '';
+    document.getElementById('f-nombre').value = '';
+    document.getElementById('f-tipo').value = '';
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const fPedido = document.getElementById('f-numpedido').value.trim();
+    const fEstado = document.getElementById('f-preparado').value;
+    const fNombre = document.getElementById('f-nombre').value.toLowerCase().trim();
+    const fTipo = document.getElementById('f-tipo').value;
+
+    const tbody = document.getElementById('table-body');
+    const trs = Array.from(tbody.querySelectorAll('tr'));
+    
+    // Agrupar filas por data-group
+    const groups = {};
+    trs.forEach(tr => {
+      const g = tr.getAttribute('data-group');
+      if(!g) return;
+      if(!groups[g]) groups[g] = [];
+      groups[g].push(tr);
+    });
+
+    let visiblesCount = 0;
+
+    Object.keys(groups).forEach(gNum => {
+      const rows = groups[gNum];
+      const mainRow = rows.find(r => r.hasAttribute('data-pedido'));
+      if(!mainRow) return;
+
+      let match = true;
+
+      if(fPedido && !mainRow.getAttribute('data-pedido').includes(fPedido)) match = false;
+      if(fEstado && mainRow.getAttribute('data-estado') !== fEstado) match = false;
+      if(fTipo && mainRow.getAttribute('data-tipo') !== fTipo) match = false;
+      if(fNombre && !mainRow.getAttribute('data-nombre').toLowerCase().includes(fNombre)) match = false;
+
+      rows.forEach(r => {
+        r.style.display = match ? '' : 'none';
+      });
+
+      if(match) visiblesCount++;
+    });
+
+    document.getElementById('no-results').style.display = (visiblesCount === 0) ? 'block' : 'none';
+  }
+
+  // Carga de preparadores únicos en el select del filtro
+  window.addEventListener('DOMContentLoaded', () => {
+    const preparadores = new Set();
+    document.querySelectorAll('tr[data-preparadores]').forEach(tr => {
+      const pStr = tr.getAttribute('data-preparadores');
+      if(pStr) pStr.split(',').forEach(p => preparadores.add(p.trim()));
+    });
+    const select = document.getElementById('f-preparador');
+    preparadores.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p; opt.textContent = p;
+      select.appendChild(opt);
+    });
+  });
+</script>
+
+</body>
+</html>
