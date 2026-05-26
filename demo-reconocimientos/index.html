@@ -31,7 +31,6 @@
     </style>
 
     <script>
-        // Base de datos integrada
         const bdReconocimientos = [
             {
                 id: "230406",
@@ -97,7 +96,6 @@
 
         let idSeleccionado = "230406";
 
-        // Función de conmutación de vistas globalizada
         function conmutarVista(vistaId) {
             const vEstado = document.getElementById('vista-pantalla-estado');
             const vListado = document.getElementById('vista-listado');
@@ -112,21 +110,40 @@
             vListado.classList.add('hidden');
             vDetalle.classList.add('hidden');
 
-            btnEstado.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-teal-100 hover:bg-[#24534d] transition-colors cursor-pointer";
-            btnReco.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-teal-100 hover:bg-[#24534d] transition-colors cursor-pointer";
+            const claseInactivo = "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-teal-100 hover:bg-[#24534d] transition-colors cursor-pointer";
+            const claseActivo = "w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-100 text-[#2e6962] font-semibold shadow-xs cursor-pointer";
+
+            if(btnEstado) btnEstado.className = claseInactivo;
+            if(btnReco) btnReco.className = claseInactivo;
 
             if (vistaId === 'pantalla-estado') {
                 vEstado.classList.remove('hidden');
-                btnEstado.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-100 text-[#2e6962] font-semibold shadow-xs cursor-pointer";
+                if(btnEstado) btnEstado.className = claseActivo;
                 renderizarPantallaEstado();
             } else if (vistaId === 'listado') {
                 vListado.classList.remove('hidden');
-                btnReco.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-100 text-[#2e6962] font-semibold shadow-xs cursor-pointer";
+                if(btnReco) btnReco.className = claseActivo;
                 renderizarListado(bdReconocimientos);
             } else if (vistaId === 'detalle') {
                 vDetalle.classList.remove('hidden');
-                btnReco.className = "w-full flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-100 text-[#2e6962] font-semibold shadow-xs cursor-pointer";
+                if(btnReco) btnReco.className = claseActivo;
                 cargarDatosDetalle();
+            }
+            
+            // Cerrar el sidebar automáticamente en pantallas pequeñas al cambiar de vista
+            const sidebar = document.getElementById('sidebar-menu');
+            if (sidebar && !sidebar.classList.contains('-translate-x-full') && window.innerWidth < 1024) {
+                conmutarSidebar();
+            }
+        }
+
+        function conmutarSidebar() {
+            const sidebar = document.getElementById('sidebar-menu');
+            if (!sidebar) return;
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.add('-translate-x-full');
             }
         }
 
@@ -143,16 +160,16 @@
                 let badgeColor = item.estado.includes('Completado') ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-amber-50 text-amber-700 border-amber-200';
                 
                 tr.innerHTML = `
-                    <td class="p-3 font-semibold text-slate-800 flex items-center gap-3">
-                        <div class="w-7 h-7 rounded-full bg-[#2e6962]/10 text-[#2e6962] flex items-center justify-center font-bold text-[10px]">${item.persona.charAt(0)}</div>
-                        ${item.persona}
+                    <td class="p-3 font-semibold text-slate-800 flex items-center gap-3 min-w-[200px]">
+                        <div class="w-7 h-7 rounded-full bg-[#2e6962]/10 text-[#2e6962] flex items-center justify-center font-bold text-[10px] shrink-0">${item.persona.charAt(0)}</div>
+                        <span class="truncate">${item.persona}</span>
                     </td>
-                    <td class="p-3 text-slate-500">${item.empresa}</td>
-                    <td class="p-3 text-slate-500">${item.fecha}</td>
-                    <td class="p-3">
+                    <td class="p-3 text-slate-500 min-w-[150px]">${item.empresa}</td>
+                    <td class="p-3 text-slate-500 min-w-[100px]">${item.fecha}</td>
+                    <td class="p-3 min-w-[120px]">
                         <span class="px-2 py-0.5 rounded-full border text-[10px] font-bold ${badgeColor}">${item.estado}</span>
                     </td>
-                    <td class="p-3 text-center text-slate-400">
+                    <td class="p-3 text-center text-slate-400 w-12">
                         <span class="material-symbols-outlined text-base hover:text-slate-600">more_vert</span>
                     </td>
                 `;
@@ -193,22 +210,22 @@
 
                 tr.innerHTML = `
                     <td class="p-4"><button onclick="abrirElemento('${item.id}')" class="text-[#2e6962] font-bold hover:underline cursor-pointer">${item.id}</button></td>
-                    <td class="p-4">
+                    <td class="p-4 min-w-[155px]">
                         <span class="border border-blue-200 bg-blue-50/30 text-blue-700 font-medium px-2 py-1 rounded-full text-[11px] inline-flex items-center gap-1">
                             <span class="material-symbols-outlined text-xs">calendar_month</span> ${item.fechaFormateada}
                         </span>
                     </td>
-                    <td class="p-4">
+                    <td class="p-4 min-w-[200px]">
                         <div class="font-bold text-slate-800">${item.persona}</div>
                         <div class="text-[11px] text-slate-400 font-mono tracking-wide mt-0.5">${item.dni}</div>
                     </td>
-                    <td class="p-4 text-slate-500">${item.empresa}</td>
-                    <td class="p-4 text-slate-600 font-medium">${item.modalidad}</td>
-                    <td class="p-4">
+                    <td class="p-4 text-slate-500 min-w-[150px]">${item.empresa}</td>
+                    <td class="p-4 text-slate-600 font-medium min-w-[100px]">${item.modalidad}</td>
+                    <td class="p-4 min-w-[110px]">
                         <span class="border px-2 py-0.5 rounded-full text-[11px] font-medium ${badgeTipo}">${item.tipo}</span>
                     </td>
-                    <td class="p-4">${badgeEstado}</td>
-                    <td class="p-4 text-center">
+                    <td class="p-4 min-w-[100px]">${badgeEstado}</td>
+                    <td class="p-4 text-center w-20">
                         <div class="flex items-center justify-center gap-2 text-slate-400">
                             <button onclick="abrirElemento('${item.id}')" class="hover:text-slate-700 cursor-pointer"><span class="material-symbols-outlined text-sm">edit</span></button>
                             <button class="hover:text-rose-600 cursor-not-allowed"><span class="material-symbols-outlined text-sm">delete</span></button>
@@ -276,22 +293,25 @@
                 if (!btn || !content) return;
                 
                 if (key === pestanaKey) {
-                    btn.className = "flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold rounded-xl bg-white text-[#2e6962] shadow-xs border border-slate-200/60 transition-all cursor-pointer";
+                    btn.className = "flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-bold rounded-xl bg-white text-[#2e6962] shadow-xs border border-slate-200/60 transition-all cursor-pointer";
                     content.classList.remove('hidden');
                 } else {
-                    btn.className = "flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
+                    btn.className = "flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer";
                     content.classList.add('hidden');
                 }
             });
         }
     </script>
 </head>
-<body class="flex h-screen overflow-hidden text-slate-700">
+<body class="flex h-screen overflow-hidden text-slate-700 relative">
 
-    <aside class="w-64 bg-[#2e6962] text-white flex flex-col justify-between shrink-0 select-none">
+    <aside id="sidebar-menu" class="fixed inset-y-0 left-0 w-64 bg-[#2e6962] text-white flex flex-col justify-between shrink-0 select-none transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static z-50">
         <div>
-            <div class="h-14 border-b border-[#24534d] flex items-center px-4">
-                <div class="font-bold text-lg tracking-wide">RECONOCIMIENTOS</div>
+            <div class="h-14 border-b border-[#24534d] flex items-center justify-between px-4">
+                <div class="font-bold text-lg tracking-wide">SISTEMA</div>
+                <button onclick="conmutarSidebar()" class="lg:hidden text-teal-200 hover:text-white cursor-pointer">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
             </div>
             
             <nav class="p-3 space-y-6 text-sm">
@@ -330,23 +350,36 @@
                         </button>
                     </div>
                 </div>
+
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider text-teal-200/60 font-bold px-3 block mb-2">Sistema</span>
+                    <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-teal-100 hover:bg-[#24534d] opacity-70 cursor-not-allowed">
+                        <span class="material-symbols-outlined">style</span>
+                        <span>Design System</span>
+                    </button>
+                </div>
             </nav>
         </div>
     </aside>
 
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div id="sidebar-overlay" onclick="conmutarSidebar()" class="hidden fixed inset-0 bg-black/40 z-40 lg:hidden"></div>
+
+    <div class="flex-1 flex flex-col overflow-hidden w-full">
         
-        <header class="h-14 bg-[#3b7a71] text-white flex items-center justify-between px-6 shrink-0 shadow-sm">
-            <button class="hover:bg-[#2e6962] p-1 rounded transition-colors cursor-pointer">
+        <header class="h-14 bg-[#3b7a71] text-white flex items-center justify-between px-4 lg:px-6 shrink-0 shadow-sm z-30">
+            <button onclick="conmutarSidebar()" class="lg:hidden hover:bg-[#2e6962] p-1 rounded transition-colors cursor-pointer">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+            <button class="hidden lg:block hover:bg-[#2e6962] p-1 rounded transition-colors cursor-pointer">
                 <span class="material-symbols-outlined">menu</span>
             </button>
             <div class="flex items-center gap-3 text-sm">
-                <span class="font-medium opacity-90">Usuario Demo</span>
+                <span class="font-medium opacity-90 hidden sm:inline">Usuario Demo</span>
                 <div class="w-8 h-8 rounded-full bg-[#52948b] flex items-center justify-center font-bold text-xs border border-teal-200/30">U</div>
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto p-6 bg-[#f4f7f6]">
+        <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-[#f4f7f6]">
 
             <section id="vista-pantalla-estado" class="hidden space-y-6">
                 <div class="text-xs text-slate-500 flex items-center gap-2">
@@ -358,7 +391,7 @@
                     <p class="text-xs text-slate-500 mt-0.5">Un vistazo rápido al estado actual de los reconocimientos médicos.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6">
                     <div class="bg-white p-5 rounded-3xl border border-slate-100 shadow-xs flex items-center justify-between">
                         <div class="space-y-2">
                             <div class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-600">
@@ -400,17 +433,17 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl border border-slate-100 shadow-xs p-6 space-y-4">
-                    <div class="flex justify-between items-center">
+                <div class="bg-white rounded-2xl border border-slate-100 shadow-xs p-4 lg:p-6 space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
                             <h2 class="text-sm font-bold text-slate-800">Reconocimientos Recientes</h2>
                             <p class="text-xs text-slate-500">Últimos exámenes médicos procesados en el sistema</p>
                         </div>
-                        <button onclick="conmutarVista('listado')" class="text-xs font-bold text-[#2e6962] flex items-center gap-1 hover:underline cursor-pointer">
+                        <button onclick="conmutarVista('listado')" class="text-xs font-bold text-[#2e6962] flex items-center gap-1 hover:underline cursor-pointer self-end sm:self-auto">
                             Ver todos <span class="material-symbols-outlined text-xs">arrow_forward</span>
                         </button>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto w-full">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-500 border-b border-slate-100">
@@ -432,12 +465,12 @@
                     <span>Inicio</span> <span class="material-symbols-outlined text-[12px]">chevron_right</span> <span class="font-medium text-slate-700">Historias Clínicas</span>
                 </div>
 
-                <div class="flex justify-between items-start">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
                         <h1 class="text-xl font-bold text-slate-800">Reconocimientos</h1>
                         <p class="text-xs text-slate-500 mt-0.5">Gestión de Reconocimientos</p>
                     </div>
-                    <button class="bg-[#2e6962] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#24534d] shadow-xs cursor-pointer">
+                    <button class="w-full sm:w-auto bg-[#2e6962] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-[#24534d] shadow-xs cursor-pointer">
                         <span class="material-symbols-outlined text-sm">add</span> Nuevo Reconocimiento
                     </button>
                 </div>
@@ -447,9 +480,8 @@
                         <span class="text-xs font-bold flex items-center gap-2 text-slate-700">
                             <span class="material-symbols-outlined text-slate-500">filter_list</span> Filtros de Búsqueda
                         </span>
-                        <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_down</span>
                     </div>
-                    <div class="p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-500 mb-1">Buscar por Persona o DNI</label>
                             <input type="text" id="filtro-buscador" placeholder="Ej. Roberto Sánchez..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-[#2e6962] bg-slate-50/50">
@@ -466,7 +498,7 @@
                 </div>
 
                 <div class="bg-white rounded-xl border border-slate-200/80 shadow-xs overflow-hidden">
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto w-full">
                         <table class="w-full text-left text-xs border-collapse">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-slate-400 font-medium">
@@ -484,7 +516,7 @@
                         </table>
                     </div>
 
-                    <div class="p-4 border-t border-slate-100 flex justify-end items-center gap-6 text-xs text-slate-500 select-none">
+                    <div class="p-4 border-t border-slate-100 flex flex-wrap justify-end items-center gap-4 sm:gap-6 text-xs text-slate-500 select-none">
                         <div class="flex items-center gap-2">
                             <span>Filas:</span>
                             <select class="border border-slate-200 rounded px-1.5 py-0.5 bg-white focus:outline-none text-slate-700 font-medium">
@@ -504,47 +536,49 @@
             </section>
 
             <section id="vista-detalle" class="hidden space-y-6">
-                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs flex items-center justify-between relative">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200">
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 lg:p-5 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative">
+                    <div class="flex items-start sm:items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 border border-slate-200 shrink-0 hidden xs:flex">
                             <span class="material-symbols-outlined text-xl">medical_services</span>
                         </div>
-                        <div>
+                        <div class="space-y-1">
                             <div class="flex items-center gap-2 flex-wrap">
                                 <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">Reconocimiento</span>
                                 <span class="text-[11px] bg-slate-100 text-slate-600 font-semibold px-2 py-0.5 rounded-md border border-slate-200" id="det-header-id">Hª: —</span>
                             </div>
-                            <div class="flex items-center gap-3 mt-1 flex-wrap">
-                                <h2 class="text-base font-bold text-slate-800" id="det-header-persona">—</h2>
-                                <span class="text-[11px] bg-[#2e6962] text-white px-2 py-0.5 rounded-full font-medium" id="det-header-sexo">—</span>
-                                <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium" id="det-header-edad">—</span>
+                            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <h2 class="text-base font-bold text-slate-800 break-words" id="det-header-persona">—</h2>
+                                <div class="flex gap-1 items-center">
+                                    <span class="text-[11px] bg-[#2e6962] text-white px-2 py-0.5 rounded-full font-medium" id="det-header-sexo">—</span>
+                                    <span class="text-[11px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-medium" id="det-header-edad">—</span>
+                                </div>
                                 <span class="text-[11px] bg-blue-600 text-white font-mono px-2 py-0.5 rounded-md tracking-wide" id="det-header-dni">—</span>
                             </div>
-                            <p class="text-xs text-slate-400 mt-1" id="det-header-sub">—</p>
+                            <p class="text-xs text-slate-400" id="det-header-sub">—</p>
                         </div>
                     </div>
-                    <button onclick="conmutarVista('listado')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg border border-transparent hover:border-slate-200 transition-colors cursor-pointer">
+                    <button onclick="conmutarVista('listado')" class="absolute top-4 right-4 sm:static text-slate-400 hover:text-slate-600 p-1.5 rounded-lg border border-transparent hover:border-slate-200 transition-colors cursor-pointer">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
 
-                <div class="bg-[#f8fafc] border border-slate-200 rounded-2xl p-1.5 flex flex-wrap gap-1 shadow-xs">
-                    <button onclick="cambiarPestana('generales')" id="tab-generales" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
+                <div class="bg-[#f8fafc] border border-slate-200 rounded-2xl p-1.5 flex overflow-x-auto gap-1 shadow-xs no-scrollbar">
+                    <button onclick="cambiarPestana('generales')" id="tab-generales" class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
                         <span class="material-symbols-outlined text-sm">person</span> Datos Generales
                     </button>
-                    <button onclick="cambiarPestana('historia')" id="tab-historia" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
+                    <button onclick="cambiarPestana('historia')" id="tab-historia" class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
                         <span class="material-symbols-outlined text-sm">history</span> Historia Clínica
                     </button>
-                    <button class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed">
+                    <button class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed whitespace-nowrap">
                         <span class="material-symbols-outlined text-sm">accessibility_new</span> Exploración Física
                     </button>
-                    <button class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed">
-                        <span class="material-symbols-outlined text-sm">biotech</span> Pruebas Complementarias
+                    <button class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed whitespace-nowrap">
+                        <span class="material-symbols-outlined text-sm">biotech</span> Pruebas Compl.
                     </button>
-                    <button class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed">
-                        <span class="material-symbols-outlined text-sm">add_box</span> Consultas Externas
+                    <button class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-300 cursor-not-allowed whitespace-nowrap">
+                        <span class="material-symbols-outlined text-sm">add_box</span> Consultas Ext.
                     </button>
-                    <button onclick="cambiarPestana('conclusiones')" id="tab-conclusiones" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer">
+                    <button onclick="cambiarPestana('conclusiones')" id="tab-conclusiones" class="flex-1 min-w-[130px] lg:flex-none flex items-center justify-center gap-2 py-2 px-3 text-xs font-semibold rounded-xl text-slate-500 hover:text-slate-800 transition-all cursor-pointer whitespace-nowrap">
                         <span class="material-symbols-outlined text-sm">assignment_turned_in</span> Conclusiones
                     </button>
                 </div>
@@ -555,7 +589,6 @@
                             <span class="text-xs font-bold text-slate-700 flex items-center gap-3">
                                 <span class="material-symbols-outlined text-slate-500">tune</span> Configuración del Reconocimiento
                             </span>
-                            <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_down</span>
                         </div>
                     </div>
 
@@ -564,26 +597,25 @@
                             <span class="text-xs font-bold text-slate-700 flex items-center gap-3">
                                 <span class="material-symbols-outlined text-slate-500">assignment_ind</span> Detalles del Reconocimiento
                             </span>
-                            <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_up</span>
                         </div>
-                        <div class="p-6 space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="p-4 lg:p-6 space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500"><span class="material-symbols-outlined text-lg">badge</span></div>
+                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0"><span class="material-symbols-outlined text-lg">badge</span></div>
                                     <div>
                                         <p class="text-[10px] font-bold text-slate-400 uppercase">Nº Historia</p>
                                         <p class="text-xs font-bold text-slate-800" id="det-gen-historia">—</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500"><span class="material-symbols-outlined text-lg">history</span></div>
+                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0"><span class="material-symbols-outlined text-lg">history</span></div>
                                     <div>
                                         <p class="text-[10px] font-bold text-slate-400 uppercase">Grabación</p>
                                         <p class="text-xs font-bold text-slate-800" id="det-gen-grabacion">—</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500"><span class="material-symbols-outlined text-lg">medical_services</span></div>
+                                    <div class="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-500 shrink-0"><span class="material-symbols-outlined text-lg">medical_services</span></div>
                                     <div>
                                         <p class="text-[10px] font-bold text-slate-400 uppercase">Grabado por</p>
                                         <p class="text-xs font-bold text-slate-800" id="det-gen-grabadopor">—</p>
@@ -592,29 +624,29 @@
                             </div>
 
                             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-slate-100">
-                                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div class="relative">
+                                <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="relative mt-2">
                                         <label class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-bold text-slate-400">Fecha Reconocimiento</label>
                                         <div class="flex items-center border border-slate-200 rounded-lg p-2.5 bg-white text-xs font-medium">
                                             <input type="text" id="det-gen-fecha" class="w-full focus:outline-none text-slate-800">
                                             <span class="material-symbols-outlined text-slate-400 text-sm">calendar_month</span>
                                         </div>
                                     </div>
-                                    <div class="relative">
+                                    <div class="relative mt-2">
                                         <label class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-bold text-slate-400">Nº Análisis</label>
                                         <div class="flex items-center border border-slate-200 rounded-lg p-2.5 bg-white text-xs font-medium">
                                             <select class="w-full focus:outline-none text-slate-400 bg-transparent"><option>Selecciona...</option></select>
                                             <span class="material-symbols-outlined text-slate-600 text-sm bg-slate-100 border border-slate-200 p-1 rounded ml-2">assignment</span>
                                         </div>
                                     </div>
-                                    <div class="relative">
+                                    <div class="relative mt-2">
                                         <label class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-bold text-slate-400">H. Llegada</label>
                                         <div class="flex items-center border border-slate-200 rounded-lg p-2.5 bg-white text-xs font-medium">
                                             <input type="text" id="det-gen-llegada" class="w-full focus:outline-none text-slate-800">
                                             <span class="material-symbols-outlined text-slate-400 text-sm">schedule</span>
                                         </div>
                                     </div>
-                                    <div class="relative">
+                                    <div class="relative mt-2">
                                         <label class="absolute -top-2 left-3 bg-white px-1 text-[10px] font-bold text-slate-400">H. Salida</label>
                                         <div class="flex items-center border border-slate-200 rounded-lg p-2.5 bg-white text-xs font-medium">
                                             <input type="text" id="det-gen-salida" class="w-full focus:outline-none text-slate-800">
@@ -623,15 +655,15 @@
                                     </div>
                                 </div>
 
-                                <div class="lg:col-span-5 border border-slate-100 bg-slate-50/50 rounded-2xl p-4 grid grid-cols-2 gap-y-3 gap-x-4 text-[11px] font-bold text-slate-600">
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-completado" class="accent-[#2e6962] w-4 h-4"> COMPLETADO</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-auditado" class="accent-[#2e6962] w-4 h-4"> AUDITADO</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-imprimido" class="accent-[#2e6962] w-4 h-4"> IMPRIMIDO</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-encarpetado" class="accent-[#2e6962] w-4 h-4"> ENCARPETADO</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-facturable" class="accent-[#2e6962] w-4 h-4"> FACTURABLE</label>
-                                    <label class="flex items-center gap-2"><input type="checkbox" id="chk-enviadoweb" class="accent-[#2e6962] w-4 h-4"> ENVIADO WEB</label>
-                                    <div class="col-span-2 flex items-center gap-3 pt-2 border-t border-slate-200/60 mt-1">
-                                        <label class="flex items-center gap-2"><input type="checkbox" id="chk-facturado" class="accent-[#2e6962] w-4 h-4"> FACTURADO</label>
+                                <div class="lg:col-span-5 border border-slate-100 bg-slate-50/50 rounded-2xl p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-y-3 gap-x-4 text-[11px] font-bold text-slate-600">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-completado" class="accent-[#2e6962] w-4 h-4 shrink-0"> COMPLETADO</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-auditado" class="accent-[#2e6962] w-4 h-4 shrink-0"> AUDITADO</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-imprimido" class="accent-[#2e6962] w-4 h-4 shrink-0"> IMPRIMIDO</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-encarpetado" class="accent-[#2e6962] w-4 h-4 shrink-0"> ENCARPETADO</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-facturable" class="accent-[#2e6962] w-4 h-4 shrink-0"> FACTURABLE</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-enviadoweb" class="accent-[#2e6962] w-4 h-4 shrink-0"> ENVIADO WEB</label>
+                                    <div class="col-span-full sm:col-span-3 lg:col-span-2 flex items-center gap-3 pt-2 border-t border-slate-200/60 mt-1">
+                                        <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="chk-facturado" class="accent-[#2e6962] w-4 h-4 shrink-0"> FACTURADO</label>
                                         <div class="flex items-center gap-2">
                                             <span class="text-[10px] text-slate-400 font-bold">No</span>
                                             <input type="text" id="det-gen-facturadono" class="border border-slate-200 rounded px-2 py-0.5 w-16 bg-white text-xs focus:outline-none text-slate-800 font-medium">
@@ -644,27 +676,26 @@
                 </div>
 
                 <div id="contenido-tab-historia" class="hidden space-y-4">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                         <div>
                             <h3 class="text-sm font-bold text-slate-800">Historia Clínica</h3>
                             <p class="text-xs text-slate-400">Antecedentes personales y familiares del trabajador</p>
                         </div>
-                        <button class="border border-[#2e6962] text-[#2e6962] text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-white hover:bg-teal-50/50 cursor-pointer">
+                        <button class="w-full sm:w-auto border border-[#2e6962] text-[#2e6962] text-xs font-bold px-3 py-1.5 rounded-full flex items-center justify-center gap-1.5 bg-white hover:bg-teal-50/50 cursor-pointer">
                             <span class="material-symbols-outlined text-sm">auto_awesome</span> Reconocimiento Asistido
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                        <div class="lg:col-span-7 space-y-4">
+                    <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
+                        <div class="xl:col-span-7 space-y-4">
                             <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs">
                                 <div class="p-3 bg-slate-50/50 flex justify-between items-center border-b border-slate-100">
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs font-bold text-slate-700">Historia Profesional</span>
                                         <span class="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md font-semibold border border-amber-200/50 flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">list_alt</span> 2 registro(s)</span>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-400 text-sm ml-1">keyboard_arrow_up</span>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 overflow-x-auto w-full">
                                     <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
                                         <thead>
                                             <tr class="bg-slate-50 text-slate-400 font-medium border-b border-slate-200">
@@ -674,7 +705,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
                                             <tr>
-                                                <td class="p-3">¿Ha trabajado anteriormente?</td>
+                                                <td class="p-3 min-w-[180px]">¿Ha trabajado anteriormente?</td>
                                                 <td class="p-3">Sí</td>
                                             </tr>
                                             <tr>
@@ -696,7 +727,7 @@
                             </div>
                         </div>
 
-                        <div class="lg:col-span-5 space-y-4">
+                        <div class="xl:col-span-5 space-y-4">
                             <div class="bg-white border border-slate-200 rounded-xl p-3 bg-slate-50/20 flex justify-between items-center shadow-xs">
                                 <span class="text-xs font-bold text-slate-700">Inmunizaciones</span>
                                 <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_down</span>
@@ -708,9 +739,8 @@
                                         <span class="text-xs font-bold text-slate-700">Alergias</span>
                                         <span class="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md font-semibold border border-amber-200/50">1 registro(s)</span>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-400 text-sm ml-1">keyboard_arrow_up</span>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 overflow-x-auto w-full">
                                     <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
                                         <thead>
                                             <tr class="bg-slate-50 text-slate-400 font-medium border-b border-slate-200">
@@ -720,7 +750,7 @@
                                         </thead>
                                         <tbody class="divide-y divide-slate-100 text-slate-700 font-medium">
                                             <tr>
-                                                <td class="p-3">¿Tiene Ud alguna alergia?</td>
+                                                <td class="p-3 min-w-[180px]">¿Tiene Ud alguna alergia?</td>
                                                 <td class="p-3">No</td>
                                             </tr>
                                         </tbody>
@@ -737,12 +767,12 @@
                 </div>
 
                 <div id="contenido-tab-conclusiones" class="hidden space-y-4">
-                    <div class="flex justify-between items-center flex-wrap gap-3">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                         <div>
                             <h3 class="text-sm font-bold text-slate-800">Conclusiones y Aptitud</h3>
-                            <p class="text-xs text-slate-400">Dictamen médico final y recommendations laborales</p>
+                            <p class="text-xs text-slate-400">Dictamen médico final y recomendaciones laborales</p>
                         </div>
-                        <button class="bg-[#2e6962] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#24534d] shadow-sm cursor-pointer">
+                        <button class="w-full sm:w-auto bg-[#2e6962] text-white text-xs font-bold px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-[#24534d] shadow-sm cursor-pointer">
                             <span class="material-symbols-outlined text-sm">sync</span> Generar Rec./Anexos/Conc.
                         </button>
                     </div>
@@ -760,9 +790,8 @@
                                         <span class="text-xs font-bold text-slate-700">Aptitud</span>
                                         <span class="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md font-semibold border border-amber-200/50">1 registro(s)</span>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_up</span>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 overflow-x-auto w-full">
                                     <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
                                         <thead>
                                             <tr class="bg-slate-50 text-slate-400 font-semibold border-b border-slate-200 uppercase text-[10px]">
@@ -773,7 +802,7 @@
                                         </thead>
                                         <tbody class="text-slate-800 font-bold">
                                             <tr>
-                                                <td class="p-3 text-[11px] uppercase tracking-wide">Apto con Limitaciones</td>
+                                                <td class="p-3 text-[11px] uppercase tracking-wide min-w-[160px]">Apto con Limitaciones</td>
                                                 <td class="p-3 font-medium text-slate-500">—</td>
                                                 <td class="p-3 text-right"><span class="material-symbols-outlined text-rose-400 cursor-pointer hover:text-rose-600 text-base">close</span></td>
                                             </tr>
@@ -790,9 +819,8 @@
                                         <span class="text-xs font-bold text-slate-700">Conclusiones</span>
                                         <span class="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md font-semibold border border-amber-200/50">1 registro(s)</span>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_up</span>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 overflow-x-auto w-full">
                                     <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
                                         <thead>
                                             <tr class="bg-slate-50 text-slate-400 font-semibold border-b border-slate-200 uppercase text-[10px]">
@@ -803,8 +831,8 @@
                                         </thead>
                                         <tbody class="text-slate-800 font-bold">
                                             <tr>
-                                                <td class="p-3 text-[11px] uppercase tracking-wide">Apto con Restricciones</td>
-                                                <td class="p-3 font-medium text-slate-600">evitar cargas &gt;20kg</td>
+                                                <td class="p-3 text-[11px] uppercase tracking-wide min-w-[160px]">Apto con Restricciones</td>
+                                                <td class="p-3 font-medium text-slate-600 min-w-[150px]">evitar cargas &gt;20kg</td>
                                                 <td class="p-3 text-right"><span class="material-symbols-outlined text-rose-400 cursor-pointer hover:text-rose-600 text-base">close</span></td>
                                             </tr>
                                         </tbody>
@@ -818,9 +846,8 @@
                                         <span class="text-xs font-bold text-slate-700">Recomendaciones</span>
                                         <span class="text-[10px] bg-amber-50 text-amber-700 px-1.5 py-0.5 rounded-md font-semibold border border-amber-200/50">1 registro(s)</span>
                                     </div>
-                                    <span class="material-symbols-outlined text-slate-400 text-sm">keyboard_arrow_up</span>
                                 </div>
-                                <div class="p-4">
+                                <div class="p-4 overflow-x-auto w-full">
                                     <table class="w-full text-xs text-left border border-slate-200 rounded-xl overflow-hidden">
                                         <thead>
                                             <tr class="bg-slate-50 text-slate-400 font-semibold border-b border-slate-200 uppercase text-[10px]">
@@ -831,8 +858,8 @@
                                         </thead>
                                         <tbody class="text-slate-800 font-bold">
                                             <tr>
-                                                <td class="p-3 text-[11px] uppercase tracking-wide">Ergonomia</td>
-                                                <td class="p-3 font-medium text-slate-600">uso de faja lumbar</td>
+                                                <td class="p-3 text-[11px] uppercase tracking-wide min-w-[160px]">Ergonomia</td>
+                                                <td class="p-3 font-medium text-slate-600 min-w-[150px]">uso de faja lumbar</td>
                                                 <td class="p-3 text-right"><span class="material-symbols-outlined text-rose-400 cursor-pointer hover:text-rose-600 text-base">close</span></td>
                                             </tr>
                                         </tbody>
@@ -849,7 +876,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Asignación de inputs para filtros en tiempo real
             const filtroBusqueda = document.getElementById('filtro-buscador');
             const filtroEstado = document.getElementById('filtro-estado');
 

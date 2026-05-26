@@ -26,51 +26,50 @@
 </head>
 <body class="text-slate-700 text-xs antialiased selection:bg-purple-200">
 
-    <header class="bg-white border-b border-slate-200 h-12 flex items-center justify-between px-4 sticky top-0 z-50">
-        <div class="flex items-center space-x-4">
-            <div class="font-bold text-lg text-purple-700 tracking-wider flex items-center space-x-1">
-                <span class="bg-purple-600 text-white p-1 rounded text-sm"><i class="fa-solid fa-building-user"></i></span>
-                <span class="text-slate-800 text-sm font-semibold">Condominios</span>
+    <header class="bg-white border-b border-slate-200 h-12 flex items-center justify-between px-3 md:px-4 sticky top-0 z-50">
+        <div class="flex items-center space-x-2 md:space-x-4 overflow-hidden">
+            <div class="font-bold text-base md:text-lg text-purple-700 tracking-wider flex items-center space-x-1 flex-shrink-0">
+                <span class="bg-purple-600 text-white p-1 rounded text-xs md:text-sm"><i class="fa-solid fa-building-user"></i></span>
+                <span class="text-slate-800 text-xs md:text-sm font-semibold hidden sm:inline">Condominios</span>
             </div>
-            <div class="flex items-center space-x-3 ml-6 text-[11px]">
-                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                    <i class="fa-solid fa-triangle-exclamation text-[10px]"></i>
+            
+            <div class="flex items-center space-x-1.5 md:space-x-3 text-[10px] md:text-[11px] overflow-x-auto no-scrollbar py-1">
+                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation text-[9px] md:text-[10px]"></i>
                     <span>88</span>
                 </div>
-                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                    <i class="fa-solid fa-bell text-[10px]"></i>
+                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">
+                    <i class="fa-solid fa-bell text-[9px] md:text-[10px]"></i>
                     <span>125</span>
                 </div>
-                <span class="text-slate-300 font-bold">|</span>
-                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                    <i class="fa-solid fa-wrench text-[10px]"></i>
+                <span class="text-slate-300 font-bold hidden sm:inline">|</span>
+                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">
+                    <i class="fa-solid fa-wrench text-[9px] md:text-[10px]"></i>
                     <span>281</span>
                 </div>
-                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                    <i class="fa-solid fa-screwdriver-wrench text-[10px]"></i>
+                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">
+                    <i class="fa-solid fa-screwdriver-wrench text-[9px] md:text-[10px]"></i>
                     <span>56</span>
                 </div>
-                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-bold">
-                    <i class="fa-solid fa-clipboard-check text-[10px]"></i>
+                <div class="flex items-center space-x-1 bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full font-bold flex-shrink-0">
+                    <i class="fa-solid fa-clipboard-check text-[9px] md:text-[10px]"></i>
                     <span>3</span>
                 </div>
-                <i class="fa-regular fa-cloud text-slate-400 pl-2 cursor-pointer hover:text-purple-600"></i>
-                <i class="fa-regular fa-envelope text-slate-400 pl-2 cursor-pointer hover:text-purple-600"></i>
             </div>
         </div>
-        <div class="flex items-center space-x-4 text-slate-500 text-sm">
-            <i class="fa-solid fa-house cursor-pointer hover:text-purple-600"></i>
+        
+        <div class="flex items-center space-x-2 md:space-x-4 text-slate-500 text-xs md:text-sm flex-shrink-0">
+            <i class="fa-solid fa-house cursor-pointer hover:text-purple-600 hidden xs:inline"></i>
             <i class="fa-solid fa-circle-plus cursor-pointer hover:text-purple-600"></i>
-            <i class="fa-regular fa-circle-question cursor-pointer hover:text-purple-600"></i>
             <i class="fa-regular fa-user cursor-pointer hover:text-purple-600"></i>
-            <div class="bg-amber-100 text-amber-800 px-1.5 py-0.5 text-[10px] font-bold rounded border border-amber-200">SIA</div>
+            <div class="bg-amber-100 text-amber-800 px-1.5 py-0.5 text-[9px] font-bold rounded border border-amber-200">SIA</div>
             <i class="fa-solid fa-bars cursor-pointer hover:text-purple-600"></i>
         </div>
     </header>
 
     <div class="flex min-h-[calc(100vh-3rem)]">
         
-        <aside class="w-12 bg-[#1e1b4b] text-slate-400 flex flex-col items-center py-4 space-y-4 flex-shrink-0">
+        <aside class="w-12 bg-[#1e1b4b] text-slate-400 hidden md:flex flex-col items-center py-4 space-y-4 flex-shrink-0">
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer text-white border-l-2 border-purple-500 w-full text-center"><i class="fa-solid fa-house-chimney text-base"></i></div>
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-regular fa-calendar-days text-base"></i></div>
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-regular fa-bell text-base"></i></div>
@@ -81,13 +80,9 @@
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-solid fa-user-gear text-base"></i></div>
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-solid fa-chart-line text-base"></i></div>
             <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-solid fa-wrench text-purple-400 text-base"></i></div>
-            <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-solid fa-right-from-bracket text-base"></i></div>
-            <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-regular fa-copy text-base"></i></div>
-            <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-solid fa-list-check text-base"></i></div>
-            <div class="p-2 hover:bg-purple-900/50 rounded cursor-pointer w-full text-center"><i class="fa-regular fa-comments text-base"></i></div>
         </aside>
 
-        <main class="flex-1 p-4 bg-[#f8fafc] overflow-x-hidden flex flex-col justify-between">
+        <main class="flex-1 p-3 md:p-4 bg-[#f8fafc] overflow-x-hidden flex flex-col justify-between w-full">
             
             <div>
                 <div class="text-slate-500 mb-3 flex items-center space-x-1 text-[11px]">
@@ -98,7 +93,7 @@
 
                 <div id="view-listado" class="space-y-4">
                     
-                    <div class="flex items-center space-x-2">
+                    <div class="flex flex-wrap gap-2">
                         <button class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded flex items-center space-x-1.5 shadow-xs font-medium cursor-pointer">
                             <i class="fa-solid fa-plus text-[10px]"></i>
                             <span>Adicionar</span>
@@ -114,8 +109,8 @@
                         </button>
                     </div>
 
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                    <div class="bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-xs">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 items-end">
                             <div>
                                 <label class="block text-slate-400 mb-1">Condomínio</label>
                                 <select id="filter-condominio" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 appearance-none bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%2394a3b8%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:12px] bg-[right_8px_center] bg-no-repeat">
@@ -140,23 +135,26 @@
                                 <label class="block text-slate-400 mb-1">Fornecedor</label>
                                 <input id="filter-fornecedor" type="text" placeholder="Escreva o nome do fornecedor" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700">
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <div class="flex-1">
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:col-span-2 md:col-span-4 lg:col-span-1 xl:w-full items-end">
+                                <div class="sm:col-span-1">
                                     <label class="block text-slate-400 mb-1">Data prevista entre</label>
                                     <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1">
                                         <input type="text" placeholder="Data inicial" class="w-full bg-transparent focus:outline-none text-slate-700">
                                         <i class="fa-regular fa-calendar text-slate-400 text-[11px] ml-1"></i>
                                     </div>
                                 </div>
-                                <span class="text-slate-400 mt-5">e</span>
-                                <div class="flex-1 mt-5">
+                                <div class="sm:col-span-1">
+                                    <label class="block text-slate-400 mb-1">Até</label>
                                     <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1">
                                         <input type="text" placeholder="Data final" class="w-full bg-transparent focus:outline-none text-slate-700">
                                         <i class="fa-regular fa-calendar text-slate-400 text-[11px] ml-1"></i>
                                     </div>
                                 </div>
-                                <button id="btn-pesquisar" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded font-medium cursor-pointer shadow-xs">Pesquisar</button>
-                                <button id="btn-limpar" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-4 py-1.5 rounded font-medium cursor-pointer">Limpar</button>
+                                <div class="flex space-x-2 pt-2 sm:pt-0">
+                                    <button id="btn-pesquisar" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded font-medium cursor-pointer shadow-xs text-center">Pesquisar</button>
+                                    <button id="btn-limpar" class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 px-3 py-1.5 rounded font-medium cursor-pointer">Limpar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -165,8 +163,8 @@
                         <div class="p-4 border-b border-slate-100">
                             <h2 class="text-purple-700 font-bold text-sm tracking-wide">Manutenções</h2>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
+                        <div class="overflow-x-auto w-full block scrollbar">
+                            <table class="w-full text-left border-collapse min-w-[800px]">
                                 <thead>
                                     <tr class="bg-slate-50 text-[10px] text-slate-400 font-semibold uppercase tracking-wider border-b border-slate-200">
                                         <th class="py-2.5 px-4 font-semibold">Condomínio</th>
@@ -188,22 +186,22 @@
 
                 <div id="view-detalle" class="space-y-4 hidden">
                     
-                    <div id="toolbar-edicion" class="flex items-center space-x-2 hidden">
-                        <button id="btn-gravar" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded flex items-center space-x-1.5 shadow-xs font-medium cursor-pointer">
+                    <div id="toolbar-edicion" class="flex flex-wrap gap-2 hidden">
+                        <button id="btn-gravar" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-1.5 rounded flex items-center space-x-1.5 shadow-xs font-medium cursor-pointer">
                             <i class="fa-solid fa-floppy-disk text-[10px]"></i>
                             <span>Gravar</span>
                         </button>
-                        <button id="btn-cancelar" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded flex items-center space-x-1.5 font-medium cursor-pointer">
+                        <button id="btn-cancelar" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-4 py-1.5 rounded flex items-center space-x-1.5 font-medium cursor-pointer">
                             <span>Cancelar</span>
                         </button>
                     </div>
 
-                    <div id="toolbar-lectura" class="flex items-center space-x-2">
-                        <span class="text-amber-700 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-sm font-medium flex items-center space-x-1">
+                    <div id="toolbar-lectura" class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-amber-50 border border-amber-200 p-2 rounded-md">
+                        <span class="text-amber-700 font-medium flex items-center space-x-1">
                             <i class="fa-solid fa-lock text-[10px]"></i>
-                            <span>Modo de Leitura (Clique em editar na tabela para modificar)</span>
+                            <span>Modo de Leitura (Clique em editar <i class="fa-solid fa-pencil"></i> na tabela para modificar)</span>
                         </span>
-                        <button id="btn-voltar" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-1.5 rounded flex items-center space-x-1.5 font-medium cursor-pointer">
+                        <button id="btn-voltar" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 px-3 py-1 rounded flex items-center justify-center space-x-1.5 font-medium cursor-pointer text-xs">
                             <i class="fa-solid fa-arrow-left text-[10px]"></i>
                             <span>Voltar ao listado</span>
                         </button>
@@ -214,8 +212,8 @@
                         <div class="lg:col-span-7 bg-white p-4 rounded-xl border border-slate-200 shadow-xs space-y-4">
                             <h3 class="text-purple-700 font-bold text-sm tracking-wide pb-1 border-b border-slate-100">Equipamento</h3>
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div class="md:col-span-1">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div>
                                     <label class="block text-slate-400 mb-1">Condomínio <span class="text-red-500">*</span></label>
                                     <div class="relative">
                                         <select id="detail-condominio" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 appearance-none text-slate-700 form-field">
@@ -236,25 +234,25 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <label class="block text-slate-400 mb-1">Quantidade <span class="text-red-500">*</span></label>
+                                            <label class="block text-slate-400 mb-1">Qtd <span class="text-red-500">*</span></label>
                                             <input type="number" value="1" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-right text-slate-700 form-field">
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-slate-400 mb-1">Marca</label>
                                     <input id="detail-marca" type="text" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 form-field">
-                                </div>
+                                end</div>
                                 <div>
                                     <label class="block text-slate-400 mb-1">Modelo</label>
                                     <input id="detail-modelo" type="text" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 form-field">
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-slate-400 mb-1">Nº de série</label>
                                     <input id="detail-serie" type="text" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 form-field">
@@ -265,7 +263,7 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-slate-400 mb-1">Nº do processo / imobilizado</label>
                                     <input id="detail-processo" type="text" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 form-field">
@@ -283,7 +281,7 @@
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label class="block text-slate-400 mb-1">Data de aquisição</label>
                                     <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1.5">
@@ -292,7 +290,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-slate-400 mb-1">Data de instalación</label>
+                                    <label class="block text-slate-400 mb-1">Data de instalação</label>
                                     <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1.5">
                                         <input type="text" value="08-04-2025" class="w-full bg-transparent focus:outline-none text-slate-700 form-field">
                                         <i class="fa-regular fa-calendar text-slate-400 text-[11px] ml-1"></i>
@@ -313,14 +311,16 @@
                                 
                                 <div class="flex items-center space-x-4 py-1">
                                     <span class="text-slate-400">Requer inspeção:</span>
-                                    <label class="inline-flex items-center space-x-1 cursor-pointer">
-                                        <input type="checkbox" checked class="accent-purple-600 rounded form-field">
-                                        <span class="text-slate-600">Sim</span>
-                                    </label>
-                                    <label class="inline-flex items-center space-x-1 cursor-pointer">
-                                        <input type="checkbox" class="accent-purple-600 rounded form-field">
-                                        <span class="text-slate-600">Não</span>
-                                    </label>
+                                    <div class="flex items-center space-x-3">
+                                        <label class="inline-flex items-center space-x-1 cursor-pointer">
+                                            <input type="checkbox" checked class="accent-purple-600 rounded form-field">
+                                            <span class="text-slate-600">Sim</span>
+                                        </label>
+                                        <label class="inline-flex items-center space-x-1 cursor-pointer">
+                                            <input type="checkbox" class="accent-purple-600 rounded form-field">
+                                            <span class="text-slate-600">Não</span>
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -335,7 +335,7 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-2 gap-3">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     <div>
                                         <label class="block text-slate-400 mb-1">Periodicidade <span class="text-red-500">*</span></label>
                                         <div class="relative">
@@ -361,15 +361,17 @@
                                 <h3 class="text-purple-700 font-bold text-sm tracking-wide pb-1 border-b border-slate-100">Contrato de manutenção</h3>
                                 
                                 <div class="flex items-center space-x-4 py-1">
-                                    <span class="text-slate-400">Tem contrato de manutenção:</span>
-                                    <label class="inline-flex items-center space-x-1 cursor-pointer">
-                                        <input type="checkbox" checked class="accent-purple-600 rounded form-field">
-                                        <span class="text-slate-600">Sim</span>
-                                    </label>
-                                    <label class="inline-flex items-center space-x-1 cursor-pointer">
-                                        <input type="checkbox" class="accent-purple-600 rounded form-field">
-                                        <span class="text-slate-600">Não</span>
-                                    </label>
+                                    <span class="text-slate-400">Tem contrato:</span>
+                                    <div class="flex items-center space-x-3">
+                                        <label class="inline-flex items-center space-x-1 cursor-pointer">
+                                            <input type="checkbox" checked class="accent-purple-600 rounded form-field">
+                                            <span class="text-slate-600">Sim</span>
+                                        </label>
+                                        <label class="inline-flex items-center space-x-1 cursor-pointer">
+                                            <input type="checkbox" class="accent-purple-600 rounded form-field">
+                                            <span class="text-slate-600">Não</span>
+                                        </label>
+                                    </div>
                                 </div>
 
                                 <div>
@@ -382,23 +384,23 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-3 gap-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div>
-                                        <label class="block text-slate-400 mb-1">Data de início <span class="text-red-500">*</span></label>
+                                        <label class="block text-slate-400 mb-1">Início <span class="text-red-500">*</span></label>
                                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-1.5 py-1.5">
                                             <input type="text" value="08-04-2025" class="w-full bg-transparent focus:outline-none text-[11px] text-slate-700 form-field">
                                             <i class="fa-regular fa-calendar text-slate-400 text-[10px] ml-0.5"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-slate-400 mb-1">Data limite denúncia <span class="text-red-500">*</span></label>
+                                        <label class="block text-slate-400 mb-1">Limite denúncia <span class="text-red-500">*</span></label>
                                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-1.5 py-1.5">
                                             <input type="text" value="07-04-2026" class="w-full bg-transparent focus:outline-none text-[11px] text-slate-700 form-field">
                                             <i class="fa-regular fa-calendar text-slate-400 text-[10px] ml-0.5"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <label class="block text-slate-400 mb-1">Data de termo</label>
+                                        <label class="block text-slate-400 mb-1">Termo</label>
                                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-1.5 py-1.5">
                                             <input type="text" value="07-10-2025" class="w-full bg-transparent focus:outline-none text-[11px] text-slate-700 form-field">
                                             <i class="fa-regular fa-calendar text-slate-400 text-[10px] ml-0.5"></i>
@@ -406,13 +408,13 @@
                                     </div>
                                 </div>
 
-                                <div class="grid grid-cols-3 gap-2">
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div>
-                                        <label class="block text-slate-400 mb-1">Tipo de contrato</label>
+                                        <label class="block text-slate-400 mb-1">Tipo contrato</label>
                                         <input type="text" value="Renovável" class="w-full bg-slate-50 border border-slate-200 rounded px-2 py-1.5 focus:outline-none focus:border-purple-500 text-slate-700 form-field">
                                     </div>
                                     <div>
-                                        <label class="block text-slate-400 mb-1">Valor bruto anual</label>
+                                        <label class="block text-slate-400 mb-1">Valor anual</label>
                                         <div class="flex items-center bg-slate-50 border border-slate-200 rounded px-2 py-1.5">
                                             <input type="text" value="100" class="w-full bg-transparent focus:outline-none text-right pr-1 text-slate-700 form-field">
                                             <span class="text-slate-400">€</span>
@@ -438,7 +440,7 @@
 
             </div>
 
-            <footer class="mt-8 pt-4 border-t border-slate-200 flex items-center justify-between text-slate-400 text-[10px]">
+            <footer class="mt-8 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-slate-400 text-[10px]">
                 <div class="space-x-4">
                     <a href="#" class="hover:underline">Política de privacidade</a>
                     <a href="#" class="hover:underline">Termos e condições</a>
@@ -451,7 +453,6 @@
     </div>
 
     <script>
-        // Dataset estructurado con nombres limpios y ficticios
         const datasetCondominios = [
             { id: 1, condominio: "001Z1 - Condomínio Jardim Alvalade", equipamento: "Bombas de fundo", localizacao: "Entrada garagem", fornecedor: "EDP Comercial S.A.", dataPrevista: "16-04-2026", dataEfectiva: "17-04-2026", validoAte: "30-04-2026", marca: "Phoenix", modelo: "Firebird", serie: "20250801", processo: "19980713" },
             { id: 2, condominio: "Condomínio Residencial Salgueiro", equipamento: "Extintores", localizacao: "Corredor A", fornecedor: "SegurFire Portugal", dataPrevista: "30-06-2025", dataEfectiva: "", validoAte: "30-09-2025", marca: "Anaf", modelo: "PS2-X", serie: "9982311", processo: "2021004" },
@@ -485,8 +486,6 @@
             data.forEach(item => {
                 const row = document.createElement('tr');
                 row.className = "hover:bg-purple-50/40 cursor-pointer border-b border-slate-100 transition-colors";
-                
-                // Click en la fila abre la vista en Modo Lectura (Solo lectura)
                 row.onclick = () => openEntityDetail(item, false);
 
                 row.innerHTML = `
@@ -498,11 +497,10 @@
                     <td class="py-2.5 px-4 text-slate-500">${item.dataEfectiva || '—'}</td>
                     <td class="py-2.5 px-4 text-slate-500">${item.validoAte}</td>
                     <td class="py-2.5 px-4 text-center space-x-2" onclick="event.stopPropagation();">
-                        <button class="text-purple-600 hover:text-purple-900 transition-colors cursor-pointer" title="Editar"><i class="fa-solid fa-pencil"></i></button>
+                        <button class="text-purple-600 hover:text-purple-900 transition-colors p-1 cursor-pointer" title="Editar"><i class="fa-solid fa-pencil text-xs"></i></button>
                     </td>
                 `;
                 
-                // El botón del lápiz explícitamente abre en Modo Edición
                 row.querySelector('button').onclick = (e) => {
                     e.stopPropagation();
                     openEntityDetail(item, true);
@@ -517,7 +515,6 @@
             viewDetalle.classList.remove('hidden');
             breadcrumbCurrent.innerText = "Equipamentos";
 
-            // Map data values
             document.getElementById('detail-condominio').innerHTML = `<option>${item.condominio}</option>`;
             document.getElementById('detail-tipo').innerHTML = `<option>${item.equipamento}</option>`;
             document.getElementById('detail-fornecedor').innerHTML = `<option>${item.fornecedor}</option>`;
@@ -529,6 +526,7 @@
             document.getElementById('detail-processo').value = item.processo;
 
             setFormState(isEditable);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function setFormState(isEditable) {
@@ -557,6 +555,7 @@
             viewDetalle.classList.add('hidden');
             viewListado.classList.remove('hidden');
             breadcrumbCurrent.innerText = "Manutenções";
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function applyFilters() {
@@ -580,16 +579,11 @@
             renderTable(datasetCondominios);
         }
 
-        // Listeners
         btnPesquisar.addEventListener('click', applyFilters);
         btnLimpar.addEventListener('click', clearFilters);
         btnVoltar.addEventListener('click', closeDetailView);
         btnCancelar.addEventListener('click', closeDetailView);
-        
-        // Simular guardado y regreso automático al listado
-        btnGravar.addEventListener('click', () => {
-            closeDetailView();
-        });
+        btnGravar.addEventListener('click', closeDetailView);
 
         window.addEventListener('DOMContentLoaded', () => {
             renderTable(datasetCondominios);

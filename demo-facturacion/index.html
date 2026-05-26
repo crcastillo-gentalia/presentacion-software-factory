@@ -60,11 +60,11 @@
         }
     </style>
 </head>
-<body class="bg-white text-slate-900 h-screen flex flex-col overflow-hidden text-[11px] select-none">
+<body class="bg-white text-slate-900 md:h-screen flex flex-col md:overflow-hidden text-[11px] select-none">
 
-    <header class="bg-navbar-gradient h-10 flex items-center justify-between shrink-0 text-white px-3 z-20">
-        <div class="flex items-center h-full">
-            <nav class="flex h-full items-center text-[12px] font-normal">
+    <header class="bg-navbar-gradient min-h-10 flex flex-wrap md:flex-nowrap items-center justify-between shrink-0 text-white px-3 z-20 shadow-md">
+        <div class="flex items-center w-full md:w-auto overflow-x-auto scrollbar-none order-2 md:order-1">
+            <nav class="flex h-10 items-center text-[12px] font-normal whitespace-nowrap">
                 <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Validación</a>
                 <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors">Recaudación</a>
                 <a href="#" class="px-4 h-full flex items-center active-tab font-semibold">Factura</a>
@@ -75,19 +75,24 @@
                 <a href="#" class="px-3 h-full flex items-center hover:bg-black/10 transition-colors opacity-75">Remesador</a>
             </nav>
         </div>
-        <div class="flex items-center space-x-4 pr-1 text-xs">
-            <i class="bi bi-lock-fill text-green-400 text-sm"></i>
-            <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-200">
-                <span>Salir</span>
-                <i class="bi bi-box-arrow-right text-green-400 font-bold"></i>
+        <div class="flex items-center justify-between md:justify-end w-full md:w-auto py-1 md:py-0 space-x-4 pr-1 text-xs border-b border-white/10 md:border-none order-1 md:order-2">
+            <button onclick="toggleSidebar()" class="md:hidden text-white text-lg p-1 focus:outline-none cursor-pointer">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="flex items-center space-x-4">
+                <i class="bi bi-lock-fill text-green-400 text-sm"></i>
+                <div class="flex items-center space-x-1 cursor-pointer hover:text-slate-200">
+                    <span>Salir</span>
+                    <i class="bi bi-box-arrow-right text-green-400 font-bold"></i>
+                </div>
             </div>
         </div>
     </header>
 
-    <div class="flex flex-1 overflow-hidden">
+    <div class="flex flex-1 flex-col md:flex-row overflow-hidden relative">
         
-        <aside class="w-52 bg-sidebar-custom shrink-0 text-white flex flex-col select-none border-r border-black/10">
-            <div class="flex flex-col text-[11px] pt-2">
+        <aside id="sidebar" class="hidden md:flex w-full md:w-52 bg-sidebar-custom shrink-0 text-white flex-col select-none border-b md:border-b-0 md:border-r border-black/10 transition-all duration-200">
+            <div class="flex flex-col text-[11px] py-2">
                 <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Solicitudes de Metálico</a>
                 <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Gestión de procesos</a>
                 <a href="#" class="px-4 py-2 hover:bg-black/15 border-b border-white/5 opacity-90">Libro de Facturas Emitidas</a>
@@ -97,7 +102,7 @@
             </div>
         </aside>
 
-        <main class="flex-1 flex flex-col p-4 overflow-hidden bg-white">
+        <main class="flex-1 flex flex-col p-3 md:p-4 overflow-hidden bg-white">
             
             <div id="view-list" class="flex flex-col flex-1 overflow-hidden">
                 
@@ -113,54 +118,56 @@
                 <div class="border border-gray-300 rounded p-3 mb-3 shrink-0 relative bg-white mt-2">
                     <span class="absolute -top-2 left-3 bg-white px-1 font-semibold text-gray-600 text-[10px]">Filtros normales</span>
                     
-                    <form id="search-form" onsubmit="filterGrid(event)" class="flex flex-wrap items-center gap-2 pr-28">
-                        <div class="w-24 relative">
-                            <input type="text" id="input-nif" placeholder="NIF-CIF" class="compact-input font-mono pr-5">
-                            <i class="bi bi-search absolute right-2 top-1.5 text-gray-400 text-[10px]"></i>
-                        </div>
-                        <div class="w-32">
-                            <input type="text" id="input-num" placeholder="Núm. de Factura" class="compact-input font-mono">
-                        </div>
-                        <div class="w-24">
-                            <input type="text" id="input-obe" placeholder="Tarjeta/OBE" class="compact-input font-mono">
-                        </div>
-                        <div class="w-24">
-                            <input type="text" id="input-inicio" placeholder="Período Inicio" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
-                        </div>
-                        <div class="w-24">
-                            <input type="text" id="input-fin" placeholder="Período Fin" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
-                        </div>
-                        <div class="w-32">
-                            <select id="input-tipo" class="compact-input compact-select text-gray-600">
-                                <option value="" selected>Tipo de Factura</option>
-                                <option value="todos">Todos los tipos</option>
-                                <option value="02">02 - Factura Ordinaria</option>
-                            </select>
-                        </div>
-                        <div class="w-24">
-                            <select id="input-via" class="compact-input compact-select text-gray-600">
-                                <option value="" selected>Vía Envío</option>
-                                <option value="todos">Todas</option>
-                                <option value="auto">auto</option>
-                                <option value="asto">asto</option>
-                            </select>
-                        </div>
-                        <div class="w-24">
-                            <select id="input-validada" class="compact-input compact-select text-gray-600">
-                                <option value="" selected>Validadas</option>
-                                <option value="todos">Todas</option>
-                                <option value="si">Sí</option>
-                            </select>
+                    <form id="search-form" onsubmit="filterGrid(event)" class="flex flex-col lg:flex-row lg:items-center gap-2 lg:pr-28">
+                        
+                        <div class="flex flex-wrap items-center gap-2 flex-1">
+                            <div class="w-full sm:w-24 relative">
+                                <input type="text" id="input-nif" placeholder="NIF-CIF" class="compact-input font-mono pr-5">
+                                <i class="bi bi-search absolute right-2 top-1.5 text-gray-400 text-[10px]"></i>
+                            </div>
+                            <div class="w-full sm:w-32">
+                                <input type="text" id="input-num" placeholder="Núm. de Factura" class="compact-input font-mono">
+                            </div>
+                            <div class="w-full sm:w-24">
+                                <input type="text" id="input-obe" placeholder="Tarjeta/OBE" class="compact-input font-mono">
+                            </div>
+                            <div class="w-full sm:w-24">
+                                <input type="text" id="input-inicio" placeholder="Período Inicio" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                            <div class="w-full sm:w-24">
+                                <input type="text" id="input-fin" placeholder="Período Fin" class="compact-input text-gray-500" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                            <div class="w-full sm:w-32">
+                                <select id="input-tipo" class="compact-input compact-select text-gray-600">
+                                    <option value="" selected>Tipo de Factura</option>
+                                    <option value="todos">Todos los tipos</option>
+                                    <option value="02">02 - Factura Ordinaria</option>
+                                </select>
+                            </div>
+                            <div class="w-full sm:w-24">
+                                <select id="input-via" class="compact-input compact-select text-gray-600">
+                                    <option value="" selected>Vía Envío</option>
+                                    <option value="todos">Todas</option>
+                                    <option value="auto">auto</option>
+                                    <option value="asto">asto</option>
+                                </select>
+                            </div>
+                            <div class="w-full sm:w-24">
+                                <select id="input-validada" class="compact-input compact-select text-gray-600">
+                                    <option value="" selected>Validadas</option>
+                                    <option value="todos">Todas</option>
+                                    <option value="si">Sí</option>
+                                </select>
+                            </div>
                         </div>
 
-                        <div class="absolute right-3 top-0 bottom-0 flex flex-col justify-center space-y-1 w-24">
-                            <button type="submit" class="bg-[#8cc63f] hover:bg-[#7db235] text-black font-semibold h-[26px] rounded text-[11px] flex items-center justify-center space-x-1 cursor-pointer">
+                        <div class="w-full lg:w-24 lg:absolute lg:right-3 lg:top-0 lg:bottom-0 flex lg:flex-col justify-center gap-1 mt-2 lg:mt-0">
+                            <button type="submit" class="flex-1 lg:flex-none bg-[#8cc63f] hover:bg-[#7db235] text-black font-semibold h-[26px] rounded text-[11px] flex items-center justify-center space-x-1 cursor-pointer">
                                 <span>Buscar</span>
                                 <i class="bi bi-search text-[9px]"></i>
                             </button>
-                            <button type="button" onclick="clearFilters()" class="text-[10px] text-gray-600 hover:text-black bg-white border border-gray-300 rounded h-[20px] flex items-center justify-center space-x-1 cursor-pointer hover:bg-gray-50">
-                                <span>Limpiar filtros</span>
-                                <i class="bi bi-x-lg text-[8px]"></i>
+                            <button type="button" onclick="clearFilters()" class="flex-1 lg:flex-none text-[10px] text-gray-600 hover:text-black bg-white border border-gray-300 rounded h-[26px] lg:h-[20px] flex items-center justify-center space-x-1 cursor-pointer hover:bg-gray-50">
+                                <span>Limpiar</span>
                             </button>
                         </div>
                     </form>
@@ -205,8 +212,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-12 gap-x-4 gap-y-1 bg-slate-50 p-3 border border-gray-300 rounded shrink-0 text-[11px]">
-                    <div class="col-span-3 grid grid-cols-3 gap-y-0.5">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-x-4 gap-y-2 bg-slate-50 p-3 border border-gray-300 rounded shrink-0 text-[11px]">
+                    <div class="md:col-span-3 grid grid-cols-3 gap-y-0.5 border-b md:border-b-0 pb-2 md:pb-0">
                         <div class="text-right font-bold text-gray-600 pr-2">No. Factura:</div>
                         <div class="col-span-2 text-gray-900 font-mono" id="det-no-factura">-</div>
                         <div class="text-right font-bold text-gray-600 pr-2">Fecha Factura:</div>
@@ -218,7 +225,7 @@
                         <div class="text-right font-bold text-gray-600 pr-2">Período:</div>
                         <div class="col-span-2 text-gray-900 text-[10px]" id="det-periodo">-</div>
                     </div>
-                    <div class="col-span-3 grid grid-cols-3 gap-y-0.5">
+                    <div class="md:col-span-3 grid grid-cols-3 gap-y-0.5 border-b md:border-b-0 pb-2 md:pb-0">
                         <div class="text-right font-bold text-gray-600 pr-2">Anula a:</div>
                         <div class="col-span-2 text-gray-900 font-mono" id="det-anula-a">-</div>
                         <div class="text-right font-bold text-gray-600 pr-2">Fecha:</div>
@@ -226,7 +233,7 @@
                         <div class="text-right font-bold text-gray-600 pr-2">Fecha Emisión:</div>
                         <div class="col-span-2 text-gray-900" id="det-fecha-emision-anula">-</div>
                     </div>
-                    <div class="col-span-2 grid grid-cols-2 gap-y-0.5 border-r border-gray-300 pr-2">
+                    <div class="md:col-span-2 grid grid-cols-2 gap-y-0.5 md:border-r border-b md:border-b-0 pb-2 md:pb-0 border-gray-300 pr-2">
                         <div class="text-right font-bold text-gray-600 pr-2">B.I.:</div>
                         <div class="text-right text-gray-900 font-mono" id="det-bi">-</div>
                         <div class="text-right font-bold text-gray-600 pr-2">IVA:</div>
@@ -234,7 +241,7 @@
                         <div class="text-right font-bold text-gray-600 pr-2">Total:</div>
                         <div class="text-right font-bold text-black font-mono" id="det-total">-</div>
                     </div>
-                    <div class="col-span-4 pl-2">
+                    <div class="md:col-span-4 pl-0 md:pl-2">
                         <div class="font-bold text-gray-600">Cliente:</div>
                         <div class="text-gray-900 font-bold font-mono mt-0.5" id="det-cliente-id">-</div>
                         <div class="text-gray-500 text-[10px] leading-tight font-bold mt-0.5" id="det-cliente-nombre">-</div>
@@ -264,7 +271,7 @@
                         <tfoot class="sticky bottom-0 bg-slate-100 border-t-2 border-slate-300 font-bold text-black text-[11px]">
                             <tr>
                                 <td class="p-1" id="detail-foot-count">Total 0</td>
-                                <td colspan="10"></td>
+                                <td colspan="10" class="hidden sm:table-cell"></td>
                                 <td class="p-1 text-right pr-4 font-mono text-black" id="detail-foot-total">0.00</td>
                             </tr>
                         </tfoot>
@@ -272,7 +279,7 @@
                 </div>
 
                 <div class="flex justify-end mt-3 shrink-0">
-                    <button onclick="closeDetailView()" class="bg-[#0d62a1] text-white px-5 py-1 rounded text-[11px] cursor-pointer">
+                    <button onclick="closeDetailView()" class="bg-[#0d62a1] text-white w-full sm:w-auto px-5 py-1.5 sm:py-1 rounded text-[11px] cursor-pointer">
                         Cerrar
                     </button>
                 </div>
@@ -300,6 +307,12 @@
             renderTable(originalDatabase);
         };
 
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('flex');
+        }
+
         function renderTable(data) {
             const tbody = document.getElementById('grid-body');
             tbody.innerHTML = '';
@@ -308,7 +321,6 @@
                 const tr = document.createElement('tr');
                 tr.id = `invoice-row-${row.id}`;
                 tr.className = "divide-x divide-slate-200 text-slate-700";
-                // Un solo click abre directamente la vista de detalle
                 tr.onclick = () => openDetailView(row.id);
                 
                 tr.innerHTML = `
@@ -402,6 +414,11 @@
 
             document.getElementById('view-list').classList.add('hidden');
             document.getElementById('view-detail').classList.remove('hidden');
+            
+            // Ocultar menú lateral en móvil al abrir detalle para ganar espacio
+            if (window.innerWidth < 768) {
+                document.getElementById('sidebar').classList.add('hidden');
+            }
         }
 
         function closeDetailView() {

@@ -3,202 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anulación de billetes</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Anulación de Billetes - Prototipo Responsive</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f4f8;
-        }
-        .bg-teal-banner {
-            background-color: #009396;
-        }
-        .bg-green-btn {
-            background-color: #8ec63f;
-        }
-        .bg-green-btn:hover {
-            background-color: #7db335;
-        }
-        .bg-submit-green {
-            background-color: #70c044;
-        }
-        .bg-cancel-red {
-            background-color: #e26a6a;
-        }
-        .custom-table th {
-            color: #475569;
-            font-weight: 600;
-            border-right: 1px solid #e2e8f0;
-        }
-        .custom-table th:last-child {
-            border-right: none;
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
         }
     </style>
 </head>
-<body class="text-slate-700 p-4 text-[12.5px]">
+<body class="p-2 sm:p-4 text-xs text-gray-700 select-none">
 
-    <div class="max-w-7xl mx-auto bg-white p-5 rounded-sm shadow-xs border border-slate-200">
+    <div class="w-full max-w-[1300px] mx-auto bg-white border border-gray-200 shadow-sm p-3 sm:p-4 min-h-[650px] flex flex-col justify-between rounded">
         
-        <h2 class="text-xl font-semibold text-slate-800 mb-4 tracking-tight">Anulación de billetes</h2>
-
-        <div class="bg-teal-banner p-3 rounded-xs flex items-center justify-between shadow-xs mb-4 select-none">
-            <div class="flex items-center space-x-6 text-white font-medium">
-                <label class="flex items-center space-x-2 cursor-pointer">
-                    <input type="radio" name="search-type" class="w-3.5 h-3.5 accent-[#009396]">
-                    <span class="text-xs">NIF*</span>
-                    <input type="text" class="bg-white/20 border border-white/30 rounded px-2 py-1 text-xs text-white outline-none w-28 focus:bg-white focus:text-slate-800 transition-all">
-                </label>
-
-                <label class="flex items-center space-x-2 cursor-pointer">
-                    <input type="radio" name="search-type" checked class="w-3.5 h-3.5 accent-white">
-                    <span class="text-xs">Localizador</span>
-                    <input type="text" value="X5J9LZ" class="bg-white border border-white rounded px-2 py-1 text-xs text-slate-800 outline-none w-36 font-mono font-bold">
-                </label>
-
-                <label class="flex items-center space-x-2 cursor-pointer">
-                    <input type="radio" name="search-type" class="w-3.5 h-3.5 accent-[#009396]">
-                    <span class="text-xs opacity-80">Billete</span>
-                    <input type="text" class="bg-white/20 border border-white/30 rounded px-2 py-1 text-xs text-white outline-none w-40 disabled:opacity-50" disabled>
-                </label>
-            </div>
-
-            <button class="bg-green-btn text-white px-8 py-1 rounded font-medium text-xs shadow-xs transition-colors cursor-pointer">
-                Buscar
-            </button>
-        </div>
-
-        <div class="grid grid-cols-12 gap-4 mb-6">
-            
-            <div class="col-span-9 border border-slate-200 rounded-sm p-4 relative bg-slate-50/50">
-                <span class="absolute -top-2.5 left-3 bg-white px-2 text-[11px] font-semibold text-slate-500 border border-slate-200 rounded-sm">Datos Reserva</span>
-                
-                <div class="grid grid-cols-3 gap-y-2 gap-x-4 text-xs mt-1">
-                    <div>
-                        <p class="text-slate-400">Fecha reserva: <span class="text-slate-700 font-medium ml-1">12-05-2026</span></p>
-                        <p class="text-slate-400 mt-1.5">Fecha viaje: <span class="text-slate-700 font-medium ml-1">24-05-2026</span></p>
-                        <p class="text-slate-400 mt-1.5">Email: <span class="text-slate-700 font-medium ml-1">c****@domain.com</span></p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400">Localizador: <span class="text-slate-700 font-mono font-bold ml-1">X5J9LZ</span></p>
-                        <p class="text-slate-400 mt-1.5">Origen: <span class="text-slate-700 font-medium ml-1">Madrid Puerta de Atocha</span></p>
-                        <p class="text-slate-400 mt-1.5">NIF: <span class="text-slate-700 font-medium ml-1">12345678A</span></p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400">Forma Pago: <span class="text-slate-700 font-medium ml-1">Crédito</span></p>
-                        <p class="text-slate-400 mt-1.5">Destino: <span class="text-slate-700 font-medium ml-1">Vigo-Guixar</span></p>
-                        <p class="text-slate-400 mt-1.5">Servicio: <span class="text-slate-700 font-medium ml-1">LD - Alta Velocidad</span></p>
-                    </div>
+        <div>
+            <div class="flex flex-wrap justify-end items-center gap-x-4 gap-y-2 mb-4 text-[11px] font-semibold text-gray-600 border-b border-gray-100 pb-2 sm:border-none sm:pb-0">
+                <a href="#" class="hover:underline">Tu Viaje</a>
+                <a href="#" class="hover:underline">Reimprimir</a>
+                <a href="#" class="hover:underline">Cambio Billetes</a>
+                <a href="#" class="underline text-gray-900">Anulaciones</a>
+                <a href="#" class="hover:underline">Políticas</a>
+                <div class="flex gap-1 ml-2">
+                    <span class="bg-[#8cc63f] text-white px-2 py-0.5 rounded text-[10px] font-bold">EU</span>
+                    <span class="bg-[#8cc63f] text-white px-2 py-0.5 rounded text-[10px] font-bold">ES</span>
+                    <span class="bg-[#8cc63f] text-white px-2 py-0.5 rounded text-[10px] font-bold">FR</span>
+                    <span class="bg-[#8cc63f] text-white px-2 py-0.5 rounded text-[10px] font-bold">UK</span>
                 </div>
             </div>
 
-            <div class="col-span-3 border border-slate-200 rounded-sm p-4 relative bg-slate-50/50">
-                <span class="absolute -top-2.5 left-3 bg-white px-2 text-[11px] font-semibold text-slate-500 border border-slate-200 rounded-sm">% Penalización</span>
-                <div class="text-xs space-y-2 mt-1">
-                    <div class="flex justify-between items-center border-b border-slate-100 pb-1">
-                        <span class="text-slate-500">48 horas - 30 Días:</span>
-                        <span class="font-mono font-bold text-slate-700">10%</span>
+            <h1 class="text-lg sm:text-xl font-bold text-[#3a687c] mb-4">Anulación de billetes</h1>
+
+            <div class="bg-[#009aa6] p-3 rounded-t flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-inner">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 flex-1">
+                    <div class="flex flex-col w-full sm:w-32">
+                        <label class="text-white text-[10px] font-bold mb-0.5" for="nif">NIF*</label>
+                        <input type="text" id="nif" value="99999999R" class="bg-white border border-gray-300 rounded px-2 py-1 text-gray-800 font-mono focus:outline-none text-xs w-full">
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-slate-500">30 Minutos - 48 Horas:</span>
-                        <span class="font-mono font-bold text-slate-700">20%</span>
+                    <div class="flex items-center gap-1.5 sm:mt-3 w-full sm:w-40">
+                        <input type="radio" id="radio-localizador" name="tipo_busqueda" checked class="accent-[#8cc63f] h-3.5 w-3.5 shrink-0">
+                        <div class="flex flex-col w-full">
+                            <label class="text-white text-[10px] font-bold mb-0.5" for="localizador">Localizador</label>
+                            <input type="text" id="localizador" value="02a67710" class="bg-white border border-gray-300 rounded px-2 py-1 text-gray-800 font-mono focus:outline-none text-xs w-full">
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 sm:mt-3 w-full sm:w-40">
+                        <input type="radio" id="radio-billete" name="tipo_busqueda" class="accent-[#8cc63f] h-3.5 w-3.5 shrink-0">
+                        <div class="flex flex-col w-full">
+                            <label class="text-white text-[10px] font-bold mb-0.5" for="billete_input">Billete</label>
+                            <input type="text" id="billete_input" disabled class="bg-[#a5dadc] border border-gray-400 rounded px-2 py-1 text-gray-600 font-mono focus:outline-none text-xs w-full cursor-not-allowed">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="border border-slate-200 rounded-xs overflow-hidden mb-6 shadow-2xs">
-            <table class="w-full text-left text-xs custom-table border-collapse bg-white">
-                <thead>
-                    <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-[11.5px]">
-                        <th class="p-2.5 text-center w-10"><input type="checkbox" class="accent-[#009396]"></th>
-                        <th class="p-2.5">Billete</th>
-                        <th class="p-2.5">Nº Asiento</th>
-                        <th class="p-2.5 text-right">Importe</th>
-                        <th class="p-2.5 text-right">Importe Devolución</th>
-                        <th class="p-2.5">Tarifa</th>
-                        <th class="p-2.5">Fecha Anulación</th>
-                        <th class="p-2.5 text-center">% Penalización</th>
-                        <th class="p-2.5">Anulada</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-600 font-sans">
-                    <tr class="hover:bg-slate-50/60 transition-colors">
-                        <td class="p-2.5 text-center"><input type="checkbox" class="accent-[#009396]"></td>
-                        <td class="p-2.5 font-mono text-slate-500">001234567890</td>
-                        <td class="p-2.5 text-slate-700 font-medium">4A (Coche 2)</td>
-                        <td class="p-2.5 text-right font-mono font-medium">5,40 €</td>
-                        <td class="p-2.5 text-right font-mono font-semibold text-emerald-600">4,86 €</td>
-                        <td class="p-2.5 text-slate-500">Promo_Aniv</td>
-                        <td class="p-2.5 text-slate-400">—</td>
-                        <td class="p-2.5 text-center font-mono">10%</td>
-                        <td class="p-2.5 text-slate-400 font-medium flex items-center space-x-1">
-                            <span class="text-slate-300 text-[10px] font-bold">&gt;</span> <span>No</span>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-slate-50/60 transition-colors">
-                        <td class="p-2.5 text-center"><input type="checkbox" class="accent-[#009396]"></td>
-                        <td class="p-2.5 font-mono text-slate-500">001234567891</td>
-                        <td class="p-2.5 text-slate-700 font-medium">4B (Coche 2)</td>
-                        <td class="p-2.5 text-right font-mono font-medium">4,30 €</td>
-                        <td class="p-2.5 text-right font-mono font-semibold text-emerald-600">3,87 €</td>
-                        <td class="p-2.5 text-slate-500">Promo_Aniv</td>
-                        <td class="p-2.5 text-slate-400">—</td>
-                        <td class="p-2.5 text-center font-mono">10%</td>
-                        <td class="p-2.5 text-slate-400 font-medium flex items-center space-x-1">
-                            <span class="text-slate-300 text-[10px] font-bold">&gt;</span> <span>No</span>
-                        </td>
-                    </tr>
-                    <tr class="hover:bg-slate-50/60 transition-colors">
-                        <td class="p-2.5 text-center"><input type="checkbox" class="accent-[#009396]"></td>
-                        <td class="p-2.5 font-mono text-slate-500">001234567892</td>
-                        <td class="p-2.5 text-slate-700 font-medium">5A (Coche 2)</td>
-                        <td class="p-2.5 text-right font-mono font-medium text-slate-400">Gratis</td>
-                        <td class="p-2.5 text-right font-mono font-medium text-slate-400">0,00 €</td>
-                        <td class="p-2.5 text-slate-500">Menor_Fr</td>
-                        <td class="p-2.5 text-slate-400">—</td>
-                        <td class="p-2.5 text-center font-mono">0%</td>
-                        <td class="p-2.5 text-slate-400 font-medium flex items-center space-x-1">
-                            <span class="text-slate-300 text-[10px] font-bold">&gt;</span> <span>No</span>
-                        </td>
-                    </tr>
-                    <tr class="bg-rose-50/30 text-slate-400">
-                        <td class="p-2.5 text-center"><input type="checkbox" disabled class="opacity-40"></td>
-                        <td class="p-2.5 font-mono line-through opacity-70">001234567885</td>
-                        <td class="p-2.5 line-through opacity-70">12C (Coche 1)</td>
-                        <td class="p-2.5 text-right font-mono line-through">2,70 €</td>
-                        <td class="p-2.5 text-right font-mono text-rose-600 font-medium">2,43 €</td>
-                        <td class="p-2.5 opacity-70">Promo_Aniv</td>
-                        <td class="p-2.5 text-slate-500 font-mono">23-05-2026 14:22</td>
-                        <td class="p-2.5 text-center font-mono">10%</td>
-                        <td class="p-2.5 text-rose-600 font-medium flex items-center space-x-1">
-                            <span class="text-rose-400 text-[10px] font-bold">&gt;</span> <span>Sí</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="border-t border-slate-100 pt-4 flex flex-col items-center justify-center space-y-4">
-            <div class="flex items-center space-x-2">
-                <input type="checkbox" id="chk-email" checked class="w-4 h-4 accent-emerald-500 rounded cursor-pointer">
-                <label Sver-email for="chk-email" class="text-xs font-medium text-slate-600 cursor-pointer">Email</label>
-                <input type="email" value="carlos.castillo@domain.com" class="border border-slate-300 rounded px-3 py-1 text-xs w-64 outline-none focus:border-[#009396] font-sans">
-            </div>
-
-            <div class="flex items-center space-x-3">
-                <button class="bg-submit-green hover:bg-emerald-600 text-white font-medium px-5 py-1.5 rounded-xs text-xs flex items-center space-x-1.5 shadow-2xs transition-colors cursor-pointer">
-                    <i class="bi bi-check2-circle"></i>
-                    <span>Enviar</span>
+                <button onclick="buscarReserva()" class="w-full md:w-auto bg-[#8cc63f] hover:bg-[#7db235] text-white font-bold px-12 py-2 rounded shadow-sm text-xs md:mt-3 transition-colors cursor-pointer text-center">
+                    Buscar
                 </button>
-                <button class="bg-cancel-red hover:bg-rose-600 text-white font-medium px-5 py-1.5 rounded-xs text-xs flex items-center space-x-1.5 shadow-2xs transition-colors cursor-pointer">
-                    <i class="bi bi-x-circle"></i>
-                    <span>Anular Billete</span>
+            </div>
+
+            <div id="panel-info-reserva" class="hidden grid-cols-1 lg:grid-cols-4 gap-4 bg-[#f8fafc] border-x border-b border-gray-200 p-3 mb-4 items-start pt-6 lg:pt-3">
+                <div class="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-2 text-gray-600 relative">
+                    <span class="absolute -top-6 -left-1 bg-white border border-gray-200 border-b-0 px-3 py-0.5 font-bold text-gray-700 rounded-t text-[11px]">Datos Reserva</span>
+                    <div class="sm:mt-1"><strong>Fecha reserva:</strong> <span class="font-mono">2025-07-08 17:48</span></div>
+                    <div class="sm:mt-1"><strong>Localizador:</strong> <span class="font-mono">02a67710</span></div>
+                    <div class="sm:mt-1"><strong>Forma Pago:</strong> Tarjeta/Crédito</div>
+                    <div><strong>Fecha viaje:</strong> <span class="font-mono">2025-07-19 16:55</span></div>
+                    <div><strong>Origen:</strong> ARRASATE/MONDRAGÓN</div>
+                    <div><strong>Destino:</strong> VITORIA-GASTEIZ</div>
+                    <div><strong>Email:</strong> correo@gmail.com</div>
+                    <div><strong>NIF:</strong> <span class="font-mono">99999999R</span></div>
+                    <div class="text-[10px] leading-tight sm:col-span-2 md:col-span-1"><strong>Servicio:</strong> 2507191615000084100<br><span class="text-gray-400">27 DG05D-Vitoria-Gasteiz>Eskoriatza>Eibar (Paduratik)</span></div>
+                </div>
+                <div class="lg:col-span-1 border border-gray-200 rounded p-2 bg-white relative mt-4 lg:mt-0">
+                    <span class="absolute -top-3.5 left-2 bg-white border border-gray-200 border-b-0 px-2 py-0.5 font-bold text-gray-700 rounded-t text-[10px]">% Penalización</span>
+                    <div class="flex justify-between text-gray-600 mt-1">
+                        <span>48 horas - 30 Días:</span>
+                        <span class="font-mono font-bold">10%</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>30 Minutos - 48 Horas:</span>
+                        <span class="font-mono font-bold">20%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-gray-200 rounded overflow-hidden bg-white shadow-sm overflow-x-auto w-full">
+                <table class="w-full text-left border-collapse min-w-[900px]">
+                    <thead>
+                        <tr class="bg-[#f1f5f9] text-gray-700 font-bold border-b border-gray-200 text-[11px]">
+                            <th id="th-check" class="p-2 w-10 text-center border-r border-gray-200 hidden">
+                                <input type="checkbox" id="check-all" onclick="toggleSelectAll(this)" class="accent-[#8cc63f] h-3.5 w-3.5">
+                            </th>
+                            <th class="p-2 border-r border-gray-200">Billete</th>
+                            <th class="p-2 border-r border-gray-200">Nº Asiento</th>
+                            <th class="p-2 border-r border-gray-200 text-right">Importe</th>
+                            <th class="p-2 border-r border-gray-200 text-right">Importe Devolución</th>
+                            <th class="p-2 border-r border-gray-200">Tarifa</th>
+                            <th class="p-2 border-r border-gray-200">Fecha Anulación</th>
+                            <th class="p-2 border-r border-gray-200 text-center">% Penalización</th>
+                            <th class="p-2 text-center">Anulada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-billetes-body">
+                        <tr id="fila-vacia">
+                            <td colspan="8" class="p-12 text-center text-gray-400 font-medium bg-white">
+                                No existen datos para mostrar
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="mt-6 pt-4 border-t border-gray-100 flex flex-col items-center gap-3">
+            <div class="flex flex-wrap items-center justify-center gap-2">
+                <input type="checkbox" id="check-email" class="accent-[#8cc63f] h-3.5 w-3.5">
+                <label for="check-email" class="text-gray-500 font-semibold">Email</label>
+                <input type="text" id="input-email-envio" class="border border-gray-300 rounded px-2 py-0.5 w-48 sm:w-52 bg-white text-gray-700 focus:outline-none text-xs" placeholder="correo@gmail.com">
+            </div>
+            <div class="flex gap-2 w-full sm:w-auto justify-center">
+                <button class="w-1/2 sm:w-auto bg-[#b4dd7f] text-white font-bold px-6 py-1.5 rounded cursor-not-allowed text-xs" disabled>
+                    Enviar
+                </button>
+                <button onclick="abrirConfirmacion()" class="w-1/2 sm:w-auto bg-[#e06666] hover:bg-[#cc5252] text-white font-bold px-6 py-1.5 rounded shadow-sm text-xs flex items-center justify-center gap-1 transition-colors cursor-pointer">
+                    <span class="font-bold">✕</span> Anular Billete
                 </button>
             </div>
         </div>
 
     </div>
 
+    <div id="modal-confirmacion" class="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-white rounded-lg shadow-xl border border-gray-300 w-full max-w-sm overflow-hidden animate-fade-in">
+            <div class="flex justify-between items-center bg-gray-50 px-4 py-2 border-b border-gray-200">
+                <h3 class="text-sm font-bold text-gray-700">Confirmación</h3>
+                <button onclick="cerrarConfirmacion()" class="text-gray-400 hover:text-gray-600 font-bold text-lg cursor-pointer">&times;</button>
+            </div>
+            <div class="p-4 space-y-2 text-gray-600 text-xs">
+                <div>Forma de pago: <span class="text-blue-500 font-semibold underline cursor-pointer">Crédito</span></div>
+                <div>Cantidad a devolver: <span id="modal-importe-devolver" class="text-blue-500 font-bold underline cursor-pointer">0,00 €</span></div>
+                <div class="leading-relaxed">Billetes: <span id="modal-lista-billetes" class="text-blue-500 underline cursor-pointer font-mono break-all"></span></div>
+            </div>
+            <div class="flex justify-center gap-3 p-3 bg-gray-50 border-t border-gray-200">
+                <button onclick="cerrarConfirmacion()" class="bg-[#cc3333] hover:bg-[#b32d2d] text-white font-bold px-4 py-1.5 rounded text-xs flex items-center gap-1 cursor-pointer">
+                    <span>✕</span> Cancelar
+                </button>
+                <button onclick="procesarAnulacion()" class="bg-[#8cc63f] hover:bg-[#7db235] text-white font-bold px-4 py-1.5 rounded text-xs flex items-center gap-1 cursor-pointer">
+                    <span>✓</span> Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set de datos interno
+        let dbBilletes = [
+            { id: "7727190", asiento: "", importe: 5.40, devuelto: 4.86, tarifa: "Ocasional", fechaAnulacion: "2025-07-08 18:05", penalizacion: "10%", anulada: false, descuento: null },
+            { id: "7727191", asiento: "", importe: 4.30, devuelto: 3.87, tarifa: "Ocasional FN20", fechaAnulacion: "2025-07-08 18:05", penalizacion: "10%", anulada: false, descuento: { texto: "FN -Familia numerosa normal (20%): - 1,08 €" } },
+            { id: "7727192", asiento: "", importe: 2.70, devuelto: 2.43, tarifa: "Ocasional FN50", fechaAnulacion: "2025-07-08 18:05", penalizacion: "10%", anulada: false, descuento: { texto: "FN -Familia numerosa especial (50%): - 2,70 €" } },
+            { id: "7727194", asiento: "", importe: 5.40, devuelto: 4.86, tarifa: "Ocasional (PMR)", fechaAnulacion: "2025-07-08 18:05", penalizacion: "10%", anulada: false, descuento: null },
+            { id: "7727195", asiento: "", importe: 0.00, devuelto: 0.00, tarifa: "Menor 6 años Diurno", fechaAnulacion: "2025-07-08 18:05", penalizacion: "10%", anulada: false, esGratis: true, descuento: null }
+        ];
+
+        let seleccionados = {};
+        let busquedaRealizada = false;
+
+        // Disparador de búsqueda: revela datos e incluye la columna de selección
+        function buscarReserva() {
+            busquedaRealizada = true;
+            
+            // Mostrar paneles superiores de la reserva
+            const panelInfo = document.getElementById('panel-info-reserva');
+            panelInfo.classList.remove('hidden');
+            panelInfo.classList.add('grid');
+
+            // Mostrar el th del checkbox general
+            document.getElementById('th-check').classList.remove('hidden');
+            
+            // Actualizarcolspan de la fila vacía por seguridad estructural
+            const filaVacia = document.getElementById('fila-vacia');
+            if (filaVacia) {
+                filaVacia.querySelector('td').setAttribute('colspan', '9');
+            }
+
+            renderTabla();
+        }
+
+        // Renderizado de las filas
+        function renderTabla() {
+            const tbody = document.getElementById('tabla-billetes-body');
+            
+            if (!busquedaRealizada) {
+                return; // Mantiene el estado inicial "No existen datos para mostrar"
+            }
+
+            tbody.innerHTML = '';
+
+            dbBilletes.forEach(b => {
+                const tr = document.createElement('tr');
+                const estaSeleccionado = seleccionados[b.id] || false;
+                
+                if (estaSeleccionado) {
+                    tr.className = "bg-[#cceef1] hover:bg-[#bee7ea] border-b border-gray-200 font-medium";
+                } else {
+                    tr.className = "hover:bg-gray-50 border-b border-gray-200";
+                }
+
+                // Si está anulado, celda vacía (oculta el check según requerimiento)
+                let checkCell = '';
+                if (b.anulada) {
+                    checkCell = `<td class="p-2 text-center border-r border-gray-200"></td>`;
+                } else {
+                    checkCell = `
+                        <td class="p-2 text-center border-r border-gray-200">
+                            <input type="checkbox" ${estaSeleccionado ? 'checked' : ''} onchange="toggleSeleccion('${b.id}', this.checked)" class="accent-[#8cc63f] h-3.5 w-3.5 cursor-pointer">
+                        </td>`;
+                }
+
+                const importeTexto = b.esGratis ? "Gratis" : `${b.importe.toFixed(2).replace('.', ',')} €`;
+                const devueltoTexto = `${b.devuelto.toFixed(2).replace('.', ',')} €`;
+
+                tr.innerHTML = `
+                    ${checkCell}
+                    <td class="p-2 border-r border-gray-200 font-mono font-bold text-gray-800">${b.id}</td>
+                    <td class="p-2 border-r border-gray-200 font-mono">${b.asiento}</td>
+                    <td class="p-2 border-r border-gray-200 text-right font-mono">${importeTexto}</td>
+                    <td class="p-2 border-r border-gray-200 text-right font-mono">${devueltoTexto}</td>
+                    <td class="p-2 border-r border-gray-200">${b.tarifa}</td>
+                    <td class="p-2 border-r border-gray-200 font-mono text-gray-500">${b.fechaAnulacion}</td>
+                    <td class="p-2 border-r border-gray-200 text-center font-mono">${b.penalizacion}</td>
+                    <td class="p-2 text-center font-bold text-gray-600">
+                        <div class="flex items-center justify-center gap-1">
+                            <span>${b.anulada ? '✓' : '>'}</span>
+                            <span>${b.anulada ? 'Sí' : 'No'}</span>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+
+                // Sub-fila de desglose de beneficios/descuentos de la captura
+                if (b.descuento) {
+                    const trDesc = document.createElement('tr');
+                    trDesc.className = estaSeleccionado ? "bg-[#cceef1] border-b border-gray-200" : "border-b border-gray-200 bg-white";
+                    trDesc.innerHTML = `
+                        <td class="p-1 border-r border-gray-200"></td>
+                        <td colspan="8" class="p-1 px-4 text-left">
+                            <span class="inline-block border border-red-500 rounded px-2 py-0.5 text-[#cc3333] font-bold bg-white text-[10px]">
+                                ${b.descuento.texto}
+                            </span>
+                        </td>
+                    `;
+                    tbody.appendChild(trDesc);
+                }
+            });
+        }
+
+        function toggleSeleccion(id, checked) {
+            if (checked) {
+                seleccionados[id] = true;
+            } else {
+                delete seleccionados[id];
+            }
+            renderTabla();
+        }
+
+        function toggleSelectAll(master) {
+            dbBilletes.forEach(b => {
+                if (!b.anulada) {
+                    if (master.checked) {
+                        seleccionados[b.id] = true;
+                    } else {
+                        delete seleccionados[b.id];
+                    }
+                }
+            });
+            renderTabla();
+        }
+
+        function abrirConfirmacion() {
+            if (!busquedaRealizada) return;
+            
+            const keys = Object.keys(seleccionados);
+            if (keys.length === 0) {
+                alert("Por favor, seleccione al menos un billete para realizar la anulación.");
+                return;
+            }
+
+            const itemsSeleccionados = dbBilletes.filter(b => seleccionados[b.id]);
+            const totalDevolver = itemsSeleccionados.reduce((sum, item) => sum + item.devuelto, 0);
+            
+            document.getElementById('modal-importe-devolver').innerText = `${totalDevolver.toFixed(2).replace('.', ',')} €`;
+            document.getElementById('modal-lista-billetes').innerText = keys.join(', ');
+
+            document.getElementById('modal-confirmacion').classList.remove('hidden');
+        }
+
+        function cerrarConfirmacion() {
+            document.getElementById('modal-confirmacion').classList.add('hidden');
+        }
+
+        function procesarAnulacion() {
+            dbBilletes.forEach(b => {
+                if (seleccionados[b.id]) {
+                    b.anulada = true;
+                }
+            });
+
+            seleccionados = {};
+            document.getElementById('check-all').checked = false;
+
+            cerrarConfirmacion();
+            renderTabla();
+        }
+    </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <title>Software Factory - Desarrollo, Tecnologías y Proyectos Inteligentes</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2 family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* CONFIGURACIÓN BASE - ESTILO CONSULTORÍA PREMIUM */
@@ -19,18 +19,19 @@
         body {
             background-color: #f1f5f9;
             display: grid;
-            gap: 50px;
+            gap: 40px;
             grid-template-columns: 1fr;
             place-items: center;
-            padding: 40px 0;
+            padding: 20px;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: #334155;
         }
 
         /* PALETA CORPORATIVA: Granate #9a2143 | Ocre #e28723 */
         .slide-container {
-            width: 1280px;
-            height: 720px;
+            width: 100%;
+            max-width: 1280px;
+            min-height: 720px;
             background-color: #ffffff;
             border-radius: 8px;
             overflow: hidden;
@@ -94,6 +95,7 @@
             flex-direction: column;
             justify-content: center;
             width: 100%;
+            margin-bottom: 40px; /* Espacio para el footer */
         }
 
         /* COMPONENTES DE DISEÑO */
@@ -143,8 +145,18 @@
             font-size: 20px;
         }
 
-        /* TABLA TECNOLÓGICA */
-        table { width: 100%; border-collapse: collapse; }
+        /* TABLA TECNOLÓGICA CON RESPONSIVIDAD INDEPENDIENTE */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 600px;
+        }
         th {
             background-color: #9a2143;
             color: #ffffff;
@@ -202,6 +214,14 @@
         }
         .demo-link:hover { color: #e28723; }
 
+        /* REJILLA EVOLUCIÓN TECH */
+        .tech-evolution-grid {
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            gap: 60px; 
+            align-items: center;
+        }
+
         /* FOOTER DE DIAPOSITIVA */
         .slide-footer {
             position: absolute;
@@ -214,6 +234,48 @@
             padding-top: 15px;
         }
         .slide-footer span { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+
+        /* ==========================================================================
+           MEDIA QUERIES - DISEÑO TOTALMENTE RESPONSIVE (TABLETS Y MÓVILES)
+           ========================================================================== */
+        
+        @media (max-width: 1024px) {
+            .slide-container {
+                padding: 40px;
+                min-height: auto;
+            }
+            .slide-title { font-size: 30px; margin-bottom: 25px; }
+            .success-grid { grid-template-columns: repeat(2, 1fr); } /* 2 columnas en tablets */
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .tech-evolution-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; gap: 30px; }
+            .slide-container { padding: 30px 20px 60px 20px; position: relative; }
+            .two-column { grid-template-columns: 1fr; gap: 30px; }
+            .success-grid { grid-template-columns: 1fr; } /* 1 columna en móvil */
+            .services-grid { grid-template-columns: 1fr; }
+            
+            /* Ajustes de fuentes adaptativas */
+            .slide-title { font-size: 26px; }
+            p, li { font-size: 16px; }
+            .custom-list li { font-size: 17px; padding-left: 35px; }
+            
+            /* Ajustes de Portada */
+            h1 { font-size: 48px !important; }
+            div[style*="font-size: 24px"] { font-size: 18px !important; }
+            div[style*="font-size: 21px"] { font-size: 16px !important; }
+
+            /* Fijar el footer abajo de forma relativa */
+            .slide-footer {
+                left: 20px;
+                right: 20px;
+                bottom: 15px;
+                padding-top: 10px;
+            }
+            .slide-footer span { font-size: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -319,7 +381,7 @@
 <div class="slide-container" id="slide8">
     <h2 class="slide-title">Ampliación de Capacidad</h2>
     <div class="content-area">
-        <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:60px; align-items:center;">
+        <div class="tech-evolution-grid">
             <div>
                 <p style="font-size:22px; color:#9a2143; font-weight:600; margin-bottom:15px;">IA como Núcleo Operativo</p>
                 <p>La adopción de modelos como <strong>Claude</strong> y <strong>Copilot</strong> amplía exponencialmente nuestro espectro tecnológico, acortando la curva de aprendizaje en arquitecturas cloud y nuevos lenguajes.</p>
@@ -339,16 +401,18 @@
 <div class="slide-container" id="slide9">
     <h2 class="slide-title">PLATAFORMAS TECNOLÓGICAS</h2>
     <div class="content-area">
-        <table>
-            <thead><tr><th>BD</th><th>LENGUAJES</th><th>FRAMEWORKS</th><th>IDE</th><th>VERSIONES</th></tr></thead>
-            <tbody>
-                <tr><td>SQL SERVER</td><td>Java</td><td>Springboot</td><td>Eclipse</td><td>TFS</td></tr>
-                <tr><td>ORACLE</td><td>C#</td><td>DevExpress</td><td>Visual Studio</td><td>JIRA</td></tr>
-                <tr><td>MySQL</td><td>VisualBasic</td><td>Angular</td><td>IntelliJ</td><td>Azure</td></tr>
-                <tr><td>PostgreSQL</td><td>ASP.NET</td><td>IONICS</td><td>VS Code</td><td>GIT</td></tr>
-                <tr><td>MongoDB</td><td>PHP</td><td>React</td><td>PHPStorm</td><td>SVN</td></tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table>
+                <thead><tr><th>BD</th><th>LENGUAJES</th><th>FRAMEWORKS</th><th>IDE</th><th>VERSIONES</th></tr></thead>
+                <tbody>
+                    <tr><td>SQL SERVER</td><td>Java</td><td>Springboot</td><td>Eclipse</td><td>TFS</td></tr>
+                    <tr><td>ORACLE</td><td>C#</td><td>DevExpress</td><td>Visual Studio</td><td>JIRA</td></tr>
+                    <tr><td>MySQL</td><td>VisualBasic</td><td>Angular</td><td>IntelliJ</td><td>Azure</td></tr>
+                    <tr><td>PostgreSQL</td><td>ASP.NET</td><td>IONICS</td><td>VS Code</td><td>GIT</td></tr>
+                    <tr><td>MongoDB</td><td>PHP</td><td>React</td><td>PHPStorm</td><td>SVN</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="slide-footer"><span>SOFTWARE FACTORY – STACK TECNOLÓGICO</span><span>09</span></div>
 </div>
@@ -358,57 +422,44 @@
     <div class="content-area">
         <div class="success-grid">
             <div class="success-item">
-                <div class="tag-row">
-                    <span class="tag dev">Desarrollo</span>
-                    <span class="tag new-tech">React + .NET</span>
-                </div>
+                <div class="tag-row"><span class="tag dev">Desarrollo</span><span class="tag new-tech">React + .NET</span></div>
                 <h4>Reconocimientos Médicos</h4>
-                <p>ReactJs, ASP.NET, SQL Server. Plataforma de gestión de Reconocimientos Médicos.</p>
-                <a href="./demo-reconocimientos/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+                <p>ReactJs, ASP.NET, SQL Server. Validación eficiente de flujos clínicos.</p>
+                <a href="./demo-reconocimientos/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
             </div>
             <div class="success-item">
-                <div class="tag-row">
-                    <span class="tag dev">Desarrollo</span>
-                    <span class="tag new-tech">React + .NET</span>
-                </div>
+                <div class="tag-row"><span class="tag dev">Desarrollo</span><span class="tag new-tech">React + .NET</span></div>
                 <h4>Gestión de Condominios</h4>
-                <p>ReactJs, ASP.NET, SQL Server. Plataforma integral de administración y servicios distribuidos.</p>
-                <a href="./demo-condominios/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
+                <p>ReactJs, ASP.NET, SQL Server. Plataforma integral administrativa.</p>
+                <a href="./demo-condominios/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
             </div>
-			<div class="success-item">
+            <div class="success-item">
                 <div class="tag-row"><span class="tag dev">Desarrollo</span><span class="tag new-tech">React + Java</span></div>
                 <h4>Gestión de Supermercados</h4>
                 <p>React, Java, Spring, Oracle. Ecosistema transaccional de alta demanda.</p>
                 <a href="./demo-supermercados/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
             </div>
-			<div class="success-item">
+            <div class="success-item">
+                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
+                <h4>Venta de Billetes</h4>
+                <p>Java, Spring, Angular, Oracle. Motor transaccional de alta disponibilidad.</p>
+                <a href="./demo-billetes/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
+            </div>
+            <div class="success-item">
+                <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
+                <h4>Facturación</h4>
+                <p>ASP.NET, DevExpress, SQL Server. Procesamiento y conciliación financiera.</p>
+                <a href="./demo-facturacion/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
+            </div>
+            <div class="success-item">
                 <div class="tag-row"><span class="tag dev">Desarrollo</span></div>
                 <h4>Gestión Inmobiliaria</h4>
                 <p>ASP.NET, DevExpress, SQL Server. Gestión de activos y contratos complejos.</p>
                 <a href="./demo-inmobiliaria/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-link"></i> Demo</a>
             </div>
-            <div class="success-item">
-                <div class="tag-row">
-                    <span class="tag dev">Desarrollo</span>
-                </div>
-                <h4>Facturación</h4>
-                <p>Java, Spring, Angular, Oracle. Módulo de Sistema Gestión de Autopistas.</p>
-                <a href="./demo-facturacion/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
-            </div>
-            <div class="success-item">
-                <div class="tag-row">
-                    <span class="tag dev">Desarrollo</span>
-                </div>
-                <h4>Venta de Billetes</h4>
-                <p>Java, Spring, Angular, MariaDB. Sistema de Venta Anticipada de Billetes.</p>
-                <a href="./demo-billetes/index.html" class="demo-link" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> Demo</a>
-            </div>
         </div>
     </div>
-    <div class="slide-footer">
-        <span>SOFTWARE FACTORY – CASOS DE ÉXITO</span>
-        <span>10</span>
-    </div>
+    <div class="slide-footer"><span>SOFTWARE FACTORY – ÉXITOS DEMOSTRADOS</span><span>10</span></div>
 </div>
 
 </body>
